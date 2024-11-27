@@ -16,7 +16,7 @@ import java.util.List;
 public class FichasMedicas {
 
     /**
-     * REPARACION DE PROYECTO 1
+     * REPARACION DE PROYECTO 1-2
      * Primer cambio 6 noviembre 2024 Prueba Jose 7/11/2024 14:28pm Prueba Laura
      * 7/11/2024 14:43pm Prueba José Luis 7/11/2024 14:39 pm Prueba Victor Pico
      * 7/11/2024 14:45 pm Prueba Pablo Garcia 7/11/2024 02:52 pm Prueba Hector
