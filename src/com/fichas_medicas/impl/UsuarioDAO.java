@@ -12,11 +12,10 @@ import java.util.List;
  * @author user
  */
 public interface UsuarioDAO {
-    boolean save(Usuario obj);
-    boolean update (Usuario obj);
-    boolean delete (String usuario);
+    String save(Usuario obj);
+    String update (Usuario obj);
+    String delete (String usuario);
     Usuario getOne(String usuario);
-    Integer getId(String usuario);
     List<Usuario> getAll();
     Usuario getLoging(String usuario, String password);
 }

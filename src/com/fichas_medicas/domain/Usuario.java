@@ -37,7 +37,7 @@ public class Usuario {
     @NonNull
     private Integer id_rol;
     @NonNull
-    private Integer id_usuario_registro;
+    private String id_usuario_registro;
     @NonNull
     private String estado;
 

@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class CrudUsuario implements UsuarioDAO {
 
-    private String base = "desarrollo";
+    private String base = "practica_capacitacion";
     private Conexion conexion;
 
     public CrudUsuario() {
@@ -30,60 +30,67 @@ public class CrudUsuario implements UsuarioDAO {
     }
 
     @Override
-    public boolean save(Usuario obj) {
+    public String save(Usuario obj) {
+        String msg = null;
         var sql = "INSERT INTO usuario(username, password, nombre, apellido, correo, id_rol, id_usuario_registro, estado)"
                 + "values(?,?,?,?,?,?,?,?)";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
-            st.setString(1, obj.getUsuario());     
-            st.setString(2, obj.getPassword());        
+            st.setString(1, obj.getUsuario());
+            st.setString(2, obj.getPassword());
             st.setString(3, obj.getNombre());
             st.setString(4, obj.getApellido());
             st.setString(5, obj.getCorreo());
             st.setInt(6, obj.getId_rol());
-            st.setInt(7, obj.getId_usuario());
+            st.setString(7, obj.getId_usuario_registro());
             st.setString(8, obj.getEstado());
-            int rowsAffected = st.executeUpdate();   
-            return rowsAffected > 0;                  
+            st.executeUpdate();
+            msg = "Datos guardados...";
         } catch (SQLException ex) {
-            Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
+            msg = "" + ex;
+            // Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
-
+        return msg;
     }
 
     @Override
-    public boolean update(Usuario obj) {
-        var query = "UPDATE usuario SET password = ?, nombre = ?, apellido =?, correo  =?, id_rol = ? WHERE id_usuario = ?";
+    public String update(Usuario obj) {
+        String msg = null;
+        var query = "UPDATE usuario SET password = ?, nombre = ?, apellido =?, correo  =?, id_rol = ? WHERE username = ?";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
-            st.setString(1, obj.getPassword());    
-            st.setString(2, obj.getNombre());        
-            st.setString(3, obj.getApellido());       
+            st.setString(1, obj.getPassword());
+            st.setString(2, obj.getNombre());
+            st.setString(3, obj.getApellido());
             st.setString(4, obj.getCorreo());
-            st.setInt(5, obj.getId_rol());          
-            int rowsAffected = st.executeUpdate();  
-            return rowsAffected > 0;                   
+            st.setInt(5, obj.getId_rol());
+            st.setString(6, obj.getUsuario());
+            st.executeUpdate();
+            msg = "Datos guardados...";
         } catch (SQLException ex) {
+            msg = "" + ex;
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return msg;
     }
 
     @Override
-    public boolean delete(String usuario) {
+    public String delete(String usuario) {
+        String msg = null;
         var query = "UPDATE usuario SET  estado = ? WHERE username = ?";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, "I");          // Asigna el estado ('A' o 'I')
             st.setString(2, usuario);
             // Asigna el ID del área para actualizar
-            int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
-            return rowsAffected > 0;                   // Retorna true si se actualizaron filas
+            st.executeUpdate();     // Ejecuta la actualización
+            st.executeUpdate();
+            msg = "Datos guardados...";
         } catch (SQLException ex) {
+            msg = "" + ex;
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return msg;
     }
 
     @Override
@@ -92,18 +99,17 @@ public class CrudUsuario implements UsuarioDAO {
         var query = "SELECT * FROM usuario WHERE username = ? AND estado = 'A'";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
-            st.setString(1, usuario);                     
+            st.setString(1, usuario);
             try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {                      
+                if (rs.next()) {
                     obj = new Usuario(
-                            rs.getInt("id_usuario"),
                             rs.getString("username"),
                             rs.getString("password"),
                             rs.getString("nombre"),
                             rs.getString("apellido"),
                             rs.getString("correo"),
                             rs.getInt("id_rol"),
-                            rs.getInt("id_usuario_regtistro"),
+                            rs.getString("id_usuario_registro"),
                             rs.getString("estado")
                     );
                 }
@@ -111,41 +117,26 @@ public class CrudUsuario implements UsuarioDAO {
         } catch (SQLException ex) {
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return obj;
+        return obj; 
     }
 
-    @Override
-    public Integer getId(String usuario) {
-        var query = "SELECT id_usuario FROM usuario WHERE username = ? AND estado = 'A'";
-        try (
-                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
-            st.setString(1, usuario);                    
-            ResultSet rs = st.executeQuery();         
-            if (rs.next()) {                          
-                return rs.getInt("id_usuario");           
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
+
 
     @Override
     public List<Usuario> getAll() {
-        List<Usuario> datos = new ArrayList<>();
+              List<Usuario> datos = new ArrayList<>();
         var query = "select * from usuario where estado='A'";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 var obj = new Usuario(
-                        rs.getInt("id_usuario"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("correo"),
                         rs.getInt("id_rol"),
-                        rs.getInt("id_usuario_regtistro"),
+                        rs.getString("id_usuario_regtistro"),
                         rs.getString("estado")
                 );
                 datos.add(obj);
@@ -154,7 +145,7 @@ public class CrudUsuario implements UsuarioDAO {
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return datos;
+        return datos;  
     }
 
     @Override
@@ -164,17 +155,17 @@ public class CrudUsuario implements UsuarioDAO {
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, usuario);
+            st.setString(2, password);
             try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {                      
+                if (rs.next()) {
                     obj = new Usuario(
-                            rs.getInt("id_usuario"),
                             rs.getString("username"),
                             rs.getString("password"),
                             rs.getString("nombre"),
                             rs.getString("apellido"),
                             rs.getString("correo"),
                             rs.getInt("id_rol"),
-                            rs.getInt("id_usuario_regtistro"),
+                            rs.getString("id_usuario_registro"),
                             rs.getString("estado")
                     );
                 }
@@ -183,7 +174,6 @@ public class CrudUsuario implements UsuarioDAO {
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
         return obj;
-
     }
 
 }
