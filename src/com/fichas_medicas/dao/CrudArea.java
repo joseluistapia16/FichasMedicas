@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Jose Luis Tapia Fecha: 10/11/2024 hora: 17:50pm
+ * 
  */
 public class CrudArea implements AreaDAO {
 
