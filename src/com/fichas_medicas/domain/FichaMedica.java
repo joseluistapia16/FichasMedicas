@@ -32,7 +32,7 @@ public class FichaMedica {
     private String examen_complementario;
     private String firma;
     private String foto;
-    private Integer id_usuario;
+    private String id_usuario;
     private String estado;
     
 }

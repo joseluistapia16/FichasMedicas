@@ -11,19 +11,19 @@ import lombok.ToString;
 
 /**
  * Representa el estado civil de una persona.
- * 
- * @author Gabriel Vincent  Fecha:12/11/2024   Hora:11:08AM
+ *
+ * @author Gabriel Vincent Fecha:12/11/2024 Hora:11:08AM
  */
 @Data
-@ToString 
-@RequiredArgsConstructor 
-public class EstadoCivil { 
+@ToString
+@RequiredArgsConstructor
+public class EstadoCivil {
+
     private Integer idEstadoCivil;  // ID del estado civil
-    @NonNull 
+    @NonNull
     private String nombreEstadoCivil;  // Nombre del estado civil
-    @NonNull 
-    private Integer idUsuario;  // ID del usuario relacionado
-    @NonNull 
+    @NonNull
+    private String id_usuario;  // ID del usuario relacionado
+    @NonNull
     private String estado;  // Estado civil (soltero, casado, etc.)
 }
-

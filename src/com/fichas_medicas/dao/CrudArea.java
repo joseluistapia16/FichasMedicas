@@ -33,7 +33,7 @@ public class CrudArea implements AreaDAO {
                 Connection conect = this.conexion.conectar(base); 
                 PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, obj.getNombre_area());     // Asigna el nombre del área
-            st.setInt(2, obj.getId_usuario());         // Asigna el ID del usuario
+            st.setString(2, obj.getId_usuario());         // Asigna el ID del usuario
             st.setString(3, obj.getEstado());         // Asigna el estado ('A' o 'I')
             int rowsAffected = st.executeUpdate();     // Ejecuta la inserción
             return rowsAffected > 0;                   // Retorna true si se insertaron filas
@@ -50,7 +50,7 @@ public class CrudArea implements AreaDAO {
                 Connection conect = this.conexion.conectar(base); 
                 PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, obj.getNombre_area());     // Asigna el nombre del área
-            st.setInt(2, obj.getId_usuario());         // Asigna el ID del usuario
+            st.setString(2, obj.getId_usuario());         // Asigna el ID del usuario
             st.setString(3, obj.getEstado());          // Asigna el estado ('A' o 'I')
             st.setInt(4, obj.getId_area());            // Asigna el ID del área para actualizar
             int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
@@ -90,7 +90,7 @@ public class CrudArea implements AreaDAO {
                     area = new Area(
                             rs.getInt("id_area"),
                             rs.getString("nombre_area"),
-                            rs.getInt("id_usuario"),
+                            rs.getString("id_usuario"),
                             rs.getString("estado")
                     );
                 }
@@ -127,7 +127,7 @@ public class CrudArea implements AreaDAO {
 
             while (rs.next()) {
                 Area area = new Area(rs.getInt("id_area"), rs.getString("nombre_area"),
-                        rs.getInt("id_usuario"), rs.getString("estado"));
+                        rs.getString("id_usuario"), rs.getString("estado"));
                 datos.add(area);
             }
         } catch (SQLException ex) {

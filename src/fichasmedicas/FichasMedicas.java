@@ -49,14 +49,14 @@ public class FichasMedicas {
         var obj1= crud.getOne(2);
         System.out.println(obj1.toString());
         
-        var obj = new Area("ECA", 4, "A");
+        var obj = new Area("ECA", "java", "A");
        // var op = crud.save(obj);
        // System.out.println(op);
         lista = crud.getAll();
         for (int i = 0; i < lista.size(); i++) {
             System.out.println(lista.get(i).toString());
         }
-        obj = new Area(3, "CIENCIAS", 9, "I");
+        obj = new Area(3, "CIENCIAS", "C++", "I");
         var op = crud.update(obj);
         System.out.println(op);
         System.out.println("Despues");

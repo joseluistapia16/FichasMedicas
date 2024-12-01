@@ -32,7 +32,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
     @Override//uno
     public boolean update(ParteDiario obj) {
         var query = "UPDATE persona SET fecha_registro = ?, hora_entrada = ? , diagnostico = ? ,tratamiento = ?, observacion=?, permisos=?, hora_salida=?, frecuencia_cardiaca=?, saturacion=?, peso=? ,estatura=?, imc=?  "
-                + "where usuario=?";
+                + "where id_usuario=?";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setDate(1, obj.getFecha_registro());     // Asigna el nombre del área
@@ -47,7 +47,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
             st.setDouble(10, obj.getPeso());
             st.setDouble(11, obj.getEstatura());
             st.setDouble(12, obj.getImc());
-            st.setString(13, obj.getUsuario());
+            st.setString(13, obj.getId_usuario());
 
             int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
             return rowsAffected > 0;                   // Retorna true si se actualizaron filas
@@ -61,7 +61,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
     @Override//Dos
     public boolean save(ParteDiario obj) {
         var sql = "INSERT INTO persona(fecha_registro, hora_entrada, diagnostico, tratamiento, oobservacion, Persmisos, hora_salida, "
-                + "frecuencia_cardiaca, saturacion, peso, estatura, imc, usuario,) "
+                + "frecuencia_cardiaca, saturacion, peso, estatura, imc, id_usuario,) "
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (
@@ -78,7 +78,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
             st.setDouble(10, obj.getPeso());
             st.setDouble(11, obj.getEstatura());
             st.setDouble(12, obj.getImc());
-            st.setString(13, obj.getUsuario());
+            st.setString(13, obj.getId_usuario());
 
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;

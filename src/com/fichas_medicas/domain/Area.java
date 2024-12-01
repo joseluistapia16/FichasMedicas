@@ -25,7 +25,7 @@ public class Area {
     @NonNull
     private String nombre_area;
     @NonNull
-    private Integer id_usuario;
+    private String id_usuario;
     @NonNull
     private String estado;
 }

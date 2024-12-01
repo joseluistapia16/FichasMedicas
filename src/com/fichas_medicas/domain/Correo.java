@@ -28,7 +28,7 @@ public class Correo {
     @NonNull
     private String id_persona;
     @NonNull
-    private Integer id_usuario;
+    private String id_usuario;
     @NonNull
     private String estado;
 

@@ -23,8 +23,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Usuario {
 
-    private Integer id_usuario;
-    @NonNull
     private String usuario;
     @NonNull
     private String password;

@@ -37,7 +37,7 @@ public class ParteDiario {
     @NonNull
     private Time hora_salida;
     @NonNull
-    private String usuario;
+    private String id_usuario;
     @NonNull
     private String frecuencia_cardiaca;  // cambio
     @NonNull
