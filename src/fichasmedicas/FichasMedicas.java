@@ -46,7 +46,7 @@ public class FichasMedicas {
         CrudArea crud = new CrudArea();
         System.out.println(crud.getId("INFORMATICA")+" VAMOS");
         var del = crud.delete(5);
-        var obj1= crud.getOne(2);
+        var obj1= crud.getOne(1);
         System.out.println(obj1.toString());
         
         var obj = new Area("ECA", "java", "A");

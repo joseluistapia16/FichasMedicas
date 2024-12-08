@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class CrudArea implements AreaDAO {
 
-    private String base = "desarrollo";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudArea() {
