@@ -4,25 +4,23 @@
  */
 package com.fichas_medicas.impl;
 
-
-
 import com.fichas_medicas.domain.EstadoCivil;
 import java.util.List;
 
-
 /**
  *
- * @author Gabriel Vincent  Fecha:12/11/2024   Hora:11:08AM
+ * @author Gabriel Vincent Fecha:12/11/2024 Hora:11:08AM
  */
 public interface EstadoCivilDAO {
- void save(EstadoCivil obj);
 
-    void update(EstadoCivil obj);
+    boolean save(EstadoCivil obj);
 
-    void delete(Integer idEstadoCivil);
+    boolean update(EstadoCivil obj);
+
+    boolean delete(Integer idEstadoCivil);
 
     EstadoCivil getOne(Integer idEstadoCivil);
-    
+
     Integer getId(String name);
 
     List<EstadoCivil> getAll();

@@ -4,7 +4,9 @@
  */
 package com.fichas_medicas.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -15,8 +17,10 @@ import lombok.ToString;
  * @author Gabriel Vincent Fecha:12/11/2024 Hora:11:08AM
  */
 @Data
+@NoArgsConstructor
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class EstadoCivil {
 
     private Integer idEstadoCivil;  // ID del estado civil

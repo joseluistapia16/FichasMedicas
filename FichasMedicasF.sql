@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `fichas_medicas_personal_d` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `fichas_medicas_personal_d`;
+CREATE DATABASE  IF NOT EXISTS `fichas_medicas` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `fichas_medicas`;
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: localhost    Database: fichas_medicas_personal_d
+-- Host: localhost    Database: fichas_medicas
 -- ------------------------------------------------------
 -- Server version	8.0.32
 
@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `area`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `area` (
   `id_area` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
+  `nombre_area` varchar(100) NOT NULL,
   `id_usuario` varchar(30) DEFAULT NULL,
   `estado` char(1) DEFAULT 'A',
   PRIMARY KEY (`id_area`),
@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS `estado_civil`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estado_civil` (
   `id_estado_civil` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
+  `nombre_estado_civil` varchar(50) NOT NULL,
   `id_usuario` varchar(30) DEFAULT NULL,
   `estado` char(1) DEFAULT 'A',
   PRIMARY KEY (`id_estado_civil`),
@@ -148,9 +148,9 @@ DROP TABLE IF EXISTS `grupo_sanguineo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `grupo_sanguineo` (
   `id_grupo_sanguineo` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `id_usuario` varchar(30) DEFAULT NULL,
-  `estado` char(1) DEFAULT 'A',
+  `nombre_grupo_sanguineo` varchar(50) NOT NULL,
+  `id_usuario` varchar(30) NOT NULL,
+  `estado` char(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`id_grupo_sanguineo`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `grupo_sanguineo_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`username`)
@@ -184,11 +184,12 @@ CREATE TABLE `parte_diario` (
   `permisos` text NOT NULL,
   `hora_salida` time NOT NULL,
   `id_usuario` varchar(30) NOT NULL,
-  `estado` char(1) NOT NULL DEFAULT 'A',
   `frecuencia_cardiaca` text NOT NULL,
   `saturacion` text NOT NULL,
   `peso` double NOT NULL,
   `imc` double NOT NULL,
+  `estatura` double NOT NULL,
+  `estado` char(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`id_parte_diario`),
   KEY `parte_diario_ibfk_1` (`id_persona`),
   KEY `parte_diario_ibfk_2` (`id_usuario`),
@@ -319,4 +320,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-01 12:42:09
+-- Dump completed on 2024-12-07 22:44:07
