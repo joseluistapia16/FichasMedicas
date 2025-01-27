@@ -136,4 +136,15 @@ public class CrudRoles implements RolesDAO {
 
     }
 
+    public String cadenaRol(Integer id) {
+        var res = "";
+        List<Roles> lista = getAll();
+        for (int i = 0; i < lista.size(); i++) {
+            if (id == lista.get(i).getId_rol()) {
+                res = lista.get(i).getNombre();
+                break;
+            }
+        }
+        return res;
+    }
 }

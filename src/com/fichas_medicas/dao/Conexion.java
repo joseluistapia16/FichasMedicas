@@ -22,7 +22,7 @@ public class Conexion {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/" + base;
-            conect = DriverManager.getConnection(url, "root", "1234");
+            conect = DriverManager.getConnection(url, "root", "");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }

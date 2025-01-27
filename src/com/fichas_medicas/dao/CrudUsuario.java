@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class CrudUsuario implements UsuarioDAO {
 
-    private String base = "practica_capacitacion";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudUsuario() {
@@ -136,7 +136,7 @@ public class CrudUsuario implements UsuarioDAO {
                         rs.getString("apellido"),
                         rs.getString("correo"),
                         rs.getInt("id_rol"),
-                        rs.getString("id_usuario_regtistro"),
+                        rs.getString("id_usuario_regIstro"),
                         rs.getString("estado")
                 );
                 datos.add(obj);

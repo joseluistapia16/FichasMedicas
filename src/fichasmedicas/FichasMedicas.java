@@ -6,8 +6,10 @@ package fichasmedicas;
 
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.domain.Area;
+import com.fichas_medicas.views.VentanaLogin;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
 /**
  *
@@ -27,6 +29,8 @@ public class FichasMedicas {
      * @Prueba de Base de datos : Jose Luis Tapia Fecha:09-11-2024 hora:21:22pm
      */
     public static void main(String[] args) {
+           var login = new VentanaLogin(new JFrame(), true);
+           login.setVisible(true);
 //        System.out.println("Practicas Bernardino");  // Imprime un saludo
 //        // TODO code application logic here
 //        Usuario ob = new Usuario("ccvvv", "wwww", "jose", "lopez", "hhjh",
@@ -37,7 +41,7 @@ public class FichasMedicas {
 //        System.out.println(ob.toString());
 //        Area obA = new Area("Informatica", 1, "A");
 //        System.out.println(obA.toString());
-        basedatos();
+        //basedatos();
     }
 
     private static void basedatos() {
