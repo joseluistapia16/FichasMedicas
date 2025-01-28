@@ -4,7 +4,6 @@
  */
 package com.fichas_medicas.views;
 
-
 import com.fichas_medicas.dao.CrudRoles;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.Roles;
@@ -30,31 +29,35 @@ public class EditarUsuario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        fillRoles();
+        crudR = new CrudRoles();
         crudU = new CrudUsuario();
+        fillRoles();
+
         this.OCULTAR.setVisible(false);
     }
+
     public EditarUsuario(java.awt.Frame parent, boolean modal, Usuario obj) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        System.out.println("");
+        System.out.println(" object " + obj.getUsuario() + " " + obj.getNombre());
         fillRoles();
         crudU = new CrudUsuario();
         this.OCULTAR.setVisible(false);
         cargarDatos(obj);
     }
-    
-    private void cargarDatos(Usuario obj){
+
+    private void cargarDatos(Usuario obj) {
         usuario.setText(obj.getUsuario());
         password.setText(obj.getPassword());
         nombre.setText(obj.getNombre());
         apellido.setText(obj.getApellido());
         correo.setText(obj.getCorreo());
         var res = crudR.cadenaRol(obj.getId_rol());
-          roles.setSelectedItem(res);
-        System.out.println("Id_Rol "+obj.getId_rol()+" "+res);
+        roles.setSelectedItem(res);
+        System.out.println("Id_Rol " + obj.getId_rol() + " " + res);
     }
+
     private void fillRoles() {
         crudR = new CrudRoles();
         lista_rol = crudR.getAll();

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class CrudRoles implements RolesDAO {
 
-    private String base = "desarrollo";
+     private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     @Override
