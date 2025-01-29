@@ -22,8 +22,14 @@ import java.util.logging.Logger;
  */
 public class CrudRoles implements RolesDAO {
 
-     private String base = "fichas_medicas_desarrollo";
-    private Conexion conexion;
+    private String base = "fichas_medicas_desarrollo";
+    private Conexion conexion=null;
+
+    public CrudRoles() {
+        this.conexion= new Conexion();
+    }
+    
+    
 
     @Override
     public List<Roles> getAll() {
