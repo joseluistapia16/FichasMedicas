@@ -4,11 +4,12 @@
  */
 package com.fichas_medicas.views;
 
-
 import static com.fichas_medicas.components.Cadenas.validateString;
 import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudArea;
+import com.fichas_medicas.dao.CrudPersona;
 import com.fichas_medicas.domain.Area;
+import com.fichas_medicas.domain.Persona;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -37,6 +39,7 @@ public class Fichas extends javax.swing.JDialog {
     private String var1;
     private List<Area> areas = null;
     private CrudArea crudA = null;
+    private CrudPersona crudP = null;
 
     /**
      * Creates new form Fichas
@@ -52,8 +55,10 @@ public class Fichas extends javax.swing.JDialog {
         cargarImagen();
         crudA = new CrudArea();
         areas = crudA.getAll();
-        System.out.println("lista "+areas.size());
+        crudP = new CrudPersona();
+        System.out.println("lista " + areas.size());
         fillAreas();
+        activar(false);
     }
 
     private void cargarImagen() {
@@ -131,7 +136,7 @@ public class Fichas extends javax.swing.JDialog {
         jButton9 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
+        antecedentes = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -152,12 +157,12 @@ public class Fichas extends javax.swing.JDialog {
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         foto = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        FOTO = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        estado_civil = new javax.swing.JComboBox<>();
         jLabel25 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        correo = new javax.swing.JComboBox<>();
         jButton8 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         direccion = new javax.swing.JTextArea();
@@ -601,13 +606,13 @@ public class Fichas extends javax.swing.JDialog {
         foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         foto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton1.setBackground(new java.awt.Color(106, 176, 193));
-        jButton1.setFont(new java.awt.Font("Myanmar Text", 1, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\carne-de-identidad.png")); // NOI18N
-        jButton1.setText("  Foto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        FOTO.setBackground(new java.awt.Color(106, 176, 193));
+        FOTO.setFont(new java.awt.Font("Myanmar Text", 1, 14)); // NOI18N
+        FOTO.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\carne-de-identidad.png")); // NOI18N
+        FOTO.setText("  Foto");
+        FOTO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                FOTOActionPerformed(evt);
             }
         });
 
@@ -633,10 +638,10 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escoger", "Casado", "Divorciado", "Soltero" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        estado_civil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escoger", "Casado", "Divorciado", "Soltero" }));
+        estado_civil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                estado_civilActionPerformed(evt);
             }
         });
 
@@ -644,10 +649,10 @@ public class Fichas extends javax.swing.JDialog {
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("CORREO");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escoger", "Casado", "Divorciado", "Soltero" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        correo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escoger", "Casado", "Divorciado", "Soltero" }));
+        correo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                correoActionPerformed(evt);
             }
         });
 
@@ -717,7 +722,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addGap(59, 59, 59)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(TXT_L_NACIMIENTO)
-                                    .addComponent(jComboBox1, 0, 188, Short.MAX_VALUE)))
+                                    .addComponent(estado_civil, 0, 188, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(58, 58, 58)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -740,7 +745,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(TXT_TELEFONO, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
                         .addGap(35, 35, 35))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(FOTO, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(118, 118, 118))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -756,7 +761,7 @@ public class Fichas extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(178, 178, 178)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(correo, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(416, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -801,7 +806,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addComponent(jLabel31)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(estado_civil, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
@@ -809,7 +814,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(TXT_N_HIJOS, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(FOTO, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2)
@@ -834,11 +839,11 @@ public class Fichas extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(506, 506, 506)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(correo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(393, Short.MAX_VALUE)))
         );
 
-        jTabbedPane4.addTab("DATOS ", jPanel1);
+        antecedentes.addTab("DATOS ", jPanel1);
 
         jPanel2.setBackground(new java.awt.Color(74, 159, 181));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 204, 204), 2, true));
@@ -1021,7 +1026,7 @@ public class Fichas extends javax.swing.JDialog {
                 .addContainerGap(319, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("ANTECEDENTES", jPanel2);
+        antecedentes.addTab("ANTECEDENTES", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(74, 159, 181));
 
@@ -1351,7 +1356,7 @@ public class Fichas extends javax.swing.JDialog {
                 .addGap(324, 324, 324))
         );
 
-        jTabbedPane4.addTab("EXAMENES FISICO", jPanel3);
+        antecedentes.addTab("EXAMENES FISICO", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1359,14 +1364,14 @@ public class Fichas extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(20, Short.MAX_VALUE)
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 980, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 980, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1526,13 +1531,13 @@ public class Fichas extends javax.swing.JDialog {
         TXT_F_NACIMIENTO.setText(fec);
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_correoActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void estado_civilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estado_civilActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_estado_civilActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         setVisible(false);
@@ -1542,9 +1547,9 @@ public class Fichas extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void FOTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FOTOActionPerformed
         guardarImagen();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_FOTOActionPerformed
 
     private void TXT_CEDULAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_CEDULAKeyTyped
         char car = evt.getKeyChar();
@@ -1557,7 +1562,7 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_TXT_CEDULAKeyTyped
 
     private void TXT_CEDULAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_CEDULAKeyReleased
-
+        validarId();
     }//GEN-LAST:event_TXT_CEDULAKeyReleased
 
     private void TXT_CEDULAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_CEDULAActionPerformed
@@ -1734,6 +1739,37 @@ public class Fichas extends javax.swing.JDialog {
         return err.toString();
     }
 
+    private void validarId() {
+        if (TXT_CEDULA.getText().length() == 10) {
+            var per = crudP.getOne(TXT_CEDULA.getText());
+            if (per != null) {
+                      activar(false);
+                     JOptionPane.showMessageDialog(null, "Cedula ya Existe!");
+            } else {
+                System.out.println("Cedula disponible!");
+                 activar(true);
+            }
+        }
+
+    }
+    
+    private void activar(boolean valor){
+    
+        TXT_NOMBRE.setEditable(valor);
+        TXT_APELLIDO.setEditable(valor);
+        area.setEnabled(valor);
+        TXT_F_NACIMIENTO.setEditable(valor);
+        TXT_L_NACIMIENTO.setEditable(valor);
+        estado_civil.setEnabled(valor);
+        TXT_N_HIJOS.setEditable(valor);
+        correo.setEnabled(valor);
+        FOTO.setEnabled(valor);
+        direccion.setEditable(valor);
+        TXT_TELEFONO.setEditable(valor);
+        antecedentes.setEnabledAt(1, valor);
+        antecedentes.setEnabledAt(2, valor);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1777,6 +1813,7 @@ public class Fichas extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton FOTO;
     private javax.swing.JTextField F_CARDIACA;
     private javax.swing.JTextField F_CARDIACA1;
     private javax.swing.JTextField F_CARDIACA10;
@@ -1810,10 +1847,12 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JTextField TXT_NOMBRE;
     private javax.swing.JTextField TXT_N_HIJOS;
     private javax.swing.JTextField TXT_TELEFONO;
+    private javax.swing.JTabbedPane antecedentes;
     private javax.swing.JComboBox<String> area;
+    private javax.swing.JComboBox<String> correo;
     private javax.swing.JTextArea direccion;
+    private javax.swing.JComboBox<String> estado_civil;
     private javax.swing.JLabel foto;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1823,8 +1862,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1903,7 +1940,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

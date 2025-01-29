@@ -35,8 +35,6 @@ public class Persona {
     @NonNull
     private String direccion;
     @NonNull
-    private Integer id_mail;
-    @NonNull
     private String telefono;
     @NonNull
     private Integer id_grupo_sanguineo;

@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class CrudPersona implements PersonaDAO {
 
-    private String base = "desarrollo";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudPersona() {
@@ -35,8 +35,8 @@ public class CrudPersona implements PersonaDAO {
     @Override
     public boolean save(Persona obj) {
         var sql = "INSERT INTO persona(cedula, nombres, apellidos, fecha_nacimiento,lugar_nacimiento, n_hijos, correo, "
-                + "direccion, id_rol, id_mail, telefono, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "direccion, id_rol,  telefono, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
+                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
@@ -48,7 +48,6 @@ public class CrudPersona implements PersonaDAO {
             st.setString(6, obj.getLugar_nacimiento());
             st.setInt(7, obj.getN_hijos());
             st.setString(8, obj.getDireccion());
-            st.setInt(9, obj.getId_mail());
             st.setString(10, obj.getTelefono());
             st.setInt(11, obj.getId_grupo_sanguineo());
             st.setInt(12, obj.getId_estado_civil());
@@ -65,7 +64,7 @@ public class CrudPersona implements PersonaDAO {
 
     @Override
     public boolean update(Persona obj) {
-        var query = "UPDATE persona SET nombres = ?, apellidos = ? , fecha_nacimiento = ? ,lugar_nacimiento = ?, n_hijos=?, direccion=?, id_mail, id_grupo_sanguineo, id_estado_civil, id_area, estado  "
+        var query = "UPDATE persona SET nombres = ?, apellidos = ? , fecha_nacimiento = ? ,lugar_nacimiento = ?, n_hijos=?, direccion=?, id_grupo_sanguineo, id_estado_civil, id_area, estado  "
                 + "where cedula=?";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
@@ -75,7 +74,6 @@ public class CrudPersona implements PersonaDAO {
             st.setString(4, obj.getLugar_nacimiento());
             st.setInt(5, obj.getN_hijos());
             st.setString(6, obj.getDireccion());
-            st.setInt(7, obj.getId_mail());
             st.setInt(8, obj.getId_grupo_sanguineo());
             st.setInt(9, obj.getId_estado_civil());
             st.setInt(10, obj.getId_area());
@@ -116,13 +114,12 @@ public class CrudPersona implements PersonaDAO {
                 if (rs.next()) {                       // Si se encuentra un resultado
                     obj = new Persona(
                             rs.getString("cedula"),
-                            rs.getString("nombre"),
+                            rs.getString("nombres"),
                             rs.getString("apellidos"),
                             rs.getDate("fecha_nacimiento"),
                             rs.getString("lugar_nacimiento"),
                             rs.getInt("n_hijos"),
                             rs.getString("direccion"),
-                            rs.getInt("id_mail"),
                             rs.getString("telefono"),
                             rs.getInt("id_grupo_sanguineo"),
                             rs.getInt("id_estado_civil"),
