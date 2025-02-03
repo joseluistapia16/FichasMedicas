@@ -1740,7 +1740,7 @@ public class Fichas extends javax.swing.JDialog {
     }
 
     private void validarId() {
-        if (TXT_CEDULA.getText().length() == 10) {
+        if (TXT_CEDULA.getText().length()==10) {
             var per = crudP.getOne(TXT_CEDULA.getText());
             if (per != null) {
                       activar(false);
@@ -1749,6 +1749,8 @@ public class Fichas extends javax.swing.JDialog {
                 System.out.println("Cedula disponible!");
                  activar(true);
             }
+        }else{
+            activar(false);
         }
 
     }
