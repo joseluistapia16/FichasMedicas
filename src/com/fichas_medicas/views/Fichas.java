@@ -891,7 +891,6 @@ public class Fichas extends javax.swing.JDialog {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("PERSONALES");
 
-        TXT_A_P_PERSONALES.setForeground(new java.awt.Color(204, 204, 204));
         TXT_A_P_PERSONALES.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
         TXT_A_P_PERSONALES.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         TXT_A_P_PERSONALES.setDisabledTextColor(new java.awt.Color(0, 204, 255));
@@ -1062,6 +1061,11 @@ public class Fichas extends javax.swing.JDialog {
                 PESOActionPerformed(evt);
             }
         });
+        PESO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                PESOKeyTyped(evt);
+            }
+        });
 
         jLabel54.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel54.setForeground(new java.awt.Color(242, 242, 242));
@@ -1075,6 +1079,11 @@ public class Fichas extends javax.swing.JDialog {
                 FRE_CARActionPerformed(evt);
             }
         });
+        FRE_CAR.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                FRE_CARKeyTyped(evt);
+            }
+        });
 
         jLabel56.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel56.setForeground(new java.awt.Color(242, 242, 242));
@@ -1085,6 +1094,11 @@ public class Fichas extends javax.swing.JDialog {
         PRESION_ARTERIAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PRESION_ARTERIALActionPerformed(evt);
+            }
+        });
+        PRESION_ARTERIAL.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                PRESION_ARTERIALKeyTyped(evt);
             }
         });
 
@@ -1137,6 +1151,11 @@ public class Fichas extends javax.swing.JDialog {
                 ESTATURAActionPerformed(evt);
             }
         });
+        ESTATURA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ESTATURAKeyTyped(evt);
+            }
+        });
 
         jLabel63.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel63.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\file (4).png")); // NOI18N
@@ -1152,6 +1171,11 @@ public class Fichas extends javax.swing.JDialog {
         IMC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IMCActionPerformed(evt);
+            }
+        });
+        IMC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                IMCKeyTyped(evt);
             }
         });
 
@@ -1505,7 +1529,8 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_FRE_CARActionPerformed
 
     private void PESOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PESOActionPerformed
-        // TODO add your handling code here:
+
+
     }//GEN-LAST:event_PESOActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -1726,7 +1751,7 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_TXT_E_ACTUALKeyReleased
 
     private void TEMPERATURAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TEMPERATURAKeyTyped
-                char car = evt.getKeyChar();
+        char car = evt.getKeyChar();
         if (TEMPERATURA.getText().length() == 2) {
             evt.consume();
         }
@@ -1736,8 +1761,79 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_TEMPERATURAKeyTyped
 
     private void SATURACIONKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SATURACIONKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SATURACIONKeyTyped
+        char car = evt.getKeyChar();
+        if (SATURACION.getText().length() == 2) {
+            evt.consume();
+        }
+        if ((car < '0' || car > '9')) {
+            evt.consume();
+        }    }//GEN-LAST:event_SATURACIONKeyTyped
+
+    private void PESOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PESOKeyTyped
+        char car = evt.getKeyChar();    
+        if (PESO.getText().length() == 5) {
+            evt.consume();
+        }
+        if ((car < '0' || car > '9') && car != '.' && car != ',') {
+            evt.consume(); // Ignorar el carácter no permitido
+        }
+      if ((car == '.' || car == ',') && PESO.getText().contains(".")) {
+                    evt.consume(); // Ignorar si ya hay un punto
+                }
+       if ((car == '.' || car == ',') && PESO.getText().contains(",")) {
+                    evt.consume(); // Ignorar si ya hay una coma
+                }    }//GEN-LAST:event_PESOKeyTyped
+
+    private void ESTATURAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ESTATURAKeyTyped
+        char car = evt.getKeyChar();
+        if (ESTATURA.getText().length() == 4) {
+            evt.consume();
+        }
+        if ((car < '0' || car > '9') && car != '.' && car != ',') {
+            evt.consume(); // Ignorar el carácter no permitido
+        }
+      if ((car == '.' || car == ',') && ESTATURA.getText().contains(".")) {
+                    evt.consume(); // Ignorar si ya hay un punto
+                }
+       if ((car == '.' || car == ',') && ESTATURA.getText().contains(",")) {
+                    evt.consume(); // Ignorar si ya hay una coma
+                }
+    }//GEN-LAST:event_ESTATURAKeyTyped
+
+    private void FRE_CARKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRE_CARKeyTyped
+        char car = evt.getKeyChar();
+        if (FRE_CAR.getText().length() == 2) {
+            evt.consume();
+        }
+        if ((car < '0' || car > '9')) {
+            evt.consume();
+        }    }//GEN-LAST:event_FRE_CARKeyTyped
+
+    private void PRESION_ARTERIALKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PRESION_ARTERIALKeyTyped
+        char car = evt.getKeyChar();
+        if (PRESION_ARTERIAL.getText().length() == 3) {
+            evt.consume();
+        }
+        if ((car < '0' || car > '9')) {
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_PRESION_ARTERIALKeyTyped
+
+    private void IMCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IMCKeyTyped
+  char car = evt.getKeyChar();    
+        if (IMC.getText().length() == 4) {
+            evt.consume();
+        }
+        if ((car < '0' || car > '9') && car != '.' && car != ',') {
+            evt.consume(); // Ignorar el carácter no permitido
+        }
+      if ((car == '.' || car == ',') && IMC.getText().contains(".")) {
+                    evt.consume(); // Ignorar si ya hay un punto
+                }
+       if ((car == '.' || car == ',') && IMC.getText().contains(",")) {
+                    evt.consume(); // Ignorar si ya hay una coma
+                }    }//GEN-LAST:event_IMCKeyTyped
     private void guardarImagen() {
         String pass = "\\Fichas_Medicas\\fotos\\";
         //String pass = "\\Users\\TapiaSoftware\\Documents\\NetBeansProjects\\HermanosJesus\\src\\pictures\\";
