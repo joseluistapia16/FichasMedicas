@@ -5,6 +5,7 @@
 package com.fichas_medicas.views;
 
 import static com.fichas_medicas.components.Cadenas.validateString;
+import com.fichas_medicas.components.Calculos;
 import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.dao.CrudPersona;
@@ -194,7 +195,7 @@ public class Fichas extends javax.swing.JDialog {
         jLabel55 = new javax.swing.JLabel();
         FRE_CAR = new javax.swing.JTextField();
         jLabel56 = new javax.swing.JLabel();
-        PRESION_ARTERIAL = new javax.swing.JTextField();
+        SISTOLICA = new javax.swing.JTextField();
         jLabel57 = new javax.swing.JLabel();
         jLabel58 = new javax.swing.JLabel();
         SATURACION = new javax.swing.JTextField();
@@ -219,6 +220,10 @@ public class Fichas extends javax.swing.JDialog {
         jButton11 = new javax.swing.JButton();
         jLabel70 = new javax.swing.JLabel();
         jLabel71 = new javax.swing.JLabel();
+        DIASTOLICA = new javax.swing.JTextField();
+        jLabel72 = new javax.swing.JLabel();
+        sistolicatxt = new javax.swing.JLabel();
+        diastolicatxt = new javax.swing.JLabel();
 
         jLabel22.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/file (3).png"))); // NOI18N
@@ -1062,6 +1067,9 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
         PESO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                PESOKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 PESOKeyTyped(evt);
             }
@@ -1090,15 +1098,15 @@ public class Fichas extends javax.swing.JDialog {
         jLabel56.setText("FRECUANCIA CARDIACA");
         jLabel56.setDoubleBuffered(true);
 
-        PRESION_ARTERIAL.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        PRESION_ARTERIAL.addActionListener(new java.awt.event.ActionListener() {
+        SISTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        SISTOLICA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PRESION_ARTERIALActionPerformed(evt);
+                SISTOLICAActionPerformed(evt);
             }
         });
-        PRESION_ARTERIAL.addKeyListener(new java.awt.event.KeyAdapter() {
+        SISTOLICA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                PRESION_ARTERIALKeyTyped(evt);
+                SISTOLICAKeyTyped(evt);
             }
         });
 
@@ -1152,6 +1160,9 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
         ESTATURA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ESTATURAKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 ESTATURAKeyTyped(evt);
             }
@@ -1167,13 +1178,18 @@ public class Fichas extends javax.swing.JDialog {
         jLabel65.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel65.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\file (6).png")); // NOI18N
 
-        IMC.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        IMC.setEditable(false);
+        IMC.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        IMC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         IMC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IMCActionPerformed(evt);
             }
         });
         IMC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                IMCKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 IMCKeyTyped(evt);
             }
@@ -1243,6 +1259,30 @@ public class Fichas extends javax.swing.JDialog {
 
         jLabel71.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Imagen_imc.png")); // NOI18N
 
+        DIASTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        DIASTOLICA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DIASTOLICAActionPerformed(evt);
+            }
+        });
+        DIASTOLICA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                DIASTOLICAKeyTyped(evt);
+            }
+        });
+
+        jLabel72.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        jLabel72.setForeground(new java.awt.Color(242, 242, 242));
+        jLabel72.setText("/");
+
+        sistolicatxt.setFont(new java.awt.Font("Segoe UI Black", 0, 8)); // NOI18N
+        sistolicatxt.setForeground(new java.awt.Color(242, 242, 242));
+        sistolicatxt.setText("Sistólica");
+
+        diastolicatxt.setFont(new java.awt.Font("Segoe UI Black", 0, 8)); // NOI18N
+        diastolicatxt.setForeground(new java.awt.Color(242, 242, 242));
+        diastolicatxt.setText("Diastólica");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1262,16 +1302,31 @@ public class Fichas extends javax.swing.JDialog {
                                     .addComponent(jLabel58)
                                     .addComponent(jLabel59)
                                     .addComponent(jLabel56)
-                                    .addComponent(PRESION_ARTERIAL)
                                     .addComponent(FRE_CAR)
-                                    .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(32, 32, 32)
+                                                .addComponent(sistolicatxt)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(31, 31, 31)
+                                                .addComponent(diastolicatxt)
+                                                .addGap(0, 0, Short.MAX_VALUE))))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel61)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel62)
-                                    .addComponent(TEMPERATURA, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(53, 53, 53)
+                                    .addComponent(TEMPERATURA, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel62))))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1286,7 +1341,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addComponent(jLabel53))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel71)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 10, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1316,7 +1371,7 @@ public class Fichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1380,14 +1435,21 @@ public class Fichas extends javax.swing.JDialog {
                                             .addComponent(jLabel65)))
                                     .addGap(20, 20, 20)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(159, 159, 159)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(51, 51, 51)
+                                        .addComponent(sistolicatxt)
+                                        .addGap(97, 97, 97))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addComponent(diastolicatxt)
+                                        .addGap(98, 98, 98)))
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(jLabel62)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(TEMPERATURA, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel61))
@@ -1402,7 +1464,9 @@ public class Fichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel57)
-                            .addComponent(PRESION_ARTERIAL, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -1520,9 +1584,9 @@ public class Fichas extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_SATURACIONActionPerformed
 
-    private void PRESION_ARTERIALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PRESION_ARTERIALActionPerformed
+    private void SISTOLICAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SISTOLICAActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PRESION_ARTERIALActionPerformed
+    }//GEN-LAST:event_SISTOLICAActionPerformed
 
     private void FRE_CARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FRE_CARActionPerformed
         // TODO add your handling code here:
@@ -1770,19 +1834,19 @@ public class Fichas extends javax.swing.JDialog {
         }    }//GEN-LAST:event_SATURACIONKeyTyped
 
     private void PESOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PESOKeyTyped
-        char car = evt.getKeyChar();    
+        char car = evt.getKeyChar();
         if (PESO.getText().length() == 5) {
             evt.consume();
         }
         if ((car < '0' || car > '9') && car != '.' && car != ',') {
             evt.consume(); // Ignorar el carácter no permitido
         }
-      if ((car == '.' || car == ',') && PESO.getText().contains(".")) {
-                    evt.consume(); // Ignorar si ya hay un punto
-                }
-       if ((car == '.' || car == ',') && PESO.getText().contains(",")) {
-                    evt.consume(); // Ignorar si ya hay una coma
-                }    }//GEN-LAST:event_PESOKeyTyped
+        if ((car == '.' || car == ',') && PESO.getText().contains(".")) {
+            evt.consume(); // Ignorar si ya hay un punto
+        }
+        if ((car == '.' || car == ',') && PESO.getText().contains(",")) {
+            evt.consume(); // Ignorar si ya hay una coma
+        }    }//GEN-LAST:event_PESOKeyTyped
 
     private void ESTATURAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ESTATURAKeyTyped
         char car = evt.getKeyChar();
@@ -1792,12 +1856,12 @@ public class Fichas extends javax.swing.JDialog {
         if ((car < '0' || car > '9') && car != '.' && car != ',') {
             evt.consume(); // Ignorar el carácter no permitido
         }
-      if ((car == '.' || car == ',') && ESTATURA.getText().contains(".")) {
-                    evt.consume(); // Ignorar si ya hay un punto
-                }
-       if ((car == '.' || car == ',') && ESTATURA.getText().contains(",")) {
-                    evt.consume(); // Ignorar si ya hay una coma
-                }
+        if ((car == '.' || car == ',') && ESTATURA.getText().contains(".")) {
+            evt.consume(); // Ignorar si ya hay un punto
+        }
+        if ((car == '.' || car == ',') && ESTATURA.getText().contains(",")) {
+            evt.consume(); // Ignorar si ya hay una coma
+        }
     }//GEN-LAST:event_ESTATURAKeyTyped
 
     private void FRE_CARKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRE_CARKeyTyped
@@ -1809,31 +1873,56 @@ public class Fichas extends javax.swing.JDialog {
             evt.consume();
         }    }//GEN-LAST:event_FRE_CARKeyTyped
 
-    private void PRESION_ARTERIALKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PRESION_ARTERIALKeyTyped
+    private void SISTOLICAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SISTOLICAKeyTyped
         char car = evt.getKeyChar();
-        if (PRESION_ARTERIAL.getText().length() == 3) {
+        if (SISTOLICA.getText().length() == 3) {
             evt.consume();
         }
         if ((car < '0' || car > '9')) {
             evt.consume();
         }
 
-    }//GEN-LAST:event_PRESION_ARTERIALKeyTyped
+    }//GEN-LAST:event_SISTOLICAKeyTyped
 
     private void IMCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IMCKeyTyped
-  char car = evt.getKeyChar();    
-        if (IMC.getText().length() == 4) {
+
+     }//GEN-LAST:event_IMCKeyTyped
+
+    private void DIASTOLICAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DIASTOLICAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DIASTOLICAActionPerformed
+
+    private void DIASTOLICAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DIASTOLICAKeyTyped
+        char car = evt.getKeyChar();
+        if (DIASTOLICA.getText().length() == 2) {
             evt.consume();
         }
-        if ((car < '0' || car > '9') && car != '.' && car != ',') {
-            evt.consume(); // Ignorar el carácter no permitido
-        }
-      if ((car == '.' || car == ',') && IMC.getText().contains(".")) {
-                    evt.consume(); // Ignorar si ya hay un punto
-                }
-       if ((car == '.' || car == ',') && IMC.getText().contains(",")) {
-                    evt.consume(); // Ignorar si ya hay una coma
-                }    }//GEN-LAST:event_IMCKeyTyped
+        if ((car < '0' || car > '9')) {
+            evt.consume();
+        }    }//GEN-LAST:event_DIASTOLICAKeyTyped
+
+    private void IMCKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IMCKeyReleased
+
+    }//GEN-LAST:event_IMCKeyReleased
+
+    private void PESOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PESOKeyReleased
+        calcular();
+    }//GEN-LAST:event_PESOKeyReleased
+
+    private void ESTATURAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ESTATURAKeyReleased
+        calcular();
+    }//GEN-LAST:event_ESTATURAKeyReleased
+
+    private void calcular() {
+        var peso = Double.parseDouble(PESO.getText());
+        var estatura = Double.parseDouble(ESTATURA.getText());
+        var rs = Calculos.getImc(peso, estatura);
+        //CALCULO DE IMC MEDIANTE CLASE calculos en componentes.
+        
+        System.out.println(Math.round(rs * 100.0) / 100.0);
+        IMC.setText(""+Math.round(rs * 100.0) / 100.0);
+    }
+
     private void guardarImagen() {
         String pass = "\\Fichas_Medicas\\fotos\\";
         //String pass = "\\Users\\TapiaSoftware\\Documents\\NetBeansProjects\\HermanosJesus\\src\\pictures\\";
@@ -1989,6 +2078,7 @@ public class Fichas extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CONDI_FIS;
+    private javax.swing.JTextField DIASTOLICA;
     private javax.swing.JTextField ESTATURA;
     private javax.swing.JButton FOTO;
     private javax.swing.JTextField FRE_CAR;
@@ -2008,8 +2098,8 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JTextField F_CARDIACA9;
     private javax.swing.JTextField IMC;
     private javax.swing.JTextField PESO;
-    private javax.swing.JTextField PRESION_ARTERIAL;
     private javax.swing.JTextField SATURACION;
+    private javax.swing.JTextField SISTOLICA;
     private javax.swing.JTextField TEMPERATURA;
     private javax.swing.JTextField TXT_APELLIDO;
     private javax.swing.JTextField TXT_A_P_FAMILIARES;
@@ -2025,6 +2115,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JTabbedPane antecedentes;
     private javax.swing.JComboBox<String> area;
     private javax.swing.JComboBox<String> correo;
+    private javax.swing.JLabel diastolicatxt;
     private javax.swing.JTextArea direccion;
     private javax.swing.JComboBox<String> estado_civil;
     private javax.swing.JLabel foto;
@@ -2106,6 +2197,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -2116,5 +2208,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel sistolicatxt;
     // End of variables declaration//GEN-END:variables
 }
