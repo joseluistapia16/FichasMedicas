@@ -1,5 +1,6 @@
 package com.fichas_medicas.views;
 
+
 import com.fichas_medicas.domain.Usuario;
 import java.awt.Font;
 import java.awt.Image;
@@ -9,13 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Menu extends javax.swing.JDialog {
+public class MenuP extends javax.swing.JDialog {
 
     JLabel etiquetaUsuario = new JLabel("Usuario: " + "Jose Lopez");
-    String rutaimagen = "C:\\Users\\user\\Documents\\NetBeansProjects\\TerceroProfesor\\src\\images\\fondopico.png";
+    String rutaimagen = "C:\\Users\\user\\Documents\\NetBeansProjects\\TerceroProfesor\\src\\images\\Logo3A.png";
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("", "jpg");
 
-    public Menu(java.awt.Frame parent, boolean modal) {
+    public MenuP(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setUndecorated(true);  // Quitar la decoración de la ventana
         etiquetaUsuario = new JLabel("Usuario: " + "Jose Lopez");
@@ -29,11 +30,10 @@ public class Menu extends javax.swing.JDialog {
 
     }
 
-    public Menu(java.awt.Frame parent, boolean modal, Usuario obj) {
+    public MenuP(java.awt.Frame parent, boolean modal, Usuario obj) {
         super(parent, modal);
         setUndecorated(true);  // Quitar la decoración de la ventana
         // etiquetaUsuario = new JLabel("Usuario: " + obj.getNombre() + " " + obj.getApellidos() + ".");
-        etiquetaUsuario = new JLabel("Usuario: " + obj.getNombre()+" "+obj.getApellido()+".");
         etiquetaUsuario.setFont(new Font("Arial", Font.BOLD, 16));
         initComponents();
         // Agregar el menú dinámicamente y la etiqueta del usuario
@@ -189,12 +189,12 @@ public class Menu extends javax.swing.JDialog {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       var gficha = new GestionFichasMedicas(new JFrame(), true);
+        var gficha = new GestionFichasMedicas(new JFrame(), true);
         gficha.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        new ParteDiario(new JFrame(), true).setVisible(true);
+//      new GestionParteDiario(new JFrame(),true).setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
@@ -214,38 +214,14 @@ public class Menu extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -258,7 +234,7 @@ public class Menu extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Menu dialog = new Menu(new javax.swing.JFrame(), true);
+                MenuP dialog = new MenuP(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

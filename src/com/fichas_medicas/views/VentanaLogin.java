@@ -281,7 +281,7 @@ public class VentanaLogin extends javax.swing.JDialog {
             if (res != null) {
 //            if ("Sofia25".equals(usuario1.getText()) && "1234".equals(password1.getText())) {
                 setVisible(false);
-                new Menu(new JFrame(), true).setVisible(true);
+                new Menu(new JFrame(), true,res).setVisible(true);
             }
             JOptionPane.showMessageDialog(null, a);
         }
@@ -300,7 +300,7 @@ public class VentanaLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_OCULTARMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        setVisible(false);
+        System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void usuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuario1ActionPerformed

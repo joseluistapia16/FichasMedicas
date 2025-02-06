@@ -5,7 +5,7 @@
 package com.fichas_medicas.views;
 
 
-
+import com.fichas_medicas.components.Tablas;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.FichaMedica;
 import com.fichas_medicas.domain.Usuario;
@@ -16,21 +16,24 @@ import javax.swing.JFrame;
  *
  * @author user
  */
-public class GestionFichas extends javax.swing.JDialog {
-    
+public class GestionFichasMedicas extends javax.swing.JDialog {
+
     Usuario user = null;
-    List<Usuario> lista = null;
+    List<FichaMedica> lista = null;
     CrudUsuario crudU = null;
-     
+    Tablas tbl = null;
 
     /**
      * Creates new form GestionUsuarios
      */
-    public GestionFichas(java.awt.Frame parent, boolean modal) {
+    public GestionFichasMedicas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
- 
+        tbl = new Tablas();
+        crudU = new CrudUsuario();
+//        lista = crudU.getAll();
+//        tbl.cargarUsuarios(lista, tabla);
     }
 
     /**
@@ -53,13 +56,25 @@ public class GestionFichas extends javax.swing.JDialog {
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,6 +100,7 @@ public class GestionFichas extends javax.swing.JDialog {
         });
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cerrar (3).png")); // NOI18N
         jButton1.setText("Salir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,6 +109,7 @@ public class GestionFichas extends javax.swing.JDialog {
         });
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\ic_nuevo.png")); // NOI18N
         jButton2.setText("Nuevo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,26 +132,26 @@ public class GestionFichas extends javax.swing.JDialog {
                                 .addGap(41, 41, 41)
                                 .addComponent(filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(201, 201, 201)
+                        .addGap(204, 204, 204)
                         .addComponent(jButton2)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(39, 39, 39)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
+                .addContainerGap(76, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(17, 17, 17))
+                .addContainerGap())
         );
 
         pack();
@@ -146,7 +163,7 @@ public class GestionFichas extends javax.swing.JDialog {
 
     private void filtroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtroKeyReleased
         var user = filtro.getText();
-//        tbl.filter(user, tabla);
+        tbl.filter(user, tabla);
 
     }//GEN-LAST:event_filtroKeyReleased
 
@@ -154,20 +171,20 @@ public class GestionFichas extends javax.swing.JDialog {
         // TODO add your handling code here:
         var fila = 0;
         try {
-            if (evt.getClickCount() == 2) {
-                fila = tabla.getSelectedRow();
-                var obj = getObject(tabla.getValueAt(fila, 1).toString(), lista);
-                if (obj != null) {
-                    System.out.println(obj.getUsuario());
-//                    var ob = new EditarRegistro(new JFrame(), true, obj);
+//            if (evt.getClickCount() == 2) {
+//                fila = tabla.getSelectedRow();
+//                var obj = getObject(tabla.getValueAt(fila, 1).toString(), lista);
+//                if (obj != null) {
+//                    System.out.println(obj.getUsuario() + " " + obj.getId_rol());
+//                    var ob = new EditarUsuario(new JFrame(), true, obj);
 //                    ob.setVisible(true);
-//                    lista = arch.getAll(ruta);
+//                    lista = crudU.getAll();
 //                    tbl.cargarUsuarios(lista, tabla);
 //                    filtro.setText("");
-//                    tbl.filter("", tabla);                    
-                }
-            }
-            
+//                    tbl.filter("", tabla);
+//                }
+//            }
+
         } catch (Exception e) {
         }
 
@@ -178,8 +195,7 @@ public class GestionFichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    var gficha = new Fichas(new JFrame(), true);
-        gficha.setVisible(true);
+        new Fichas(new JFrame(), true).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
     private Usuario getObject(String usuario, List<Usuario> lista) {
         Usuario obj = null;
@@ -209,14 +225,38 @@ public class GestionFichas extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GestionFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionFichasMedicas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GestionFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionFichasMedicas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GestionFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionFichasMedicas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GestionFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionFichasMedicas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -229,7 +269,7 @@ public class GestionFichas extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GestionFichas dialog = new GestionFichas(new javax.swing.JFrame(), true);
+                GestionFichasMedicas dialog = new GestionFichasMedicas(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
