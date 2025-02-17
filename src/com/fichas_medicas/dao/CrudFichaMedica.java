@@ -20,9 +20,9 @@ import java.sql.Date;
  *
  * @author user
  */
-public abstract class CrudFichaMedica implements FichaMedicaDAO {
+public  class CrudFichaMedica implements FichaMedicaDAO {
 
-    private String base = "practica_capacitacion";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudFichaMedica() {
@@ -31,22 +31,19 @@ public abstract class CrudFichaMedica implements FichaMedicaDAO {
 
     public boolean save(FichaMedica obj) {
         boolean msg = false;
-        var sql = "INSERT INTO FichaMedica(id_usuario, usuario, password, nombre, apellido, correo, id_rol, id_usuario_registro, estado)"
-                + "values(?,?,?,?,?,?,?,?,?,?,?,?)";
+        var sql = "INSERT INTO FichaMedica(fecha_registro, id_persona, antecedentes_patologicos_personales, antecedentes_patologicos_familiares, examen_complementario, firma, foto, id_usuario, estado)"
+                + "values(?,?,?,?,?,?,?,?,?)";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
             st.setDate(1, obj.getFecha_registro());
             st.setString(2, obj.getId_persona());
             st.setString(3, obj.getAnt_patologicos_per());
             st.setString(4, obj.getAnt_patologicos_fam());
-            st.setString(5, obj.getHabito());
-            st.setString(6, obj.getEstado_actual());
-            st.setString(7, obj.getExamen_fisico());
-            st.setString(8, obj.getExamen_complementario());
-            st.setString(9, obj.getFirma());
-            st.setString(10, obj.getFoto());
-            st.setString(11, obj.getId_usuario());
-            st.setString(12, obj.getEstado());
+            st.setString(5, obj.getExamen_complementario());
+            st.setString(6, obj.getFirma());
+            st.setString(7, obj.getFoto());
+            st.setString(8, obj.getId_usuario());
+            st.setString(9, obj.getEstado());
             st.executeUpdate();
             msg = true;
         } catch (SQLException ex) {
@@ -58,21 +55,17 @@ public abstract class CrudFichaMedica implements FichaMedicaDAO {
 
     public boolean update(FichaMedica obj) {
         boolean msg = false;
-        var query = "UPDATE ficha_medica SET fecha_registro = ?, id_persona = ?, antecedentes_patologicos_personales =?, antecedentes_patologicos_familiares  =?,"
-                + " habito = ?,estado_actual=?,examen_fisico=?,examen_complementario=?,firma=?,"
+        var query = "UPDATE ficha_medica SET id_persona = ?, antecedentes_patologicos_personales =?, antecedentes_patologicos_familiares  =?,"
+                + " examen_complementario=?,firma=?,"
                 + "foto=?,  WHERE username = ?";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
-            st.setDate(1, obj.getFecha_registro());
-            st.setString(2, obj.getId_persona());
-            st.setString(3, obj.getAnt_patologicos_per());
-            st.setString(4, obj.getAnt_patologicos_fam());
-            st.setString(5, obj.getHabito());
-            st.setString(6, obj.getEstado_actual());
-            st.setString(7, obj.getExamen_fisico());
-            st.setString(8, obj.getExamen_complementario());
-            st.setString(9, obj.getFirma());
-            st.setString(10, obj.getFoto());
+            st.setString(1, obj.getId_persona());
+            st.setString(2, obj.getAnt_patologicos_per());
+            st.setString(3, obj.getAnt_patologicos_fam());
+            st.setString(4, obj.getExamen_complementario());
+            st.setString(5, obj.getFirma());
+            st.setString(6, obj.getFoto());
             st.executeUpdate();
             msg = true;
         } catch (SQLException ex) {
@@ -113,9 +106,6 @@ public abstract class CrudFichaMedica implements FichaMedicaDAO {
                             rs.getString("id_persona"),
                             rs.getString("antecedentes_patologicos_personales"),
                             rs.getString("antecedentes_patologicos_familiares"),
-                            rs.getString("habito"),
-                            rs.getString("estado_actual"),
-                            rs.getString("examen_fisico"),
                             rs.getString("examen_complementario"),
                             rs.getString("firma"),
                             rs.getString("foto"),
@@ -161,9 +151,6 @@ public abstract class CrudFichaMedica implements FichaMedicaDAO {
                         rs.getString("id_persona"),
                         rs.getString("antecedentes_patologicos_personales"),
                         rs.getString("antecedentes_patologicos_familiares"),
-                        rs.getString("habito"),
-                        rs.getString("estado_actual"),
-                        rs.getString("examen_fisico"),
                         rs.getString("examen_complementario"),
                         rs.getString("firma"),
                         rs.getString("foto"),

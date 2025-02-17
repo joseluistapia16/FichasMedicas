@@ -1173,13 +1173,13 @@ public class Fichas extends javax.swing.JDialog {
 
         jLabel64.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel64.setForeground(new java.awt.Color(242, 242, 242));
-        jLabel64.setText("ESTATURA (CM)");
+        jLabel64.setText("ESTATURA (M)");
 
         jLabel65.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel65.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\file (6).png")); // NOI18N
 
         IMC.setEditable(false);
-        IMC.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        IMC.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         IMC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         IMC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

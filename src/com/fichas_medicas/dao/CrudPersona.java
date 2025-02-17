@@ -34,8 +34,8 @@ public class CrudPersona implements PersonaDAO {
 
     @Override
     public boolean save(Persona obj) {
-        var sql = "INSERT INTO persona(cedula, nombres, apellidos, fecha_nacimiento,lugar_nacimiento, n_hijos, correo, "
-                + "direccion, id_rol,  telefono, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
+        var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, correo, "
+                + "direccion, telefono, id_rol+, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
                 + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (

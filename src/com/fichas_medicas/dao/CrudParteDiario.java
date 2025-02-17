@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class CrudParteDiario implements ParteDiarioDAO {
 
-    private String base = "desarrollo";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudParteDiario() {

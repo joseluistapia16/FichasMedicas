@@ -6,6 +6,8 @@ package com.fichas_medicas.views;
 
 
 import com.fichas_medicas.components.Tablas;
+import com.fichas_medicas.components.TablasFichas;
+import com.fichas_medicas.dao.CrudFichaMedica;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.FichaMedica;
 import com.fichas_medicas.domain.Usuario;
@@ -20,8 +22,8 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
 
     Usuario user = null;
     List<FichaMedica> lista = null;
-    CrudUsuario crudU = null;
-    Tablas tbl = null;
+    CrudFichaMedica crudF = null;
+    TablasFichas tbl = null;
 
     /**
      * Creates new form GestionUsuarios
@@ -30,10 +32,10 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        tbl = new Tablas();
-        crudU = new CrudUsuario();
-//        lista = crudU.getAll();
-//        tbl.cargarUsuarios(lista, tabla);
+        tbl = new TablasFichas();
+        crudF = new CrudFichaMedica() ;
+        lista = crudF.getAll();
+       tbl.cargarFichas(lista, tabla);
     }
 
     /**

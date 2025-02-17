@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class CrudGrupoSanguineo implements GrupoSanguineoDAO {
 
-    private String base = "tercerca";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudGrupoSanguineo() {
