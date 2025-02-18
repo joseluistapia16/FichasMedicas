@@ -4,9 +4,6 @@
  */
 package com.fichas_medicas.dao;
 
-
-
-
 import com.fichas_medicas.domain.Correo;
 import com.fichas_medicas.impl.CorreoDAO;
 import java.sql.Connection;
@@ -18,15 +15,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Robert López 15/11/24 14:26
+/**
+ * Robert López 15/11/24 14:26
  *
- * @author USUARIO 
+ * @author USUARIO
  */
+public class CrudCorreo implements CorreoDAO {
 
-public class CrudCorreo implements CorreoDAO{
-    
-    private String base = "desarrollo";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
+
+    public CrudCorreo() {
+        this.conexion = new Conexion();
+    }
 
     @Override
     public boolean save(Correo obj) {
@@ -43,7 +44,7 @@ public class CrudCorreo implements CorreoDAO{
             Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-        
+
     }
 
     @Override
@@ -58,7 +59,7 @@ public class CrudCorreo implements CorreoDAO{
             Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-       
+
     }
 
     @Override
@@ -75,7 +76,7 @@ public class CrudCorreo implements CorreoDAO{
             Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-        
+
     }
 
     @Override
@@ -83,8 +84,7 @@ public class CrudCorreo implements CorreoDAO{
         Correo correo = null;
         var query = "SELECT * FROM correo WHERE id_correo = ? AND estado = 'A'";
         try (
-                Connection conect = this.conexion.conectar(base);
-                PreparedStatement st = conect.prepareStatement(query)) {
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setInt(1, id_correo);                      // Asigna el id_correo Robert
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {                       // Si se encuentra un resultado
@@ -101,7 +101,7 @@ public class CrudCorreo implements CorreoDAO{
             Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return correo;
-    
+
     }
 
     @Override
@@ -115,10 +115,10 @@ public class CrudCorreo implements CorreoDAO{
                 return rs.getInt("id_correo");           // Retorna el id_rol encontrado
             }
         } catch (SQLException ex) {
-                Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-        
+
     }
 
     @Override
@@ -130,7 +130,7 @@ public class CrudCorreo implements CorreoDAO{
 
             while (rs.next()) {
                 Correo correo = new Correo(rs.getInt("id_correo"), rs.getString("correo"),
-                        rs.getString("id_persona"),rs.getString("id_usuario"), rs.getString("estado"));
+                        rs.getString("id_persona"), rs.getString("id_usuario"), rs.getString("estado"));
                 datos.add(correo);
             }
         } catch (SQLException ex) {
@@ -138,6 +138,60 @@ public class CrudCorreo implements CorreoDAO{
         }
 
         return datos;
-        
+
     }
+
+    //*******************************
+    public List<Correo> getPersonMail(String id_persona) {
+        List<Correo> lista = new ArrayList<>();
+        var query = "SELECT * FROM correo WHERE id_persona = ? AND estado = 'A'";
+
+        try (
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
+            st.setString(1, id_persona); // Asigna el id_persona
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) { // Cambiado de if a while para recorrer todos los registros
+                    lista.add(new Correo(
+                            rs.getInt("id_correo"),
+                            rs.getString("correo"),
+                            rs.getString("id_persona"),
+                            rs.getString("id_usuario"),
+                            rs.getString("estado")
+                    ));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
+    /////////////////////////////
+    public boolean saveNews(List<Correo> lista) {
+        var query = "INSERT INTO correo (correo, id_persona, id_usuario, estado) VALUES (?, ?, ?, ?)";
+
+        try (
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
+            conect.setAutoCommit(false); // Inicia la transacción
+
+            for (Correo obj : lista) {
+                st.setString(1, obj.getCorreo());
+                st.setString(2, obj.getId_persona());
+                st.setString(3, obj.getId_usuario());
+                st.setString(4, obj.getEstado());
+                st.addBatch(); // Agregar al batch
+            }
+
+            int[] rowsAffected = st.executeBatch(); // Ejecutar el batch
+            conect.commit(); // Confirmar la transacción
+
+            return rowsAffected.length == lista.size(); // Retorna true si todas las inserciones fueron exitosas
+        } catch (SQLException ex) {
+            Logger.getLogger(CrudCorreo.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        return false;
+    }
+
 }

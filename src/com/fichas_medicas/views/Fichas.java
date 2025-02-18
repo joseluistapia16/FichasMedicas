@@ -8,9 +8,14 @@ import static com.fichas_medicas.components.Cadenas.validateString;
 import com.fichas_medicas.components.Calculos;
 import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudArea;
+import com.fichas_medicas.dao.CrudCorreo;
+import com.fichas_medicas.dao.CrudEstadoCivil;
 import com.fichas_medicas.dao.CrudPersona;
 import com.fichas_medicas.domain.Area;
+import com.fichas_medicas.domain.Correo;
+import com.fichas_medicas.domain.EstadoCivil;
 import com.fichas_medicas.domain.Persona;
+import com.fichas_medicas.domain.Usuario;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +44,13 @@ public class Fichas extends javax.swing.JDialog {
     String rutaimagen = "C://FichaMedica//img//logofoto.png";
     private String var1;
     private List<Area> areas = null;
+    private List<EstadoCivil> estados_civiles = null;
     private CrudArea crudA = null;
     private CrudPersona crudP = null;
+    private CrudEstadoCivil crudEcl = null;
+    private Usuario objU = null;
+    private CrudCorreo crudCo = null;
+    private List<Correo> lista_correos = null;
 
     /**
      * Creates new form Fichas
@@ -57,8 +67,31 @@ public class Fichas extends javax.swing.JDialog {
         crudA = new CrudArea();
         areas = crudA.getAll();
         crudP = new CrudPersona();
+        crudEcl = new CrudEstadoCivil();
+        crudCo = new CrudCorreo();
         System.out.println("lista " + areas.size());
         fillAreas();
+        fillEstadoCivil();
+        activar(false);
+    }
+
+    public Fichas(java.awt.Frame parent, boolean modal, Usuario obj) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        setSize(797, 685);
+        this.objU = obj;
+        System.out.println("Usuario Modulo Fichas " + objU.getUsuario());
+        cargarImagen();
+        crudA = new CrudArea();
+        areas = crudA.getAll();
+        crudP = new CrudPersona();
+        crudEcl = new CrudEstadoCivil();
+        crudCo = new CrudCorreo();
+        System.out.println("lista " + areas.size());
+        fillAreas();
+        fillEstadoCivil();
+        fillCorreo();
         activar(false);
     }
 
@@ -80,6 +113,24 @@ public class Fichas extends javax.swing.JDialog {
         area.addItem("Elija una Opción...");
         for (int i = 0; i < areas.size(); i++) {
             area.addItem(areas.get(i).getNombre_area());
+        }
+    }
+
+    private void fillEstadoCivil() {
+        estados_civiles = crudEcl.getAll();
+        estado_civil.removeAllItems();
+        estado_civil.addItem("Elija una Opción...");
+        for (int i = 0; i < estados_civiles.size(); i++) {
+            estado_civil.addItem(estados_civiles.get(i).getNombreEstadoCivil());
+        }
+    }
+
+    private void fillCorreo() {
+        lista_correos = crudCo.getPersonMail(TXT_CEDULA.getText());
+        correo.removeAllItems();
+        correo.addItem("Elija una Opción...");
+        for (int i = 0; i < lista_correos.size(); i++) {
+            correo.addItem(lista_correos.get(i).getCorreo());
         }
     }
 
@@ -164,12 +215,12 @@ public class Fichas extends javax.swing.JDialog {
         estado_civil = new javax.swing.JComboBox<>();
         jLabel25 = new javax.swing.JLabel();
         correo = new javax.swing.JComboBox<>();
-        jButton8 = new javax.swing.JButton();
+        btn_cal = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         direccion = new javax.swing.JTextArea();
         area = new javax.swing.JComboBox<>();
         jLabel69 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btn_correo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -225,7 +276,7 @@ public class Fichas extends javax.swing.JDialog {
         sistolicatxt = new javax.swing.JLabel();
         diastolicatxt = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        CON_FIS = new javax.swing.JTextArea();
 
         jLabel22.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/file (3).png"))); // NOI18N
@@ -656,17 +707,17 @@ public class Fichas extends javax.swing.JDialog {
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("CORREO");
 
-        correo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escoger", "Casado", "Divorciado", "Soltero" }));
+        correo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "...." }));
         correo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 correoActionPerformed(evt);
             }
         });
 
-        jButton8.setText("....");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btn_cal.setText("....");
+        btn_cal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btn_calActionPerformed(evt);
             }
         });
 
@@ -688,10 +739,10 @@ public class Fichas extends javax.swing.JDialog {
         jLabel69.setForeground(new java.awt.Color(255, 255, 255));
         jLabel69.setText("DIRECCIÓN");
 
-        jButton1.setText("....");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_correo.setText("....");
+        btn_correo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_correoActionPerformed(evt);
             }
         });
 
@@ -750,29 +801,28 @@ public class Fichas extends javax.swing.JDialog {
                                             .addComponent(TXT_F_NACIMIENTO, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(area, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(correo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_cal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_correo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel69)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                                    .addComponent(jLabel8)))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(TXT_TELEFONO, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(21, 21, 21))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(FOTO, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(118, 118, 118)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel69)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(TXT_TELEFONO, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(FOTO, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(118, 118, 118))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -809,7 +859,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addComponent(jLabel30))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(TXT_F_NACIMIENTO, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton8))))
+                                .addComponent(btn_cal))))
                     .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -843,7 +893,9 @@ public class Fichas extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(19, 19, 19)
-                                .addComponent(correo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(correo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btn_correo)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -855,10 +907,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton1)))
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(315, 315, 315))
         );
 
@@ -1287,9 +1336,14 @@ public class Fichas extends javax.swing.JDialog {
         diastolicatxt.setForeground(new java.awt.Color(242, 242, 242));
         diastolicatxt.setText("Diastólica");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        CON_FIS.setColumns(20);
+        CON_FIS.setRows(5);
+        CON_FIS.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                CON_FISKeyReleased(evt);
+            }
+        });
+        jScrollPane3.setViewportView(CON_FIS);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1628,13 +1682,13 @@ public class Fichas extends javax.swing.JDialog {
         System.out.println(err.toString());
     }//GEN-LAST:event_direccionKeyTyped
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btn_calActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calActionPerformed
         var cld = new GetFecha(new JFrame(), true);
         cld.setVisible(true);
         var fec = cld.getStr_fecha();
         System.out.println(" fecha frm " + fec);
         TXT_F_NACIMIENTO.setText(fec);
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btn_calActionPerformed
 
     private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
         // TODO add your handling code here:
@@ -1797,9 +1851,10 @@ public class Fichas extends javax.swing.JDialog {
         TXT_E_ACTUAL.setText(texto_corregido);
     }//GEN-LAST:event_TXT_E_ACTUALKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new  NewMail(new JFrame(),true).setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btn_correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_correoActionPerformed
+        new NewMail(new JFrame(), true, TXT_CEDULA.getText(), this.objU).setVisible(true);
+        fillCorreo();
+    }//GEN-LAST:event_btn_correoActionPerformed
 
     private void DIASTOLICAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DIASTOLICAKeyTyped
         char car = evt.getKeyChar();
@@ -1930,14 +1985,20 @@ public class Fichas extends javax.swing.JDialog {
 
     }//GEN-LAST:event_PESOActionPerformed
 
+    private void CON_FISKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CON_FISKeyReleased
+        String texto = CON_FIS.getText();
+        String texto_corregido = texto.replaceAll("^\\s+", "");
+        CON_FIS.setText(texto_corregido);
+    }//GEN-LAST:event_CON_FISKeyReleased
+
     private void calcular() {
         var peso = Double.parseDouble(PESO.getText());
         var estatura = Double.parseDouble(ESTATURA.getText());
         var rs = Calculos.getImc(peso, estatura);
         //CALCULO DE IMC MEDIANTE CLASE calculos en componentes.
-        
+
         System.out.println(Math.round(rs * 100.0) / 100.0);
-        IMC.setText(""+Math.round(rs * 100.0) / 100.0);
+        IMC.setText("" + Math.round(rs * 100.0) / 100.0);
     }
 
     private void guardarImagen() {
@@ -2049,6 +2110,8 @@ public class Fichas extends javax.swing.JDialog {
         TXT_TELEFONO.setEditable(valor);
         antecedentes.setEnabledAt(1, valor);
         antecedentes.setEnabledAt(2, valor);
+        btn_correo.setEnabled(valor);
+        btn_cal.setEnabled(valor);
     }
 
     /**
@@ -2094,6 +2157,7 @@ public class Fichas extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea CON_FIS;
     private javax.swing.JTextField DIASTOLICA;
     private javax.swing.JTextField ESTATURA;
     private javax.swing.JButton FOTO;
@@ -2130,12 +2194,13 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JTextField TXT_TELEFONO;
     private javax.swing.JTabbedPane antecedentes;
     private javax.swing.JComboBox<String> area;
+    private javax.swing.JButton btn_cal;
+    private javax.swing.JButton btn_correo;
     private javax.swing.JComboBox<String> correo;
     private javax.swing.JLabel diastolicatxt;
     private javax.swing.JTextArea direccion;
     private javax.swing.JComboBox<String> estado_civil;
     private javax.swing.JLabel foto;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -2143,7 +2208,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -2226,7 +2290,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel sistolicatxt;
     // End of variables declaration//GEN-END:variables
 }

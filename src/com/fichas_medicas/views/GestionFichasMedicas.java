@@ -4,7 +4,6 @@
  */
 package com.fichas_medicas.views;
 
-
 import com.fichas_medicas.components.Tablas;
 import com.fichas_medicas.components.TablasFichas;
 import com.fichas_medicas.dao.CrudFichaMedica;
@@ -24,6 +23,7 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
     List<FichaMedica> lista = null;
     CrudFichaMedica crudF = null;
     TablasFichas tbl = null;
+    private Usuario objU = null;
 
     /**
      * Creates new form GestionUsuarios
@@ -33,9 +33,21 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         tbl = new TablasFichas();
-        crudF = new CrudFichaMedica() ;
+        crudF = new CrudFichaMedica();
         lista = crudF.getAll();
-       tbl.cargarFichas(lista, tabla);
+        tbl.cargarFichas(lista, tabla);
+    }
+
+    public GestionFichasMedicas(java.awt.Frame parent, boolean modal, Usuario obj) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        this.objU = obj;
+        System.out.println("Usuario Gestian Fichas " + objU.getUsuario());
+        tbl = new TablasFichas();
+        crudF = new CrudFichaMedica();
+        lista = crudF.getAll();
+        tbl.cargarFichas(lista, tabla);
     }
 
     /**
@@ -217,7 +229,7 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new Fichas(new JFrame(), true).setVisible(true);
+        new Fichas(new JFrame(), true,objU).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
     private Usuario getObject(String usuario, List<Usuario> lista) {
         Usuario obj = null;

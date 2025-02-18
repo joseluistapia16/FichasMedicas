@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class CrudEstadoCivil implements EstadoCivilDAO {
 
-    private String base = "practica_capacitacion";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudEstadoCivil() {

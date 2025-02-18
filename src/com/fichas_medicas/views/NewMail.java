@@ -6,6 +6,9 @@ package com.fichas_medicas.views;
 
 import com.fichas_medicas.components.Cadenas;
 import com.fichas_medicas.components.TablasCorreo;
+import com.fichas_medicas.dao.CrudCorreo;
+import com.fichas_medicas.domain.Correo;
+import com.fichas_medicas.domain.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -18,6 +21,9 @@ public class NewMail extends javax.swing.JDialog {
 
     List<String> correos = null;
     TablasCorreo tbC = null;
+    private String id_persona;
+    private Usuario objU = null;
+    private CrudCorreo crudC = null;
 
     /**
      * Creates new form NewMail
@@ -28,7 +34,21 @@ public class NewMail extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         correos = new ArrayList<>();
         tbC = new TablasCorreo();
-        tbC.cargarCorreos(correos, tabla);
+        tbC.cargarCorreosNuevos(correos, tabla);
+    }
+
+    public NewMail(java.awt.Frame parent, boolean modal, String id_persona, Usuario obj) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        this.objU = obj;
+        System.out.println("Usuario fichas "+objU.getUsuario());
+        this.id_persona = id_persona;
+        crudC= new CrudCorreo();
+        correos = new ArrayList<>();
+        tbC = new TablasCorreo();
+        tbC.cargarCorreosNuevos(correos, tabla);
+
     }
 
     /**
@@ -46,6 +66,7 @@ public class NewMail extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -55,8 +76,8 @@ public class NewMail extends javax.swing.JDialog {
 
         jButton1.setBackground(new java.awt.Color(0, 153, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
-        jButton1.setText("Cerrar");
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
+        jButton1.setText("Guardar");
         jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +115,17 @@ public class NewMail extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tabla);
 
+        jButton3.setBackground(new java.awt.Color(0, 153, 204));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
+        jButton3.setText("Cerrar");
+        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -109,8 +141,10 @@ public class NewMail extends javax.swing.JDialog {
                         .addGap(54, 54, 54)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(70, 70, 70)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -123,8 +157,10 @@ public class NewMail extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,9 +178,12 @@ public class NewMail extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setVisible(false);
+        guardar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void guardar() {
+        insertNews(this.id_persona, correos, objU);
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         var res = Cadenas.validateEmail(correo.getText());
@@ -154,7 +193,8 @@ public class NewMail extends javax.swing.JDialog {
             System.out.println(res1);
             if (res1 == false) {
                 correos.add(correo.getText());
-                tbC.cargarCorreos(correos, tabla);
+                tbC.cargarCorreosNuevos(correos, tabla);
+
                 correo.setText("");
             } else {
                 JOptionPane.showMessageDialog(null, "Correo ya existe!");
@@ -166,11 +206,15 @@ public class NewMail extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     private boolean validar(String correo) {
         var res = false;
-         for (int i = 0; i < correos.size(); i++) {
-            System.out.println((i+1)+" lista " + correos.get(i));
-         }
+        for (int i = 0; i < correos.size(); i++) {
+            System.out.println((i + 1) + " lista " + correos.get(i));
+        }
         for (int i = 0; i < correos.size(); i++) {
             System.out.println("lista " + correos.get(i));
             if (correo.equals(correos.get(i))) {
@@ -180,6 +224,18 @@ public class NewMail extends javax.swing.JDialog {
         }
         return res;
 
+    }
+
+    private String insertNews(String id_persona, List<String> lista, Usuario obj) {
+        List<Correo> lista_correo = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+                 System.out.println("Usuario fichas - lista "+objU.getUsuario());
+            Correo obC = new Correo(lista.get(i), id_persona, obj.getUsuario(), "A");
+            lista_correo.add(obC);
+        }
+        var res = crudC.saveNews(lista_correo);
+        System.out.println(" prueba grabar " + res);
+        return null;
     }
 
     /**
@@ -229,6 +285,7 @@ public class NewMail extends javax.swing.JDialog {
     private javax.swing.JTextField correo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;

@@ -1,6 +1,6 @@
 package com.fichas_medicas.components;
 
-
+import com.fichas_medicas.domain.Correo;
 import java.awt.Font;
 import java.util.List;
 import javax.swing.JTable;
@@ -23,7 +23,7 @@ public class TablasCorreo {
         return modelo1;
     }
 
-    public void cargarCorreos(List<String> lista1, JTable tabla) {
+    public void cargarCorreosNuevos(List<String> lista1, JTable tabla) {
         // Ancho de las columnas
         int a[] = {30, 150};
         String columna[] = {"ID", "Correo"};
@@ -72,8 +72,6 @@ public class TablasCorreo {
         // Mostrar las líneas de la cuadrícula
         tabla.setShowGrid(true);
     }
-
-   
 
     public void filter(String valor, JTable tabla) {
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(modelo);
