@@ -175,15 +175,17 @@ public class NuevoUsuario extends javax.swing.JDialog {
         apellido.setFont(new java.awt.Font("Microsoft Tai Le", 0, 24)); // NOI18N
         apellido.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton3.setBackground(new java.awt.Color(168, 216, 228));
+        jButton3.setBackground(new java.awt.Color(0, 153, 204));
         jButton3.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\ic_grabar.png")); // NOI18N
         jButton3.setText("Grabar");
+        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton4.setBackground(new java.awt.Color(167, 215, 226));
+        jButton4.setBackground(new java.awt.Color(0, 153, 204));
         jButton4.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
         jButton4.setText("Salir");
+        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);

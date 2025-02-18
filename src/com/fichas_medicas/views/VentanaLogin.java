@@ -136,7 +136,7 @@ public class VentanaLogin extends javax.swing.JDialog {
         password1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         password1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton3.setBackground(new java.awt.Color(45, 117, 135));
+        jButton3.setBackground(new java.awt.Color(0, 153, 204));
         jButton3.setFont(new java.awt.Font("Microsoft Tai Le", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\aceptar.png")); // NOI18N
@@ -148,7 +148,7 @@ public class VentanaLogin extends javax.swing.JDialog {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(45, 116, 135));
+        jButton4.setBackground(new java.awt.Color(0, 153, 204));
         jButton4.setFont(new java.awt.Font("Microsoft Tai Le", 1, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
