@@ -22,9 +22,8 @@ public class CrudParteDiario implements ParteDiarioDAO {
 
     @Override
     public boolean save(ParteDiario obj) {
-        var sql = "INSERT INTO parte_diario(fecha_registro, hora_entrada, id_persona, diagnostico, tratamiento,"
-                + " observacion, permisos, hora_salida,id_usuario,frecuencia_cardiaca,saturacion,peso,imc,estatura,estado)"
-                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var sql = "INSERT INTO parte_diario(fecha_registro, hora_entrada, id_persona, diagnostico, tratamiento, observacion, permisos, hora_salida, usuario, estado)"
+                + " VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
             st.setDate(1, obj.getFecha_registro());
@@ -35,14 +34,8 @@ public class CrudParteDiario implements ParteDiarioDAO {
             st.setString(6, obj.getObservacion());
             st.setString(7, obj.getPermisos());
             st.setTime(8, obj.getHora_salida());
-            st.setString(9, obj.getId_usuario());
-            st.setString(10, obj.getFrecuencia_cardiaca());
-            st.setString(11, obj.getSaturacion());
-            st.setString(12, obj.getSaturacion());
-            st.setDouble(13, obj.getPeso());
-            st.setDouble(14, obj.getImc());
-            st.setDouble(15, obj.getEstatura());
-            st.setString(16, obj.getEstado());
+            st.setString(9, obj.getUsuario());
+            st.setString(10, obj.getEstado());
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
@@ -53,8 +46,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
 
     @Override
     public boolean update(ParteDiario obj) {
-        var query = "UPDATE parte_diario SET fecha_registro = ?, hora_entrada = ?, id_persona = ?, diagnostico = ?, tratamiento = ?, observacion = ?, permisos = ?, hora_salida = ?,"
-                + "frecuencia_cardiaca=?,saturacion=?,peso=?,imc=?,estatura=? WHERE id_parte_diario = ?";
+        var query = "UPDATE parte_diario SET fecha_registro = ?, hora_entrada = ?, id_persona = ?, diagnostico = ?, tratamiento = ?, observacion = ?, permisos = ?, hora_salida = ?, usuario = ?, estado = ? WHERE id_partediario = ?";
 
         try (Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setDate(1, obj.getFecha_registro());
@@ -65,12 +57,9 @@ public class CrudParteDiario implements ParteDiarioDAO {
             st.setString(6, obj.getObservacion());
             st.setString(7, obj.getPermisos());
             st.setTime(8, obj.getHora_salida());
-            st.setString(9, obj.getFrecuencia_cardiaca());
-            st.setString(10, obj.getSaturacion());
-            st.setDouble(11, obj.getPeso());
-            st.setDouble(12, obj.getImc());
-            st.setDouble(13, obj.getEstatura());
-            st.setInt(14, obj.getId_partediario());
+            st.setString(9, obj.getUsuario());
+            st.setString(10, obj.getEstado());
+            st.setInt(11, obj.getId_partediario());
 
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
@@ -98,8 +87,8 @@ public class CrudParteDiario implements ParteDiarioDAO {
 
     @Override
     public ParteDiario getOne(Integer idParte) {
-        ParteDiario obj = null;
-        var query = "SELECT * FROM parte_diario WHERE id_parte_diario = ? AND estado = 'A'";
+         ParteDiario obj = null;
+        var query = "SELECT * FROM parte_diario WHERE id_partediario = ? AND estado = 'A'";
 
         try (Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setInt(1, idParte);
@@ -107,7 +96,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
                     obj = new ParteDiario(
-                            rs.getInt("id_parte_diario"),
+                            rs.getInt("id_partediario"),
                             rs.getDate("fecha_registro"),
                             rs.getTime("hora_entrada"),
                             rs.getString("id_persona"),
@@ -116,12 +105,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
                             rs.getString("observacion"),
                             rs.getString("permisos"),
                             rs.getTime("hora_salida"),
-                            rs.getString("id_usuario"),
-                            rs.getString("frecuencia_cardiaca"),
-                            rs.getString("saturacion"),
-                            rs.getDouble("peso"),
-                            rs.getDouble("imc"),
-                            rs.getDouble("estatura"),
+                            rs.getString("usuario"),
                             rs.getString("estado")
                     );
                 }
@@ -153,13 +137,13 @@ public class CrudParteDiario implements ParteDiarioDAO {
 
     @Override
     public List<ParteDiario> getAll() {
-        List<ParteDiario> datos = new ArrayList<>();
+       List<ParteDiario> datos = new ArrayList<>();
         var query = "SELECT * FROM parte_diario WHERE estado = 'A'";
 
         try (Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 var obj = new ParteDiario(
-                        rs.getInt("id_parte_diario"),
+                        rs.getInt("id_partediario"),
                         rs.getDate("fecha_registro"),
                         rs.getTime("hora_entrada"),
                         rs.getString("id_persona"),
@@ -168,12 +152,7 @@ public class CrudParteDiario implements ParteDiarioDAO {
                         rs.getString("observacion"),
                         rs.getString("permisos"),
                         rs.getTime("hora_salida"),
-                        rs.getString("id_usuario"),
-                        rs.getString("frecuencia_cardiaca"),
-                        rs.getString("saturacion"),
-                        rs.getDouble("peso"),
-                        rs.getDouble("imc"),
-                        rs.getDouble("estatura"),
+                        rs.getString("usuario"),
                         rs.getString("estado")
                 );
                 datos.add(obj);

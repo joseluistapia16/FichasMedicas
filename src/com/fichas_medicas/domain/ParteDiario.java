@@ -19,7 +19,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class ParteDiario {
 
-    private Integer id_partediario;
+  private Integer id_partediario;
     @NonNull
     private Date fecha_registro;
     @NonNull
@@ -37,18 +37,9 @@ public class ParteDiario {
     @NonNull
     private Time hora_salida;
     @NonNull
-    private String id_usuario;
-    @NonNull
-    private String frecuencia_cardiaca;  // cambio
-    @NonNull
-    private String saturacion;           // cambio
-    @NonNull
-    private Double peso;                 // cambio
-    @NonNull
-    private Double estatura;
-    @NonNull
-    private Double imc;     // cambio (indice de masa corporal
+    private String usuario;
     @NonNull
     private String estado;
+
 
 }
