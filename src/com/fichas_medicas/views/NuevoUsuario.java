@@ -180,6 +180,11 @@ public class NuevoUsuario extends javax.swing.JDialog {
         jButton3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
         jButton3.setText("Guardar");
         jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(0, 153, 204));
         jButton4.setFont(new java.awt.Font("Segoe UI Variable", 1, 24)); // NOI18N
@@ -334,6 +339,10 @@ public class NuevoUsuario extends javax.swing.JDialog {
         OCULTAR.setVisible(false);
         password.setEchoChar('*');
     }//GEN-LAST:event_OCULTARMouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void grabar() {
         var id_rol = lista_rol.get(posC).getId_rol();
