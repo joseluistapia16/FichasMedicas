@@ -14,14 +14,15 @@ public class Menu extends javax.swing.JDialog {
     JLabel etiquetaUsuario = new JLabel("Usuario: " + "Jose Lopez");
     String rutaimagen = "C:\\Users\\user\\Documents\\NetBeansProjects\\TerceroProfesor\\src\\images\\fondopico.png";
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("", "jpg");
-    private Usuario objU=null;
+    private Usuario objU = null;
+
     public Menu(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setUndecorated(true);  // Quitar la decoración de la ventana
         etiquetaUsuario = new JLabel("Usuario: " + "Jose Lopez");
         etiquetaUsuario.setFont(new Font("Arial", Font.BOLD, 16));
         initComponents();
-        
+
         // Agregar el menú dinámicamente y la etiqueta del usuario
         menu1.add(Box.createHorizontalGlue()); // Empuja la etiqueta a la derecha
         menu1.add(etiquetaUsuario);  // Añadir la etiqueta del usuario al menú
@@ -34,10 +35,10 @@ public class Menu extends javax.swing.JDialog {
         super(parent, modal);
         setUndecorated(true);  // Quitar la decoración de la ventana
         // etiquetaUsuario = new JLabel("Usuario: " + obj.getNombre() + " " + obj.getApellidos() + ".");
-        etiquetaUsuario = new JLabel("Usuario: " + obj.getNombre()+" "+obj.getApellido()+".");
+        etiquetaUsuario = new JLabel("Usuario: " + obj.getNombre() + " " + obj.getApellido() + ".");
         etiquetaUsuario.setFont(new Font("Arial", Font.BOLD, 16));
         initComponents();
-        this.objU=obj;
+        this.objU = obj;
         // Agregar el menú dinámicamente y la etiqueta del usuario
         menu1.add(Box.createHorizontalGlue()); // Empuja la etiqueta a la derecha
         menu1.add(etiquetaUsuario);  // Añadir la etiqueta del usuario al menú
@@ -181,8 +182,9 @@ public class Menu extends javax.swing.JDialog {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-//              About obj = new About(new JFrame(), true);
-//              obj.setVisible(true);
+
+        About obj = new About(new JFrame(), true);
+        obj.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -191,8 +193,8 @@ public class Menu extends javax.swing.JDialog {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-            System.out.println("Usuario Menu "+objU.getUsuario());
-        var gficha = new GestionFichasMedicas(new JFrame(), true,objU);
+        System.out.println("Usuario Menu " + objU.getUsuario());
+        var gficha = new GestionFichasMedicas(new JFrame(), true, objU);
         gficha.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
