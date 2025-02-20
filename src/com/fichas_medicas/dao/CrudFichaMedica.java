@@ -22,7 +22,7 @@ import java.sql.Date;
  */
 public  class CrudFichaMedica implements FichaMedicaDAO {
 
-    private String base = "fichas_medicas_prueba";
+    private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
 
     public CrudFichaMedica() {

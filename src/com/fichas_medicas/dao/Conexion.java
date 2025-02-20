@@ -21,8 +21,8 @@ public class Conexion {
     public Connection conectar(String base) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/" + base;
-            conect = DriverManager.getConnection(url, "root", "");
+            String url = "jdbc:mysql://localhost:3307/" + base;
+            conect = DriverManager.getConnection(url, "root", "1234");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
