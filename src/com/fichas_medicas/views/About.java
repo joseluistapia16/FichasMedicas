@@ -6,7 +6,7 @@ package com.fichas_medicas.views;
 
 /**
  *
- * @author RAUL
+ * @author raul calderon
  */
 public class About extends javax.swing.JDialog {
 
