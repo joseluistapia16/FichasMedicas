@@ -112,7 +112,7 @@ public class CrudGrupoSanguineo implements GrupoSanguineoDAO {
     @Override
     public List<GrupoSanguineo> getAll() {
         List<GrupoSanguineo> datos = new ArrayList<>();
-        var query = "select id_usuario from GrupoSanguineo where estado='A'";
+        var query = "select * from grupo_sanguineo where estado='A'";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); ResultSet rs = st.executeQuery()) {
 

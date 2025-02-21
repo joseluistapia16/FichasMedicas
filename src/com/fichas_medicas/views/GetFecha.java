@@ -97,7 +97,7 @@ public class GetFecha extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setStr_fecha(fecha.getYearChooser().getYear() + "-" + (fecha.getMonthChooser().getMonth()+1)  + "-" + fecha.getDayChooser().getDay());
-        System.out.println("fecha grt 1 " + getStr_fecha());
+       // System.out.println("fecha grt 1 " + getStr_fecha());
         var fch = Date.valueOf(getStr_fecha());
       //  System.out.println("fecha date " + fch);
         setStr_fecha(FechaComponente.getStringFecha(fch));

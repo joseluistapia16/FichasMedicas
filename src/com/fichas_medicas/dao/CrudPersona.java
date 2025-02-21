@@ -35,8 +35,8 @@ public class CrudPersona implements PersonaDAO {
     @Override
     public boolean save(Persona obj) {
         var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, correo, "
-                + "direccion, telefono, id_rol+, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
-                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "direccion, telefono,telefono_emergencia,id_rol+, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
+                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)";
 
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
@@ -49,22 +49,24 @@ public class CrudPersona implements PersonaDAO {
             st.setInt(7, obj.getN_hijos());
             st.setString(8, obj.getDireccion());
             st.setString(10, obj.getTelefono());
-            st.setInt(11, obj.getId_grupo_sanguineo());
-            st.setInt(12, obj.getId_estado_civil());
-            st.setInt(13, obj.getId_area());
-            st.setDate(14, obj.getFecha_registro());
-            st.setString(15, obj.getEstado());
+            st.setString(11, obj.getTelefono_emergencia());
+            st.setInt(12, obj.getId_grupo_sanguineo());
+            st.setInt(13, obj.getId_estado_civil());
+            st.setInt(14, obj.getId_area());
+            st.setDate(15, obj.getFecha_registro());
+            st.setString(16, obj.getEstado());
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrudPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
     @Override
     public boolean update(Persona obj) {
-        var query = "UPDATE persona SET nombres = ?, apellidos = ? , fecha_nacimiento = ? ,lugar_nacimiento = ?, n_hijos=?, direccion=?, id_grupo_sanguineo, id_estado_civil, id_area, estado  "
+        var query = "UPDATE persona SET nombres = ?, apellidos = ? , fecha_nacimiento = ? ,lugar_nacimiento = ?, n_hijos=?,"
+                + " direccion=?,telefono=?,telefono_emergencia=?, id_grupo_sanguineo=?, id_estado_civil=?, id_area=?  "
                 + "where cedula=?";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
@@ -74,15 +76,16 @@ public class CrudPersona implements PersonaDAO {
             st.setString(4, obj.getLugar_nacimiento());
             st.setInt(5, obj.getN_hijos());
             st.setString(6, obj.getDireccion());
-            st.setInt(8, obj.getId_grupo_sanguineo());
-            st.setInt(9, obj.getId_estado_civil());
-            st.setInt(10, obj.getId_area());
-            st.setString(11, obj.getEstado());
+            st.setString(7, obj.getTelefono());
+            st.setString(8, obj.getTelefono_emergencia());
+            st.setInt(9, obj.getId_grupo_sanguineo());
+            st.setInt(10, obj.getId_estado_civil());
+            st.setInt(11, obj.getId_area());
             st.setString(12, obj.getCedula());
             int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
             return rowsAffected > 0;                   // Retorna true si se actualizaron filas
         } catch (SQLException ex) {
-            Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrudPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -98,7 +101,7 @@ public class CrudPersona implements PersonaDAO {
             int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
             return rowsAffected > 0;                   // Retorna true si se actualizaron filas
         } catch (SQLException ex) {
-            Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrudPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -121,6 +124,7 @@ public class CrudPersona implements PersonaDAO {
                             rs.getInt("n_hijos"),
                             rs.getString("direccion"),
                             rs.getString("telefono"),
+                            rs.getString("telefono_emergencia"),
                             rs.getInt("id_grupo_sanguineo"),
                             rs.getInt("id_estado_civil"),
                             rs.getInt("id_area"),
@@ -131,14 +135,43 @@ public class CrudPersona implements PersonaDAO {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrudPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
         return obj;
     }
 
     @Override
     public List<Persona> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Persona> datos = new ArrayList<>();
+        var query = "select * from persona where estado='A'";
+        try (
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                var obj = new Persona(
+                        rs.getString("cedula"),
+                        rs.getString("nombres"),
+                        rs.getString("apellidos"),
+                        rs.getDate("fecha_nacimiento"),
+                        rs.getString("lugar_nacimiento"),
+                        rs.getInt("n_hijos"),
+                        rs.getString("direccion"),
+                        rs.getString("telefono"),
+                        rs.getString("telefono_emergencia"),
+                        rs.getInt("id_grupo_sanguineo"),
+                        rs.getInt("id_estado_civil"),
+                        rs.getInt("id_area"),
+                        rs.getString("id_usuario"),
+                        rs.getDate("fecha_registro"),
+                        rs.getString("estado")
+                );
+                datos.add(obj);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CrudPersona.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return datos;
     }
 
 }

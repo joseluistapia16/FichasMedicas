@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @ToString
 @RequiredArgsConstructor
-@AllArgsConstructor
+
 public class Persona {
 
     private String cedula;
@@ -37,6 +37,8 @@ public class Persona {
     @NonNull
     private String telefono;
     @NonNull
+    private String telefono_emergencia;
+    @NonNull
     private Integer id_grupo_sanguineo;
     @NonNull
     private Integer id_estado_civil;
@@ -48,5 +50,25 @@ public class Persona {
     private Date fecha_registro;  // cambio
     @NonNull
     private String estado;
+
+    public Persona(String cedula, String nombre, String apellidos, Date fecha_nacimiento, String lugar_nacimiento, Integer n_hijos, String direccion, String telefono, String telefono_emergencia, Integer id_grupo_sanguineo, Integer id_estado_civil, Integer id_area, String id_usuario, Date fecha_registro, String estado) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.fecha_nacimiento = fecha_nacimiento;
+        this.lugar_nacimiento = lugar_nacimiento;
+        this.n_hijos = n_hijos;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.telefono_emergencia = telefono_emergencia;
+        this.id_grupo_sanguineo = id_grupo_sanguineo;
+        this.id_estado_civil = id_estado_civil;
+        this.id_area = id_area;
+        this.id_usuario = id_usuario;
+        this.fecha_registro = fecha_registro;
+        this.estado = estado;
+    }
+    
+    
 
 }

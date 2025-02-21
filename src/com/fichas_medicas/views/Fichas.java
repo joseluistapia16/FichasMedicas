@@ -10,17 +10,19 @@ import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.dao.CrudCorreo;
 import com.fichas_medicas.dao.CrudEstadoCivil;
+import com.fichas_medicas.dao.CrudGrupoSanguineo;
 import com.fichas_medicas.dao.CrudPersona;
 import com.fichas_medicas.domain.Area;
 import com.fichas_medicas.domain.Correo;
 import com.fichas_medicas.domain.EstadoCivil;
+import com.fichas_medicas.domain.GrupoSanguineo;
 import com.fichas_medicas.domain.Persona;
 import com.fichas_medicas.domain.Usuario;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.System.err;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,14 +42,17 @@ public class Fichas extends javax.swing.JDialog {
 
     String rutaimagen = "C://FichaMedica//img//logofoto.png";
     private String var1;
-    private List<Area> areas = null;
-    private List<EstadoCivil> estados_civiles = null;
     private CrudArea crudA = null;
     private CrudPersona crudP = null;
     private CrudEstadoCivil crudEcl = null;
+    private CrudGrupoSanguineo crudGrupo = null;
     private Usuario objU = null;
     private CrudCorreo crudCo = null;
+    private List<Area> areas = null;
+    private List<EstadoCivil> estados_civiles = null;
+    private List<GrupoSanguineo> lista_grupo = null;
     private List<Correo> lista_correos = null;
+
     private Date fecha_nac = null;
 
     /**
@@ -67,10 +72,14 @@ public class Fichas extends javax.swing.JDialog {
         crudP = new CrudPersona();
         crudEcl = new CrudEstadoCivil();
         crudCo = new CrudCorreo();
+        crudGrupo = new CrudGrupoSanguineo();
         System.out.println("lista " + areas.size());
         fillAreas();
         fillEstadoCivil();
+        //fillCorreo();
+        fillGrupoSanguineo();
         activar(false);
+        this.objU= new Usuario("JTAPIA", "11111", "JOSE", "LOPEZ", 3, "", "A");
     }
 
     public Fichas(java.awt.Frame parent, boolean modal, Usuario obj) {
@@ -86,10 +95,12 @@ public class Fichas extends javax.swing.JDialog {
         crudP = new CrudPersona();
         crudEcl = new CrudEstadoCivil();
         crudCo = new CrudCorreo();
+        crudGrupo = new CrudGrupoSanguineo();
         System.out.println("lista " + areas.size());
         fillAreas();
         fillEstadoCivil();
         fillCorreo();
+        fillGrupoSanguineo();
         activar(false);
     }
 
@@ -111,6 +122,15 @@ public class Fichas extends javax.swing.JDialog {
         area.addItem("Elija una Opción...");
         for (int i = 0; i < areas.size(); i++) {
             area.addItem(areas.get(i).getNombre_area());
+        }
+    }
+    
+        private void fillGrupoSanguineo() {
+        lista_grupo = crudGrupo.getAll();
+        grupito.removeAllItems();
+        grupito.addItem("Elija una Opción...");
+        for (int i = 0; i < lista_grupo.size(); i++) {
+            grupito.addItem(lista_grupo.get(i).getNombre());
         }
     }
 
@@ -200,7 +220,7 @@ public class Fichas extends javax.swing.JDialog {
         TXT_F_NACIMIENTO = new javax.swing.JTextField();
         TXT_L_NACIMIENTO = new javax.swing.JTextField();
         TXT_N_HIJOS = new javax.swing.JTextField();
-        TXT_TELEFONO = new javax.swing.JTextField();
+        telefono_emergencia = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         TXT_CEDULA = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
@@ -208,7 +228,7 @@ public class Fichas extends javax.swing.JDialog {
         jLabel31 = new javax.swing.JLabel();
         foto = new javax.swing.JLabel();
         FOTO = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_guardar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         estado_civil = new javax.swing.JComboBox<>();
         jLabel25 = new javax.swing.JLabel();
@@ -219,10 +239,10 @@ public class Fichas extends javax.swing.JDialog {
         area = new javax.swing.JComboBox<>();
         jLabel69 = new javax.swing.JLabel();
         btn_correo = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        grupito = new javax.swing.JComboBox<>();
         g_sanguineo = new javax.swing.JLabel();
         EMERGENCIA = new javax.swing.JLabel();
-        TXT_TELEFONO1 = new javax.swing.JTextField();
+        telefono = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -615,18 +635,18 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        TXT_TELEFONO.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
-        TXT_TELEFONO.addActionListener(new java.awt.event.ActionListener() {
+        telefono_emergencia.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        telefono_emergencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TXT_TELEFONOActionPerformed(evt);
+                telefono_emergenciaActionPerformed(evt);
             }
         });
-        TXT_TELEFONO.addKeyListener(new java.awt.event.KeyAdapter() {
+        telefono_emergencia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                TXT_TELEFONOKeyReleased(evt);
+                telefono_emergenciaKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                TXT_TELEFONOKeyTyped(evt);
+                telefono_emergenciaKeyTyped(evt);
             }
         });
 
@@ -682,15 +702,15 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 153, 204));
-        jButton2.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
-        jButton2.setText("Guardar");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_guardar.setBackground(new java.awt.Color(0, 153, 204));
+        btn_guardar.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        btn_guardar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_guardar.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
+        btn_guardar.setText("Guardar");
+        btn_guardar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_guardarActionPerformed(evt);
             }
         });
 
@@ -756,7 +776,7 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "...", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
+        grupito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "...", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
 
         g_sanguineo.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         g_sanguineo.setForeground(new java.awt.Color(255, 255, 255));
@@ -766,18 +786,18 @@ public class Fichas extends javax.swing.JDialog {
         EMERGENCIA.setForeground(new java.awt.Color(255, 255, 255));
         EMERGENCIA.setText("EMERGENCIA");
 
-        TXT_TELEFONO1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
-        TXT_TELEFONO1.addActionListener(new java.awt.event.ActionListener() {
+        telefono.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        telefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TXT_TELEFONO1ActionPerformed(evt);
+                telefonoActionPerformed(evt);
             }
         });
-        TXT_TELEFONO1.addKeyListener(new java.awt.event.KeyAdapter() {
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                TXT_TELEFONO1KeyReleased(evt);
+                telefonoKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                TXT_TELEFONO1KeyTyped(evt);
+                telefonoKeyTyped(evt);
             }
         });
 
@@ -849,7 +869,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(g_sanguineo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(grupito, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -857,7 +877,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(EMERGENCIA)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TXT_TELEFONO))
+                                .addComponent(telefono_emergencia))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel8)
@@ -866,12 +886,12 @@ public class Fichas extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(TXT_TELEFONO1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(11, 11, 11))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(239, 239, 239))
@@ -927,7 +947,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(TXT_N_HIJOS, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
                                     .addComponent(jLabel8)
-                                    .addComponent(TXT_TELEFONO1))
+                                    .addComponent(telefono))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(40, 40, 40)
@@ -941,7 +961,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(grupito, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(g_sanguineo))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -952,11 +972,11 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(correo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_correo)
                             .addComponent(EMERGENCIA)
-                            .addComponent(TXT_TELEFONO, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(telefono_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(315, 315, 315))
         );
@@ -1170,7 +1190,6 @@ public class Fichas extends javax.swing.JDialog {
         jPanel3.setBackground(new java.awt.Color(74, 159, 181));
 
         jLabel53.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel53.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Peso FN.png")); // NOI18N
 
         PESO.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         PESO.addActionListener(new java.awt.event.ActionListener() {
@@ -1190,8 +1209,6 @@ public class Fichas extends javax.swing.JDialog {
         jLabel54.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel54.setForeground(new java.awt.Color(242, 242, 242));
         jLabel54.setText("PESO (KG)");
-
-        jLabel55.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Presion arterial FN.png")); // NOI18N
 
         FRE_CAR.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         FRE_CAR.addActionListener(new java.awt.event.ActionListener() {
@@ -1222,7 +1239,6 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        jLabel57.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Frecuencia cardiaca1 FN.png")); // NOI18N
         jLabel57.setText("jLabel9");
 
         jLabel58.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
@@ -1247,10 +1263,6 @@ public class Fichas extends javax.swing.JDialog {
         jLabel59.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel59.setForeground(new java.awt.Color(242, 242, 242));
         jLabel59.setText("SATURACION ");
-
-        jLabel60.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Saturacion FN.png")); // NOI18N
-
-        jLabel61.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Temperatura FN.png")); // NOI18N
 
         TEMPERATURA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         TEMPERATURA.addActionListener(new java.awt.event.ActionListener() {
@@ -1284,14 +1296,12 @@ public class Fichas extends javax.swing.JDialog {
         });
 
         jLabel63.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel63.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\altura FN.png")); // NOI18N
 
         jLabel64.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel64.setForeground(new java.awt.Color(242, 242, 242));
         jLabel64.setText("ESTATURA (M)");
 
         jLabel65.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel65.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Estado fisico FN.png")); // NOI18N
 
         IMC.setEditable(false);
         IMC.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1373,8 +1383,6 @@ public class Fichas extends javax.swing.JDialog {
                 .addComponent(jButton6)
                 .addGap(20, 20, 20))
         );
-
-        jLabel71.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\imc FN.png")); // NOI18N
 
         DIASTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         DIASTOLICA.addActionListener(new java.awt.event.ActionListener() {
@@ -1744,7 +1752,9 @@ public class Fichas extends javax.swing.JDialog {
         var fec = cld.getStr_fecha();
         System.out.println(" fecha frm " + fec);
         TXT_F_NACIMIENTO.setText(fec);
-        fecha_nac = cld.getDt_fecha();
+
+        fecha_nac = (Date) cld.getDt_fecha();
+        System.out.println("fecha grt 1 " + fecha_nac);
     }//GEN-LAST:event_btn_calActionPerformed
 
     private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
@@ -1759,26 +1769,33 @@ public class Fichas extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         grabar();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btn_guardarActionPerformed
     /* Metodo grabar
     20/02/2025
     Hora:9:35 am
     Autor: Jose Luis Tapia
      */
     private int getIdArea() {
-        int selectedIndex = area.getSelectedIndex() - 1;
+        int selectedIndex = area.getSelectedIndex();
         var posA = selectedIndex;
-        var id_area = areas.get(posA).getId_area() - 1;
+        var id_area = areas.get(posA).getId_area()-1;
         return id_area;
     }
 
     private int getIdAGrupoSanguineo() {
-        int selectedIndex = area.getSelectedIndex() - 1;
+        int selectedIndex = grupito.getSelectedIndex();
         var posA = selectedIndex;
-        var id_area = areas.get(posA).getId_area() - 1;
-        return id_area;
+        var id_grupo = lista_grupo.get(posA).getId_grupo_sanguineo() - 1;
+        return id_grupo ;
+    }
+
+    private int getIdEstadoCivil() {
+        int selectedIndex = estado_civil.getSelectedIndex();
+        var posA = selectedIndex;
+        var id_estado_civil = estados_civiles.get(posA).getIdEstadoCivil() - 1;
+        return id_estado_civil;
     }
 
     private void grabar() {
@@ -1789,12 +1806,13 @@ public class Fichas extends javax.swing.JDialog {
             TXT_N_HIJOS.setText("0");
         }
         nh = Integer.parseInt(TXT_N_HIJOS.getText());
-//        var objP = new Persona(TXT_CEDULA.getText(), TXT_NOMBRE.getText(),
-//                TXT_APELLIDO.getText(),
-//                fecha_nac,
-//                TXT_L_NACIMIENTO.getText(), nh, direccion.getText(), TXT_TELEFONO.getText(),
-//                PROPERTIES, HIDE_ON_CLOSE, WIDTH, objU.getUsuario(),
-//                FechaComponente.FechaSql(), "A");
+        var objP = new Persona(TXT_CEDULA.getText(), TXT_NOMBRE.getText(),
+                TXT_APELLIDO.getText(),
+                fecha_nac,
+                TXT_L_NACIMIENTO.getText(), nh, direccion.getText(), telefono.getText(), telefono_emergencia.getText(),
+                getIdAGrupoSanguineo(), getIdEstadoCivil(), getIdArea(), objU.getUsuario(),
+                (Date) FechaComponente.FechaSql(), "A");
+        System.out.println("Prueba grabar " + objP.toString());
     }
 
     private void FOTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FOTOActionPerformed
@@ -1819,23 +1837,23 @@ public class Fichas extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_TXT_CEDULAActionPerformed
 
-    private void TXT_TELEFONOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_TELEFONOKeyTyped
+    private void telefono_emergenciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefono_emergenciaKeyTyped
         char car = evt.getKeyChar();
-        if (TXT_TELEFONO.getText().length() == 12) {
+        if (telefono_emergencia.getText().length() == 12) {
             evt.consume();
         }
         if ((car < '0' || car > '9')) {
             evt.consume();
         }
-    }//GEN-LAST:event_TXT_TELEFONOKeyTyped
+    }//GEN-LAST:event_telefono_emergenciaKeyTyped
 
-    private void TXT_TELEFONOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_TELEFONOKeyReleased
+    private void telefono_emergenciaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefono_emergenciaKeyReleased
         validar();
-    }//GEN-LAST:event_TXT_TELEFONOKeyReleased
+    }//GEN-LAST:event_telefono_emergenciaKeyReleased
 
-    private void TXT_TELEFONOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_TELEFONOActionPerformed
+    private void telefono_emergenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefono_emergenciaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TXT_TELEFONOActionPerformed
+    }//GEN-LAST:event_telefono_emergenciaActionPerformed
 
     private void TXT_N_HIJOSKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_N_HIJOSKeyTyped
 
@@ -1871,23 +1889,24 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_TXT_F_NACIMIENTOKeyTyped
 
     private void TXT_APELLIDOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_APELLIDOKeyTyped
-        var var2 = validateString(TXT_APELLIDO.getText());
-        if (var2 == null) {
-            err.append("FUNCIONAL");
-            int c = 0;
-            c++;
-        } else {
-            String var1 = null;
-            TXT_APELLIDO.setText(var1);
-            System.out.println(err.toString());
-
-        }
+//        var var2 = validateString(TXT_APELLIDO.getText());
+//        if (var2 == null) {
+//            err.append("FUNCIONAL");
+//            int c = 0;
+//            c++;
+//        } else {
+//            String var1 = null;
+//            TXT_APELLIDO.setText(var1);
+//            System.out.println(err.toString());
+//
+//        }
     }//GEN-LAST:event_TXT_APELLIDOKeyTyped
 
     private void TXT_APELLIDOKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_APELLIDOKeyReleased
         String texto = TXT_APELLIDO.getText();
         String texto_corregido = texto.replaceAll("^\\s+", "");
         TXT_APELLIDO.setText(texto_corregido);
+
     }//GEN-LAST:event_TXT_APELLIDOKeyReleased
 
     private void TXT_APELLIDOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_APELLIDOActionPerformed
@@ -2097,17 +2116,17 @@ public class Fichas extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void TXT_TELEFONO1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_TELEFONO1ActionPerformed
+    private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TXT_TELEFONO1ActionPerformed
+    }//GEN-LAST:event_telefonoActionPerformed
 
-    private void TXT_TELEFONO1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_TELEFONO1KeyReleased
+    private void telefonoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_TXT_TELEFONO1KeyReleased
+    }//GEN-LAST:event_telefonoKeyReleased
 
-    private void TXT_TELEFONO1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_TELEFONO1KeyTyped
+    private void telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_TXT_TELEFONO1KeyTyped
+    }//GEN-LAST:event_telefonoKeyTyped
 
     private void calcular() {
         try {
@@ -2248,15 +2267,17 @@ public class Fichas extends javax.swing.JDialog {
         TXT_F_NACIMIENTO.setEditable(valor);
         TXT_L_NACIMIENTO.setEditable(valor);
         estado_civil.setEnabled(valor);
+        grupito.setEnabled(valor);
         TXT_N_HIJOS.setEditable(valor);
         correo.setEnabled(valor);
         FOTO.setEnabled(valor);
         direccion.setEditable(valor);
-        TXT_TELEFONO.setEditable(valor);
+        telefono_emergencia.setEditable(valor);
         antecedentes.setEnabledAt(1, valor);
         antecedentes.setEnabledAt(2, valor);
         btn_correo.setEnabled(valor);
         btn_cal.setEnabled(valor);
+        btn_guardar.setEnabled(valor);
     }
 
     /**
@@ -2337,27 +2358,25 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JTextField TXT_L_NACIMIENTO;
     private javax.swing.JTextField TXT_NOMBRE;
     private javax.swing.JTextField TXT_N_HIJOS;
-    private javax.swing.JTextField TXT_TELEFONO;
-    private javax.swing.JTextField TXT_TELEFONO1;
     private javax.swing.JTabbedPane antecedentes;
     private javax.swing.JComboBox<String> area;
     private javax.swing.JButton btn_cal;
     private javax.swing.JButton btn_correo;
+    private javax.swing.JButton btn_guardar;
     private javax.swing.JComboBox<String> correo;
     private javax.swing.JLabel diastolicatxt;
     private javax.swing.JTextArea direccion;
     private javax.swing.JComboBox<String> estado_civil;
     private javax.swing.JLabel foto;
     private javax.swing.JLabel g_sanguineo;
+    private javax.swing.JComboBox<String> grupito;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2441,5 +2460,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblResultado;
     private javax.swing.JLabel sistolicatxt;
+    private javax.swing.JTextField telefono;
+    private javax.swing.JTextField telefono_emergencia;
     // End of variables declaration//GEN-END:variables
 }
