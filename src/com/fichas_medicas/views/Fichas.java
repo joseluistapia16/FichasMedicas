@@ -52,7 +52,7 @@ public class Fichas extends javax.swing.JDialog {
     private List<EstadoCivil> estados_civiles = null;
     private List<GrupoSanguineo> lista_grupo = null;
     private List<Correo> lista_correos = null;
-
+    private String error1 = "";
     private Date fecha_nac = null;
 
     /**
@@ -79,7 +79,7 @@ public class Fichas extends javax.swing.JDialog {
         //fillCorreo();
         fillGrupoSanguineo();
         activar(false);
-        this.objU= new Usuario("JTAPIA", "11111", "JOSE", "LOPEZ", 3, "", "A");
+        this.objU = new Usuario("JTAPIA", "4444", "JOSE", "LINO", "lino@gmail.com", 3, "SOFIA24", "A");
     }
 
     public Fichas(java.awt.Frame parent, boolean modal, Usuario obj) {
@@ -124,8 +124,8 @@ public class Fichas extends javax.swing.JDialog {
             area.addItem(areas.get(i).getNombre_area());
         }
     }
-    
-        private void fillGrupoSanguineo() {
+
+    private void fillGrupoSanguineo() {
         lista_grupo = crudGrupo.getAll();
         grupito.removeAllItems();
         grupito.addItem("Elija una Opción...");
@@ -764,6 +764,11 @@ public class Fichas extends javax.swing.JDialog {
         jScrollPane2.setViewportView(direccion);
 
         area.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        area.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                areaActionPerformed(evt);
+            }
+        });
 
         jLabel69.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel69.setForeground(new java.awt.Color(255, 255, 255));
@@ -775,8 +780,6 @@ public class Fichas extends javax.swing.JDialog {
                 btn_correoActionPerformed(evt);
             }
         });
-
-        grupito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "...", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
 
         g_sanguineo.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         g_sanguineo.setForeground(new java.awt.Color(255, 255, 255));
@@ -1770,7 +1773,12 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
-        grabar();
+       var vali= validarCampos();
+        if (vali.length() > 1) {
+            JOptionPane.showMessageDialog(null, vali + "estan incorrectos!");
+        } else {
+            grabar();
+        }
     }//GEN-LAST:event_btn_guardarActionPerformed
     /* Metodo grabar
     20/02/2025
@@ -1778,27 +1786,61 @@ public class Fichas extends javax.swing.JDialog {
     Autor: Jose Luis Tapia
      */
     private int getIdArea() {
+        var id_area = 0;
         int selectedIndex = area.getSelectedIndex();
         var posA = selectedIndex;
-        var id_area = areas.get(posA).getId_area()-1;
+        System.out.println("posA ->" + posA);
+        error1 = error1 + "Area\n";
+        if (posA > 0) {
+            id_area = areas.get(posA - 1).getId_area();
+        }
+
         return id_area;
     }
 
     private int getIdAGrupoSanguineo() {
+        var id_grupo = 0;
         int selectedIndex = grupito.getSelectedIndex();
         var posA = selectedIndex;
-        var id_grupo = lista_grupo.get(posA).getId_grupo_sanguineo() - 1;
-        return id_grupo ;
+        error1 = error1 + "Grupo Sanguineo\n";
+        if (posA > 0) {
+            id_grupo = lista_grupo.get(posA - 1).getId_grupo_sanguineo();
+        }
+        return id_grupo;
     }
 
     private int getIdEstadoCivil() {
+        var id_estado_civil = 0;
         int selectedIndex = estado_civil.getSelectedIndex();
         var posA = selectedIndex;
-        var id_estado_civil = estados_civiles.get(posA).getIdEstadoCivil() - 1;
+        if (posA > 0) {
+            id_estado_civil = estados_civiles.get(posA - 1).getIdEstadoCivil();
+        }
         return id_estado_civil;
     }
 
+    private String validarCampos() {
+        var error2 = "";
+        int posA = area.getSelectedIndex();
+        //System.out.println("posA ->" + posA);
+        if (posA < 1) {
+            error2 = error2 + "Area\n";
+        }
+        posA = estado_civil.getSelectedIndex();
+        if (posA < 1) {
+            error2 = error2 + "Estado Civil\n";
+        }
+
+        posA = grupito.getSelectedIndex();
+        if (posA < 1) {
+            error2 = error2 + "Grupo Sanguinseo\n";
+        }
+        return error2;
+
+    }
+
     private void grabar() {
+
         var id_area = getIdArea();
         System.out.println("Area " + id_area);
         var nh = 0; // numero de hijos
@@ -1812,7 +1854,9 @@ public class Fichas extends javax.swing.JDialog {
                 TXT_L_NACIMIENTO.getText(), nh, direccion.getText(), telefono.getText(), telefono_emergencia.getText(),
                 getIdAGrupoSanguineo(), getIdEstadoCivil(), getIdArea(), objU.getUsuario(),
                 (Date) FechaComponente.FechaSql(), "A");
+        // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objP.toString());
+
     }
 
     private void FOTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FOTOActionPerformed
@@ -2127,6 +2171,10 @@ public class Fichas extends javax.swing.JDialog {
     private void telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_telefonoKeyTyped
+
+    private void areaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_areaActionPerformed
 
     private void calcular() {
         try {
