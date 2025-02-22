@@ -15,6 +15,7 @@ import com.fichas_medicas.dao.CrudPersona;
 import com.fichas_medicas.domain.Area;
 import com.fichas_medicas.domain.Correo;
 import com.fichas_medicas.domain.EstadoCivil;
+import com.fichas_medicas.domain.Examen;
 import com.fichas_medicas.domain.FichaMedica;
 import com.fichas_medicas.domain.GrupoSanguineo;
 import com.fichas_medicas.domain.Persona;
@@ -1228,7 +1229,7 @@ public class Fichas extends javax.swing.JDialog {
 
         jLabel56.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel56.setForeground(new java.awt.Color(242, 242, 242));
-        jLabel56.setText("FRECUANCIA CARDIACA");
+        jLabel56.setText("FRECUENCIA CARDIACA");
         jLabel56.setDoubleBuffered(true);
 
         SISTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -1354,6 +1355,11 @@ public class Fichas extends javax.swing.JDialog {
         jButton6.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
         jButton6.setText("Guardar");
         jButton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton11.setBackground(new java.awt.Color(0, 153, 204));
         jButton11.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
@@ -1372,20 +1378,20 @@ public class Fichas extends javax.swing.JDialog {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addGap(54, 54, 54)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jButton11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addComponent(jButton6)
-                .addGap(20, 20, 20))
+                .addGap(18, 18, 18)
+                .addComponent(jButton11)
+                .addGap(23, 23, 23))
         );
 
         DIASTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1588,7 +1594,7 @@ public class Fichas extends javax.swing.JDialog {
                                                 .addComponent(IMC, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel55)
@@ -1601,7 +1607,7 @@ public class Fichas extends javax.swing.JDialog {
                                         .addComponent(jLabel67)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel70, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1612,7 +1618,7 @@ public class Fichas extends javax.swing.JDialog {
                 .addComponent(jLabel29)
                 .addGap(104, 104, 104)
                 .addComponent(jLabel68)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("EXAMENES FISICO", jPanel3);
@@ -1709,9 +1715,9 @@ public class Fichas extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         var vali = validarCamposAntecedentes();
         if (vali.length() > 1) {
-            JOptionPane.showMessageDialog(null, vali, "Datos Ivalidos", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            grabar();
+            grabarAntecedentes();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
     private void grabarAntecedentes() {
@@ -1815,7 +1821,7 @@ public class Fichas extends javax.swing.JDialog {
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         var vali = validarCampos();
         if (vali.length() > 1) {
-            JOptionPane.showMessageDialog(null, vali, "Datos Ivalidos", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
             grabar();
         }
@@ -1917,7 +1923,7 @@ public class Fichas extends javax.swing.JDialog {
                 TXT_APELLIDO.getText(),
                 fecha_nac,
                 TXT_L_NACIMIENTO.getText(), nh, direccion.getText(), telefono.getText(), telefono_emergencia.getText(),
-                getIdAGrupoSanguineo(), getIdEstadoCivil(), getIdArea(), objU.getUsuario(),rutaimagen  ,
+                getIdAGrupoSanguineo(), getIdEstadoCivil(), getIdArea(), objU.getUsuario(), rutaimagen,
                 (Date) FechaComponente.FechaSql(), "A");
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objP.toString());
@@ -2241,6 +2247,64 @@ public class Fichas extends javax.swing.JDialog {
     private void areaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_areaActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        var vali = validarCamposExamenes();
+        if (vali.length() > 1) {
+            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            grabarExamenes();
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void grabarExamenes() {
+
+//        var objE = new Examen(TXT_CEDULA.getText(),(Date) FechaComponente.FechaSql(),
+//                Integer.parseInt(FRE_CAR.getText()),Integer.parseInt(.getText()),
+//                TXT_A_P_FAMILIARES.getText(),
+//                TXT_A_P_PERSONALES.getText(),
+//                objU.getUsuario(), "A");
+//        // Problemas con fecha de nacikiento
+//        System.out.println("Prueba grabar " + objE.toString());
+
+    }
+
+    private String validarCamposExamenes() {
+        var error2 = "";
+        ///
+        if (TEMPERATURA.getText().length() < 1) {
+            error2 = error2 + "Temperatura\n";
+        }
+
+        if (PESO.getText().length() < 1) {
+            error2 = error2 + "Peso\n";
+        }
+
+        if (SATURACION.getText().length() < 1) {
+            error2 = error2 + "Saturacion\n";
+        }
+        if (ESTATURA.getText().length() < 1) {
+            error2 = error2 + "Estatura\n";
+        }
+
+        if (SISTOLICA.getText().length() < 1) {
+            error2 = error2 + "Sistolica\n";
+        }
+        if (DIASTOLICA.getText().length() < 1) {
+            error2 = error2 + "Diastolica\n";
+        }
+        if (IMC.getText().length() < 1) {
+            error2 = error2 + "IMC\n";
+        }
+        if (FRE_CAR.getText().length() < 1) {
+            error2 = error2 + "Frecuencia Cardioca\n";
+        }
+        if (CON_FIS.getText().length() < 1) {
+            error2 = error2 + "Condiciones Fisicas\n";
+        }
+        return error2;
+
+    }
 
     private void calcular() {
         try {
