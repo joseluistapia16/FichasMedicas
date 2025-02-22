@@ -5,11 +5,11 @@
 package com.fichas_medicas.domain;
 
 import java.sql.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.ToString;
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
+//import lombok.NonNull;
+//import lombok.ToString;
 
 /**
  * Eduardo Zapata 15/11/24 14:47 * @author user
@@ -29,13 +29,7 @@ public class FichaMedica {
     private String ant_patologicos_per;
     
     private String ant_patologicos_fam;
- 
-    private String examen_complementario;
-   
-    private String firma;
-    
-    private String foto;
-    
+     
     private String id_usuario;
     
     private String estado;
@@ -82,31 +76,6 @@ public class FichaMedica {
         this.ant_patologicos_fam = ant_patologicos_fam;
     }
 
-   
-
-    public String getExamen_complementario() {
-        return examen_complementario;
-    }
-
-    public void setExamen_complementario(String examen_complementario) {
-        this.examen_complementario = examen_complementario;
-    }
-
-    public String getFirma() {
-        return firma;
-    }
-
-    public void setFirma(String firma) {
-        this.firma = firma;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
 
     public String getId_usuario() {
         return id_usuario;
@@ -126,60 +95,28 @@ public class FichaMedica {
     
     
 
-//    private int id_fichaMedica;
-//    @NonNull
-//    private Date fecha_registro;
-//    @NonNull
-//    private String id_persona;
-//    @NonNull
-//    private String ant_patologicos_per;
-//    @NonNull
-//    private String ant_patologicos_fam;
-//    @NonNull
-//    private String habito;
-//    @NonNull
-//    private String estado_actual;
-//    @NonNull
-//    private String examen_fisico;
-//    @NonNull
-//    private String examen_complementario;
-//    @NonNull
-//    private String firma;
-//    @NonNull
-//    private String foto;
-//    @NonNull
-//    private String id_usuario;
-//    @NonNull
-//    private String estado;
 
-//    public FichaMedica(int id_fichaMedica, Date fecha_registro, String id_persona, String ant_patologicos_per, String ant_patologicos_fam, String habito, String estado_actual, String examen_fisico, String examen_complementario, String firma, String foto, String id_usuario, String estado) {
-//        this.id_fichaMedica = id_fichaMedica;
-//        this.fecha_registro = fecha_registro;
-//        this.id_persona = id_persona;
-//        this.ant_patologicos_per = ant_patologicos_per;
-//        this.ant_patologicos_fam = ant_patologicos_fam;
-//        this.habito = habito;
-//        this.estado_actual = estado_actual;
-//        this.examen_fisico = examen_fisico;
-//        this.examen_complementario = examen_complementario;
-//        this.firma = firma;
-//        this.foto = foto;
-//        this.id_usuario = id_usuario;
-//        this.estado = estado;
-//    }
 
-    public FichaMedica(int id_fichaMedica, Date fecha_registro, String id_persona, String ant_patologicos_per, String ant_patologicos_fam,  String examen_complementario, String firma, String foto, String id_usuario, String estado) {
+    public FichaMedica(int id_fichaMedica, Date fecha_registro, String id_persona, String ant_patologicos_per, String ant_patologicos_fam, String id_usuario, String estado) {
         this.id_fichaMedica = id_fichaMedica;
         this.fecha_registro = fecha_registro;
         this.id_persona = id_persona;
         this.ant_patologicos_per = ant_patologicos_per;
         this.ant_patologicos_fam = ant_patologicos_fam;
-        this.examen_complementario = examen_complementario;
-        this.firma = firma;
-        this.foto = foto;
         this.id_usuario = id_usuario;
         this.estado = estado;
     }
+
+    public FichaMedica(Date fecha_registro, String id_persona, String ant_patologicos_per, String ant_patologicos_fam, String id_usuario, String estado) {
+        this.fecha_registro = fecha_registro;
+        this.id_persona = id_persona;
+        this.ant_patologicos_per = ant_patologicos_per;
+        this.ant_patologicos_fam = ant_patologicos_fam;
+        this.id_usuario = id_usuario;
+        this.estado = estado;
+    }
+
+
     
     
 

@@ -15,6 +15,7 @@ import com.fichas_medicas.dao.CrudPersona;
 import com.fichas_medicas.domain.Area;
 import com.fichas_medicas.domain.Correo;
 import com.fichas_medicas.domain.EstadoCivil;
+import com.fichas_medicas.domain.FichaMedica;
 import com.fichas_medicas.domain.GrupoSanguineo;
 import com.fichas_medicas.domain.Persona;
 import com.fichas_medicas.domain.Usuario;
@@ -1504,7 +1505,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(jLabel54)
                             .addComponent(jLabel64))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(243, 243, 243)
+                .addGap(231, 231, 231)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -1706,8 +1707,47 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        var vali = validarCamposAntecedentes();
+        if (vali.length() > 1) {
+            JOptionPane.showMessageDialog(null, vali, "Datos Ivalidos", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            grabar();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
+    private void grabarAntecedentes() {
+
+        var objF = new FichaMedica((Date) FechaComponente.FechaSql(),
+                TXT_CEDULA.getText(),
+                TXT_A_P_FAMILIARES.getText(),
+                TXT_A_P_PERSONALES.getText(),
+                objU.getUsuario(), "A");
+        // Problemas con fecha de nacikiento
+        System.out.println("Prueba grabar " + objF.toString());
+
+    }
+
+    private String validarCamposAntecedentes() {
+        var error2 = "";
+        ///
+        if (TXT_A_P_FAMILIARES.getText().length() < 4) {
+            error2 = error2 + "Antecedentes Familiares\n";
+        }
+
+        if (TXT_A_P_PERSONALES.getText().length() < 4) {
+            error2 = error2 + "Antecedentes Personales\n";
+        }
+
+        if (TXT_HABITOS.getText().length() < 3) {
+            error2 = error2 + "Habitos\n";
+        }
+        if (TXT_E_ACTUAL.getText().length() < 3) {
+            error2 = error2 + "Estado Actual\n";
+        }
+
+        return error2;
+
+    }
+
 
     private void TXT_E_ACTUALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_E_ACTUALActionPerformed
         // TODO add your handling code here:
@@ -1773,9 +1813,9 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
-       var vali= validarCampos();
+        var vali = validarCampos();
         if (vali.length() > 1) {
-            JOptionPane.showMessageDialog(null, vali + "estan incorrectos!");
+            JOptionPane.showMessageDialog(null, vali, "Datos Ivalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
             grabar();
         }
@@ -1821,6 +1861,30 @@ public class Fichas extends javax.swing.JDialog {
 
     private String validarCampos() {
         var error2 = "";
+        ///
+        if (TXT_NOMBRE.getText().length() < 2) {
+            error2 = error2 + "Nombres\n";
+        }
+
+        if (TXT_APELLIDO.getText().length() < 2) {
+            error2 = error2 + "Apellidos\n";
+        }
+
+        if (TXT_F_NACIMIENTO.getText().length() < 3) {
+            error2 = error2 + "Fecha de nacimiento\n";
+        }
+        if (TXT_L_NACIMIENTO.getText().length() < 3) {
+            error2 = error2 + "Lugar de nacimiento\n";
+        }
+        if (TXT_N_HIJOS.getText().length() < 1) {
+            error2 = error2 + "Números de hijos\n";
+        }
+        if (telefono.getText().length() < 9) {
+            error2 = error2 + "Telefono\n";
+        }
+        if (direccion.getText().length() < 5) {
+            error2 = error2 + "Direccion de domicilio\n";
+        }
         int posA = area.getSelectedIndex();
         //System.out.println("posA ->" + posA);
         if (posA < 1) {
@@ -1835,6 +1899,7 @@ public class Fichas extends javax.swing.JDialog {
         if (posA < 1) {
             error2 = error2 + "Grupo Sanguinseo\n";
         }
+
         return error2;
 
     }
@@ -1852,12 +1917,13 @@ public class Fichas extends javax.swing.JDialog {
                 TXT_APELLIDO.getText(),
                 fecha_nac,
                 TXT_L_NACIMIENTO.getText(), nh, direccion.getText(), telefono.getText(), telefono_emergencia.getText(),
-                getIdAGrupoSanguineo(), getIdEstadoCivil(), getIdArea(), objU.getUsuario(),
+                getIdAGrupoSanguineo(), getIdEstadoCivil(), getIdArea(), objU.getUsuario(),rutaimagen  ,
                 (Date) FechaComponente.FechaSql(), "A");
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objP.toString());
 
     }
+
 
     private void FOTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FOTOActionPerformed
         guardarImagen();

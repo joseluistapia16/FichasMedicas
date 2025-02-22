@@ -4,17 +4,13 @@
  */
 package com.fichas_medicas.dao;
 
-import com.fichas_medicas.domain.Area;
-import com.fichas_medicas.impl.AreaDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.fichas_medicas.domain.Persona;
 import com.fichas_medicas.impl.PersonaDAO;
 import java.util.List;
@@ -35,8 +31,8 @@ public class CrudPersona implements PersonaDAO {
     @Override
     public boolean save(Persona obj) {
         var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, correo, "
-                + "direccion, telefono,telefono_emergencia,id_rol+, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
-                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)";
+                + "direccion, telefono,telefono_emergencia,id_rol+, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,foto,fecha_registro, estado) "
+                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?,?)";
 
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
@@ -53,8 +49,9 @@ public class CrudPersona implements PersonaDAO {
             st.setInt(12, obj.getId_grupo_sanguineo());
             st.setInt(13, obj.getId_estado_civil());
             st.setInt(14, obj.getId_area());
-            st.setDate(15, obj.getFecha_registro());
-            st.setString(16, obj.getEstado());
+            st.setString(15, obj.getFoto());
+            st.setDate(16, obj.getFecha_registro());
+            st.setString(17, obj.getEstado());
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
@@ -66,7 +63,7 @@ public class CrudPersona implements PersonaDAO {
     @Override
     public boolean update(Persona obj) {
         var query = "UPDATE persona SET nombres = ?, apellidos = ? , fecha_nacimiento = ? ,lugar_nacimiento = ?, n_hijos=?,"
-                + " direccion=?,telefono=?,telefono_emergencia=?, id_grupo_sanguineo=?, id_estado_civil=?, id_area=?  "
+                + " direccion=?,telefono=?,telefono_emergencia=?, id_grupo_sanguineo=?, id_estado_civil=?, id_area=? ,foto=? "
                 + "where cedula=?";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
@@ -81,7 +78,8 @@ public class CrudPersona implements PersonaDAO {
             st.setInt(9, obj.getId_grupo_sanguineo());
             st.setInt(10, obj.getId_estado_civil());
             st.setInt(11, obj.getId_area());
-            st.setString(12, obj.getCedula());
+            st.setString(12, obj.getFoto());
+            st.setString(13, obj.getCedula());
             int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
             return rowsAffected > 0;                   // Retorna true si se actualizaron filas
         } catch (SQLException ex) {
@@ -129,6 +127,7 @@ public class CrudPersona implements PersonaDAO {
                             rs.getInt("id_estado_civil"),
                             rs.getInt("id_area"),
                             rs.getString("id_usuario"),
+                            rs.getString("foto"),
                             rs.getDate("fecha_registro"),
                             rs.getString("estado")
                     );
@@ -162,6 +161,7 @@ public class CrudPersona implements PersonaDAO {
                         rs.getInt("id_estado_civil"),
                         rs.getInt("id_area"),
                         rs.getString("id_usuario"),
+                        rs.getString("foto"),
                         rs.getDate("fecha_registro"),
                         rs.getString("estado")
                 );

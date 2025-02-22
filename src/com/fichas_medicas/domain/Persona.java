@@ -47,11 +47,13 @@ public class Persona {
     @NonNull
     private String id_usuario;
     @NonNull
+    private String foto;
+    @NonNull
     private Date fecha_registro;  // cambio
     @NonNull
     private String estado;
 
-    public Persona(String cedula, String nombre, String apellidos, Date fecha_nacimiento, String lugar_nacimiento, Integer n_hijos, String direccion, String telefono, String telefono_emergencia, Integer id_grupo_sanguineo, Integer id_estado_civil, Integer id_area, String id_usuario, Date fecha_registro, String estado) {
+    public Persona(String cedula, String nombre, String apellidos, Date fecha_nacimiento, String lugar_nacimiento, Integer n_hijos, String direccion, String telefono, String telefono_emergencia, Integer id_grupo_sanguineo, Integer id_estado_civil, Integer id_area, String id_usuario, String foto, Date fecha_registro, String estado) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -65,10 +67,10 @@ public class Persona {
         this.id_estado_civil = id_estado_civil;
         this.id_area = id_area;
         this.id_usuario = id_usuario;
+        this.foto = foto;
         this.fecha_registro = fecha_registro;
         this.estado = estado;
     }
-    
-    
 
+    
 }

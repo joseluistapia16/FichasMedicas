@@ -20,7 +20,7 @@ import java.sql.Date;
  *
  * @author user
  */
-public  class CrudFichaMedica implements FichaMedicaDAO {
+public class CrudFichaMedica implements FichaMedicaDAO {
 
     private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
@@ -31,19 +31,16 @@ public  class CrudFichaMedica implements FichaMedicaDAO {
 
     public boolean save(FichaMedica obj) {
         boolean msg = false;
-        var sql = "INSERT INTO FichaMedica(fecha_registro, id_persona, antecedentes_patologicos_personales, antecedentes_patologicos_familiares, examen_complementario, firma, foto, id_usuario, estado)"
-                + "values(?,?,?,?,?,?,?,?,?)";
+        var sql = "INSERT INTO ficha_medica(fecha_registro, id_persona, antecedentes_patologicos_personales, antecedentes_patologicos_familiares,id_usuario, estado)"
+                + "values(?,?,?,?,?,?)";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
             st.setDate(1, obj.getFecha_registro());
             st.setString(2, obj.getId_persona());
             st.setString(3, obj.getAnt_patologicos_per());
             st.setString(4, obj.getAnt_patologicos_fam());
-            st.setString(5, obj.getExamen_complementario());
-            st.setString(6, obj.getFirma());
-            st.setString(7, obj.getFoto());
-            st.setString(8, obj.getId_usuario());
-            st.setString(9, obj.getEstado());
+            st.setString(5, obj.getId_usuario());
+            st.setString(6, obj.getEstado());
             st.executeUpdate();
             msg = true;
         } catch (SQLException ex) {
@@ -55,17 +52,13 @@ public  class CrudFichaMedica implements FichaMedicaDAO {
 
     public boolean update(FichaMedica obj) {
         boolean msg = false;
-        var query = "UPDATE ficha_medica SET id_persona = ?, antecedentes_patologicos_personales =?, antecedentes_patologicos_familiares  =?,"
-                + " examen_complementario=?,firma=?,"
-                + "foto=?,  WHERE username = ?";
+        var query = "UPDATE ficha_medica SET antecedentes_patologicos_personales =?, antecedentes_patologicos_familiares  =?"
+                + "  WHERE id_ficha_medica = ?";
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
-            st.setString(1, obj.getId_persona());
-            st.setString(2, obj.getAnt_patologicos_per());
-            st.setString(3, obj.getAnt_patologicos_fam());
-            st.setString(4, obj.getExamen_complementario());
-            st.setString(5, obj.getFirma());
-            st.setString(6, obj.getFoto());
+            st.setString(1, obj.getAnt_patologicos_per());
+            st.setString(2, obj.getAnt_patologicos_fam());
+            st.setInt(3, obj.getId_fichaMedica());
             st.executeUpdate();
             msg = true;
         } catch (SQLException ex) {
@@ -106,9 +99,6 @@ public  class CrudFichaMedica implements FichaMedicaDAO {
                             rs.getString("id_persona"),
                             rs.getString("antecedentes_patologicos_personales"),
                             rs.getString("antecedentes_patologicos_familiares"),
-                            rs.getString("examen_complementario"),
-                            rs.getString("firma"),
-                            rs.getString("foto"),
                             rs.getString("id_usuario"),
                             rs.getString("estado")
                     );
@@ -151,13 +141,10 @@ public  class CrudFichaMedica implements FichaMedicaDAO {
                         rs.getString("id_persona"),
                         rs.getString("antecedentes_patologicos_personales"),
                         rs.getString("antecedentes_patologicos_familiares"),
-                        rs.getString("examen_complementario"),
-                        rs.getString("firma"),
-                        rs.getString("foto"),
                         rs.getString("id_usuario"),
                         rs.getString("estado")
                 );
-                  datos.add(obj);
+                datos.add(obj);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CrudFichaMedica.class.getName()).log(Level.SEVERE, null, ex);
