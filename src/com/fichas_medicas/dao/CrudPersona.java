@@ -30,9 +30,9 @@ public class CrudPersona implements PersonaDAO {
 
     @Override
     public boolean save(Persona obj) {
-        var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, correo, "
-                + "direccion, telefono,telefono_emergencia,id_rol+, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,foto,fecha_registro, estado) "
-                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?,?)";
+        var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, "
+                + "direccion, telefono,telefono_emergencia,foto, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
+                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?)";
 
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
@@ -44,14 +44,14 @@ public class CrudPersona implements PersonaDAO {
             st.setString(6, obj.getLugar_nacimiento());
             st.setInt(7, obj.getN_hijos());
             st.setString(8, obj.getDireccion());
-            st.setString(10, obj.getTelefono());
-            st.setString(11, obj.getTelefono_emergencia());
+            st.setString(9, obj.getTelefono());
+            st.setString(10, obj.getTelefono_emergencia());
+            st.setString(11, obj.getFoto());
             st.setInt(12, obj.getId_grupo_sanguineo());
             st.setInt(13, obj.getId_estado_civil());
             st.setInt(14, obj.getId_area());
-            st.setString(15, obj.getFoto());
-            st.setDate(16, obj.getFecha_registro());
-            st.setString(17, obj.getEstado());
+            st.setDate(15, obj.getFecha_registro());
+            st.setString(16, obj.getEstado());
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {

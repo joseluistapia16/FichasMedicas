@@ -11,6 +11,8 @@ import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.dao.CrudCorreo;
 import com.fichas_medicas.dao.CrudEstadoCivil;
+import com.fichas_medicas.dao.CrudExamen;
+import com.fichas_medicas.dao.CrudFichaMedica;
 import com.fichas_medicas.dao.CrudGrupoSanguineo;
 import com.fichas_medicas.dao.CrudPersona;
 import com.fichas_medicas.domain.Area;
@@ -46,7 +48,11 @@ public class Fichas extends javax.swing.JDialog {
     String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
     private CrudArea crudA = null;
+    /// grabar
     private CrudPersona crudP = null;
+    private CrudFichaMedica crudFM = null;
+    private CrudExamen crudEx = null;
+    //
     private CrudEstadoCivil crudEcl = null;
     private CrudGrupoSanguineo crudGrupo = null;
     private Usuario objU = null;
@@ -73,6 +79,9 @@ public class Fichas extends javax.swing.JDialog {
     private Double vr_imc;
     private String vr_estado_actual;
     private String vr_habitos;
+    private Persona grb_objP;
+    private FichaMedica grb_objF;
+    private Examen grb_objE;
 
     /**
      * Creates new form Fichas
@@ -111,7 +120,11 @@ public class Fichas extends javax.swing.JDialog {
         cargarImagen();
         crudA = new CrudArea();
         areas = crudA.getAll();
+        // grabar
         crudP = new CrudPersona();
+        crudFM = new CrudFichaMedica();
+        crudEx = new CrudExamen();
+        //
         crudEcl = new CrudEstadoCivil();
         crudCo = new CrudCorreo();
         crudGrupo = new CrudGrupoSanguineo();
@@ -1749,7 +1762,7 @@ public class Fichas extends javax.swing.JDialog {
                 objU.getUsuario(), "A");
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objF.toString());
-
+        grb_objF = objF;
     }
 
     private String validarCamposAntecedentes() {
@@ -1951,7 +1964,7 @@ public class Fichas extends javax.swing.JDialog {
                 (Date) FechaComponente.FechaSql(), "A");
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objP.toString());
-
+        grb_objP = objP;
     }
 
 
@@ -2284,12 +2297,13 @@ public class Fichas extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
             grabarExamenes();
+            saveData();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
         try {
-         
+
             int frecuencia = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
             lblresultado1.setVisible(true);
 
@@ -2301,18 +2315,18 @@ public class Fichas extends javax.swing.JDialog {
                 lblresultado1.setText("Bradicardia");
                 lblresultado1.setOpaque(true);
                 lblresultado1.setForeground(Color.ORANGE);
-            }else{
+            } else {
                 lblresultado1.setText("Normal");
                 lblresultado1.setOpaque(true);
                 lblresultado1.setForeground(Color.BLACK);
             }
-    
+
             lblresultado1.setOpaque(true);
 
         } catch (NumberFormatException e) {
             lblresultado1.setVisible(false);
         }
-    
+
     }//GEN-LAST:event_FRECUENCIA_CARDIACAKeyReleased
 
     private void grabarExamenes() {
@@ -2320,18 +2334,19 @@ public class Fichas extends javax.swing.JDialog {
         vr_sistolica = Integer.parseInt(SISTOLICA.getText());
         vr_diastolica = Integer.parseInt(DIASTOLICA.getText());
         vr_saturacion = Integer.parseInt(SATURACION.getText());
-        vr_peso= Double.valueOf(PESO.getText());
-        vr_estatura= Double.valueOf(ESTATURA.getText());
-        vr_temperatura= Double.valueOf(TEMPERATURA.getText());
+        vr_peso = Double.valueOf(PESO.getText());
+        vr_estatura = Double.valueOf(ESTATURA.getText());
+        vr_temperatura = Double.valueOf(TEMPERATURA.getText());
         Double.valueOf(IMC.getText());
-        vr_estado_actual= TXT_E_ACTUAL.getText();
-        vr_habitos= TXT_HABITOS.getText();
+        vr_estado_actual = TXT_E_ACTUAL.getText();
+        vr_habitos = TXT_HABITOS.getText();
         var objE = new Examen(TXT_CEDULA.getText(), (Date) FechaComponente.FechaSql(),
-                vr_frecuencia_cardiaca, vr_sistolica,vr_diastolica,
-                vr_saturacion,vr_peso,vr_estatura,vr_temperatura,
-                vr_imc, vr_estado_actual, vr_habitos,"A");
+                vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
+                vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
+                vr_imc, vr_estado_actual, vr_habitos, "A");
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objE.toString());
+        grb_objE = objE;
     }
 
     private String validarCamposExamenes() {
@@ -2521,6 +2536,13 @@ public class Fichas extends javax.swing.JDialog {
         btn_correo.setEnabled(valor);
         btn_cal.setEnabled(valor);
         btn_validar_datos.setEnabled(valor);
+    }
+
+    private void saveData() {
+        var msg = crudP.save(grb_objP);
+        var msg1 = "\n" + crudFM.save(grb_objF);
+        var msg2 = "\n" + crudEx.save(grb_objE);
+        JOptionPane.showMessageDialog(null, msg+"\n"+msg1+"\n"+msg2);
     }
 
     /**
