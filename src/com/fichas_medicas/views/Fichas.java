@@ -6,6 +6,7 @@ package com.fichas_medicas.views;
 
 import static com.fichas_medicas.components.Cadenas.validateString;
 import com.fichas_medicas.components.Calculos;
+import com.fichas_medicas.components.Dialogo;
 import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.dao.CrudCorreo;
@@ -42,7 +43,7 @@ import java.awt.Color;
  */
 public class Fichas extends javax.swing.JDialog {
 
-    String rutaimagen = "C://FichaMedica//img//logofoto.png";
+    String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
     private CrudArea crudA = null;
     private CrudPersona crudP = null;
@@ -56,7 +57,9 @@ public class Fichas extends javax.swing.JDialog {
     private List<Correo> lista_correos = null;
     private String error1 = "";
     private Date fecha_nac = null;
-
+    private int pst_1_error=0;
+    private int pst_2_error=0;
+    private int pst_3_error=0;
     /**
      * Creates new form Fichas
      *
@@ -104,6 +107,8 @@ public class Fichas extends javax.swing.JDialog {
         fillCorreo();
         fillGrupoSanguineo();
         activar(false);
+        //antecedentes.setEnabledAt(1, false);
+        ///antecedentes.setEnabledAt(2, false);
     }
 
     private void cargarImagen() {
@@ -230,7 +235,7 @@ public class Fichas extends javax.swing.JDialog {
         jLabel31 = new javax.swing.JLabel();
         foto = new javax.swing.JLabel();
         FOTO = new javax.swing.JButton();
-        btn_guardar = new javax.swing.JButton();
+        btn_validar_datos = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         estado_civil = new javax.swing.JComboBox<>();
         jLabel25 = new javax.swing.JLabel();
@@ -258,7 +263,7 @@ public class Fichas extends javax.swing.JDialog {
         TXT_HABITOS = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         TXT_E_ACTUAL = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btn_validar_antecedentes = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -704,15 +709,15 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        btn_guardar.setBackground(new java.awt.Color(0, 153, 204));
-        btn_guardar.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        btn_guardar.setForeground(new java.awt.Color(255, 255, 255));
-        btn_guardar.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
-        btn_guardar.setText("Guardar");
-        btn_guardar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
+        btn_validar_datos.setBackground(new java.awt.Color(0, 153, 204));
+        btn_validar_datos.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        btn_validar_datos.setForeground(new java.awt.Color(255, 255, 255));
+        btn_validar_datos.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\aceptar.png")); // NOI18N
+        btn_validar_datos.setText("Validar");
+        btn_validar_datos.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_validar_datos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_guardarActionPerformed(evt);
+                btn_validar_datosActionPerformed(evt);
             }
         });
 
@@ -720,7 +725,7 @@ public class Fichas extends javax.swing.JDialog {
         jButton3.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
-        jButton3.setText("Cancelar");
+        jButton3.setText("Cerrar");
         jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -896,7 +901,7 @@ public class Fichas extends javax.swing.JDialog {
                         .addGap(11, 11, 11))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_validar_datos, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(239, 239, 239))
@@ -981,7 +986,7 @@ public class Fichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btn_validar_datos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(315, 315, 315))
         );
@@ -1074,15 +1079,15 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(0, 153, 204));
-        jButton4.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
-        jButton4.setText("Guardar");
-        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btn_validar_antecedentes.setBackground(new java.awt.Color(0, 153, 204));
+        btn_validar_antecedentes.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        btn_validar_antecedentes.setForeground(new java.awt.Color(255, 255, 255));
+        btn_validar_antecedentes.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\aceptar.png")); // NOI18N
+        btn_validar_antecedentes.setText("Validar");
+        btn_validar_antecedentes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_validar_antecedentes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btn_validar_antecedentesActionPerformed(evt);
             }
         });
 
@@ -1142,7 +1147,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_validar_antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(153, 153, 153)))
@@ -1186,7 +1191,7 @@ public class Fichas extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_validar_antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(319, Short.MAX_VALUE))
         );
 
@@ -1709,17 +1714,19 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        setVisible(false);
+        btn_validar_antecedentes.setEnabled(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btn_validar_antecedentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validar_antecedentesActionPerformed
         var vali = validarCamposAntecedentes();
         if (vali.length() > 1) {
             JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            btn_validar_antecedentes.setEnabled(false);
+            Dialogo.Mensaje("Validado", 90);
             grabarAntecedentes();
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btn_validar_antecedentesActionPerformed
     private void grabarAntecedentes() {
 
         var objF = new FichaMedica((Date) FechaComponente.FechaSql(),
@@ -1815,17 +1822,21 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_estado_civilActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // btn_validar_datos.setEnabled(true);
         setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
+    private void btn_validar_datosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validar_datosActionPerformed
         var vali = validarCampos();
         if (vali.length() > 1) {
             JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            btn_validar_datos.setEnabled(false);
+            Dialogo.Mensaje("Validado", 90);
             grabar();
+
         }
-    }//GEN-LAST:event_btn_guardarActionPerformed
+    }//GEN-LAST:event_btn_validar_datosActionPerformed
     /* Metodo grabar
     20/02/2025
     Hora:9:35 am
@@ -2266,7 +2277,6 @@ public class Fichas extends javax.swing.JDialog {
 //                objU.getUsuario(), "A");
 //        // Problemas con fecha de nacikiento
 //        System.out.println("Prueba grabar " + objE.toString());
-
     }
 
     private String validarCamposExamenes() {
@@ -2455,7 +2465,7 @@ public class Fichas extends javax.swing.JDialog {
         antecedentes.setEnabledAt(2, valor);
         btn_correo.setEnabled(valor);
         btn_cal.setEnabled(valor);
-        btn_guardar.setEnabled(valor);
+        btn_validar_datos.setEnabled(valor);
     }
 
     /**
@@ -2540,7 +2550,8 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> area;
     private javax.swing.JButton btn_cal;
     private javax.swing.JButton btn_correo;
-    private javax.swing.JButton btn_guardar;
+    private javax.swing.JButton btn_validar_antecedentes;
+    private javax.swing.JButton btn_validar_datos;
     private javax.swing.JComboBox<String> correo;
     private javax.swing.JLabel diastolicatxt;
     private javax.swing.JTextArea direccion;
@@ -2550,7 +2561,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> grupito;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
