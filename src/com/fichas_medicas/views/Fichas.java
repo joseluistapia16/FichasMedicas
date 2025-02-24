@@ -288,7 +288,7 @@ public class Fichas extends javax.swing.JDialog {
         PESO = new javax.swing.JTextField();
         jLabel54 = new javax.swing.JLabel();
         lbl_fre_cardiaca = new javax.swing.JLabel();
-        FRE_CAR = new javax.swing.JTextField();
+        FRECUENCIA_CARDIACA = new javax.swing.JTextField();
         jLabel56 = new javax.swing.JLabel();
         SISTOLICA = new javax.swing.JTextField();
         lbl_pre_arterial = new javax.swing.JLabel();
@@ -315,6 +315,7 @@ public class Fichas extends javax.swing.JDialog {
         jScrollPane3 = new javax.swing.JScrollPane();
         CON_FIS = new javax.swing.JTextArea();
         lblResultado = new javax.swing.JLabel();
+        lblresultado1 = new javax.swing.JLabel();
 
         jLabel22.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/file (3).png"))); // NOI18N
@@ -1243,15 +1244,18 @@ public class Fichas extends javax.swing.JDialog {
 
         lbl_fre_cardiaca.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Frecuencia cardiaca1 FN.png")); // NOI18N
 
-        FRE_CAR.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        FRE_CAR.addActionListener(new java.awt.event.ActionListener() {
+        FRECUENCIA_CARDIACA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        FRECUENCIA_CARDIACA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FRE_CARActionPerformed(evt);
+                FRECUENCIA_CARDIACAActionPerformed(evt);
             }
         });
-        FRE_CAR.addKeyListener(new java.awt.event.KeyAdapter() {
+        FRECUENCIA_CARDIACA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                FRECUENCIA_CARDIACAKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                FRE_CARKeyTyped(evt);
+                FRECUENCIA_CARDIACAKeyTyped(evt);
             }
         });
 
@@ -1457,6 +1461,9 @@ public class Fichas extends javax.swing.JDialog {
         lblResultado.setBackground(new java.awt.Color(73, 157, 178));
         lblResultado.setFont(new java.awt.Font("Microsoft Tai Le", 1, 14)); // NOI18N
 
+        lblresultado1.setBackground(new java.awt.Color(73, 157, 178));
+        lblresultado1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1484,7 +1491,7 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel56)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(FRE_CAR, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(FRECUENCIA_CARDIACA, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                     .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1493,7 +1500,10 @@ public class Fichas extends javax.swing.JDialog {
                                     .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(197, 197, 197)
+                        .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
@@ -1612,13 +1622,16 @@ public class Fichas extends javax.swing.JDialog {
                         .addComponent(jLabel67)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lbl_fre_cardiaca, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(FRE_CAR, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(lbl_condi_fisicas)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_fre_cardiaca, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(FRECUENCIA_CARDIACA, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbl_condi_fisicas))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
@@ -2185,18 +2198,18 @@ public class Fichas extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_SISTOLICAActionPerformed
 
-    private void FRE_CARKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRE_CARKeyTyped
+    private void FRECUENCIA_CARDIACAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyTyped
         char car = evt.getKeyChar();
-        if (FRE_CAR.getText().length() == 2) {
+        if (FRECUENCIA_CARDIACA.getText().length() == 2) {
             evt.consume();
         }
         if ((car < '0' || car > '9')) {
             evt.consume();
-    }//GEN-LAST:event_FRE_CARKeyTyped
+    }//GEN-LAST:event_FRECUENCIA_CARDIACAKeyTyped
     }
-    private void FRE_CARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FRE_CARActionPerformed
+    private void FRECUENCIA_CARDIACAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_FRE_CARActionPerformed
+    }//GEN-LAST:event_FRECUENCIA_CARDIACAActionPerformed
 
     private void PESOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PESOKeyTyped
         char car = evt.getKeyChar();
@@ -2274,8 +2287,36 @@ public class Fichas extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
+        try {
+         
+            int frecuencia = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
+            lblresultado1.setVisible(true);
+
+            if (frecuencia > 80) {
+                lblresultado1.setText("Taquicardia");
+                lblresultado1.setOpaque(true);
+                lblresultado1.setForeground(Color.RED);
+            } else if (frecuencia < 70) {
+                lblresultado1.setText("Bradicardia");
+                lblresultado1.setOpaque(true);
+                lblresultado1.setForeground(Color.ORANGE);
+            }else{
+                lblresultado1.setText("Normal");
+                lblresultado1.setOpaque(true);
+                lblresultado1.setForeground(Color.BLACK);
+            }
+    
+            lblresultado1.setOpaque(true);
+
+        } catch (NumberFormatException e) {
+            lblresultado1.setVisible(false);
+        }
+    
+    }//GEN-LAST:event_FRECUENCIA_CARDIACAKeyReleased
+
     private void grabarExamenes() {
-        vr_frecuencia_cardiaca = Integer.parseInt(FRE_CAR.getText());
+        vr_frecuencia_cardiaca = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
         vr_sistolica = Integer.parseInt(SISTOLICA.getText());
         vr_diastolica = Integer.parseInt(DIASTOLICA.getText());
         vr_saturacion = Integer.parseInt(SATURACION.getText());
@@ -2320,7 +2361,7 @@ public class Fichas extends javax.swing.JDialog {
         if (IMC.getText().length() < 1) {
             error2 = error2 + "IMC\n";
         }
-        if (FRE_CAR.getText().length() < 1) {
+        if (FRECUENCIA_CARDIACA.getText().length() < 1) {
             error2 = error2 + "Frecuencia Cardioca\n";
         }
         if (CON_FIS.getText().length() < 1) {
@@ -2530,7 +2571,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JLabel EMERGENCIA;
     private javax.swing.JTextField ESTATURA;
     private javax.swing.JButton FOTO;
-    private javax.swing.JTextField FRE_CAR;
+    private javax.swing.JTextField FRECUENCIA_CARDIACA;
     private javax.swing.JTextField F_CARDIACA;
     private javax.swing.JTextField F_CARDIACA1;
     private javax.swing.JTextField F_CARDIACA10;
@@ -2655,6 +2696,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JLabel lbl_pre_arterial;
     private javax.swing.JLabel lbl_saturacion;
     private javax.swing.JLabel lbl_temperatura;
+    private javax.swing.JLabel lblresultado1;
     private javax.swing.JLabel sistolicatxt;
     private javax.swing.JTextField telefono;
     private javax.swing.JTextField telefono_emergencia;

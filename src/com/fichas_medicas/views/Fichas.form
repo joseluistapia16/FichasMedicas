@@ -1672,7 +1672,7 @@
                                   <Component id="SATURACION" min="-2" pref="219" max="-2" attributes="0"/>
                                   <Component id="jLabel56" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="FRE_CAR" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="FRECUENCIA_CARDIACA" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="SISTOLICA" min="-2" pref="96" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
@@ -1686,6 +1686,10 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                               <Component id="jScrollPane1" min="-2" pref="324" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
+                              <Component id="lblresultado1" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -1852,14 +1856,18 @@
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="lbl_fre_cardiaca" min="-2" pref="62" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel56" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="FRE_CAR" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="lbl_fre_cardiaca" min="-2" pref="62" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel56" min="-2" pref="28" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="FRECUENCIA_CARDIACA" min="-2" pref="45" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="lbl_condi_fisicas" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="lbl_condi_fisicas" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblresultado1" min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="32767" attributes="0"/>
@@ -1941,15 +1949,16 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="FRE_CAR">
+            <Component class="javax.swing.JTextField" name="FRECUENCIA_CARDIACA">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="0"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FRE_CARActionPerformed"/>
-                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="FRE_CARKeyTyped"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FRECUENCIA_CARDIACAActionPerformed"/>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="FRECUENCIA_CARDIACAKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="FRECUENCIA_CARDIACAKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel56">
@@ -2285,6 +2294,16 @@
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft Tai Le" size="14" style="1"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblresultado1">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="b2" green="9d" red="49" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
               </Properties>
             </Component>
