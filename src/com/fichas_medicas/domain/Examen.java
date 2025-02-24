@@ -31,7 +31,9 @@ public class Examen {
     @NonNull
     private Integer frecuenciaCardiaca;
     @NonNull
-    private Integer presionArterial;
+    private Integer sistolica;
+    @NonNull
+    private Integer diastolica;
     @NonNull
     private Integer saturacion;
     @NonNull
