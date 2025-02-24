@@ -85,7 +85,7 @@ public class CrudUsuario implements UsuarioDAO {
             // Asigna el ID del área para actualizar
             st.executeUpdate();     // Ejecuta la actualización
             st.executeUpdate();
-            msg = "Datos guardados...";
+            msg = "Usuario Eliminado...";
         } catch (SQLException ex) {
             msg = "" + ex;
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);

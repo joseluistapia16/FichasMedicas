@@ -203,6 +203,11 @@ public class EditarUsuario extends javax.swing.JDialog {
         jButton3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
         jButton3.setText("Grabar");
         jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(0, 153, 204));
         jButton4.setFont(new java.awt.Font("Segoe UI Variable", 1, 18)); // NOI18N
@@ -235,6 +240,11 @@ public class EditarUsuario extends javax.swing.JDialog {
         jButton5.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\limpiar.png")); // NOI18N
         jButton5.setText("Eliminar");
         jButton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -373,12 +383,25 @@ public class EditarUsuario extends javax.swing.JDialog {
         password.setEchoChar('*');
     }//GEN-LAST:event_OCULTARMouseClicked
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        grabar();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+         var res = crudU.delete(usuario.getText());
+        JOptionPane.showMessageDialog(null, res);
+
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     private void grabar() {
         var id_rol = lista_rol.get(posC).getId_rol();
         var obj = new Usuario(usuario.getText(), password.getText(),
                 nombre.getText(), apellido.getText(), correo.getText(),
                 id_rol, "ADMIN", "A");
-        var res = crudU.save(obj);
+        var res = crudU.update(obj);
 
         JOptionPane.showMessageDialog(null, res);
 

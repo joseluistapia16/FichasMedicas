@@ -4,8 +4,6 @@
  */
 package com.fichas_medicas.views;
 
-
-
 import com.fichas_medicas.dao.CrudRoles;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.Roles;
@@ -341,7 +339,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_OCULTARMouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        grabar();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void grabar() {
