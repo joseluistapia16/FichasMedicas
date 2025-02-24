@@ -57,20 +57,23 @@ public class Fichas extends javax.swing.JDialog {
     private List<Correo> lista_correos = null;
     private String error1 = "";
     private Date fecha_nac = null;
-    private int pst_1_error=0;
-    private int pst_2_error=0;
-    private int pst_3_error=0;
-    
+    private int pst_1_error = 0;
+    private int pst_2_error = 0;
+    private int pst_3_error = 0;
+
     //// valores examen
     private Integer vr_frecuencia_cardiaca;
     private Integer vr_presion_arterial;  // doble valor
     private Integer vr_saturacion;
+    private Integer vr_sistolica;
+    private Integer vr_diastolica;
     private Double vr_peso;
     private Double vr_estatura;
     private Double vr_temperatura;
     private Double vr_imc;
     private String vr_estado_actual;
     private String vr_habitos;
+
     /**
      * Creates new form Fichas
      *
@@ -2272,14 +2275,22 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void grabarExamenes() {
-
-//        var objE = new Examen(TXT_CEDULA.getText(),(Date) FechaComponente.FechaSql(),
-//                Integer.parseInt(FRE_CAR.getText()),Integer.parseInt(.getText()),
-//                TXT_A_P_FAMILIARES.getText(),
-//                TXT_A_P_PERSONALES.getText(),
-//                objU.getUsuario(), "A");
-//        // Problemas con fecha de nacikiento
-//        System.out.println("Prueba grabar " + objE.toString());
+        vr_frecuencia_cardiaca = Integer.parseInt(FRE_CAR.getText());
+        vr_sistolica = Integer.parseInt(SISTOLICA.getText());
+        vr_diastolica = Integer.parseInt(DIASTOLICA.getText());
+        vr_saturacion = Integer.parseInt(SATURACION.getText());
+        vr_peso= Double.valueOf(PESO.getText());
+        vr_estatura= Double.valueOf(ESTATURA.getText());
+        vr_temperatura= Double.valueOf(TEMPERATURA.getText());
+        Double.valueOf(IMC.getText());
+        vr_estado_actual= TXT_E_ACTUAL.getText();
+        vr_habitos= TXT_HABITOS.getText();
+        var objE = new Examen(TXT_CEDULA.getText(), (Date) FechaComponente.FechaSql(),
+                vr_frecuencia_cardiaca, vr_sistolica,vr_diastolica,
+                vr_saturacion,vr_peso,vr_estatura,vr_temperatura,
+                vr_imc, vr_estado_actual, vr_habitos,"A");
+        // Problemas con fecha de nacikiento
+        System.out.println("Prueba grabar " + objE.toString());
     }
 
     private String validarCamposExamenes() {
@@ -2328,7 +2339,7 @@ public class Fichas extends javax.swing.JDialog {
 
             double imcRedondeado = Math.round(rs * 100.0) / 100.0;
             IMC.setText("" + imcRedondeado);
-
+            vr_imc = imcRedondeado;
             lblResultado.setVisible(true);
 
             if (imcRedondeado < 18.5) {
