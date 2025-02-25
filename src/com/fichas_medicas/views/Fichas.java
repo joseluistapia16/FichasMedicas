@@ -333,6 +333,7 @@ public class Fichas extends javax.swing.JDialog {
         CON_FIS = new javax.swing.JTextArea();
         lblResultado = new javax.swing.JLabel();
         lblresultado1 = new javax.swing.JLabel();
+        lblresultado3 = new javax.swing.JLabel();
 
         jLabel22.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/file (3).png"))); // NOI18N
@@ -1229,16 +1230,16 @@ public class Fichas extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(74, 159, 181));
 
-        lbl_peso.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Peso FN.png")); // NOI18N
+        lbl_peso.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Peso FN.png")); // NOI18N
 
-        lbl_temperatura.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Temperatura FN.png")); // NOI18N
+        lbl_temperatura.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Temperatura FN.png")); // NOI18N
 
-        lbl_altura.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\altura FN.png")); // NOI18N
+        lbl_altura.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\altura FN.png")); // NOI18N
 
-        lbl_saturacion.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Saturacion FN.png")); // NOI18N
+        lbl_saturacion.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Saturacion FN.png")); // NOI18N
 
         lbl_condi_fisicas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        lbl_condi_fisicas.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Estado fisico FN.png")); // NOI18N
+        lbl_condi_fisicas.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Estado fisico FN.png")); // NOI18N
 
         PESO.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         PESO.addActionListener(new java.awt.event.ActionListener() {
@@ -1259,7 +1260,7 @@ public class Fichas extends javax.swing.JDialog {
         jLabel54.setForeground(new java.awt.Color(242, 242, 242));
         jLabel54.setText("PESO (KG)");
 
-        lbl_fre_cardiaca.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Frecuencia cardiaca1 FN.png")); // NOI18N
+        lbl_fre_cardiaca.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Frecuencia cardiaca1 FN.png")); // NOI18N
 
         FRECUENCIA_CARDIACA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         FRECUENCIA_CARDIACA.addActionListener(new java.awt.event.ActionListener() {
@@ -1293,7 +1294,7 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        lbl_pre_arterial.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Presion arterial FN.png")); // NOI18N
+        lbl_pre_arterial.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Presion arterial FN.png")); // NOI18N
         lbl_pre_arterial.setText("jLabel9");
 
         jLabel58.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
@@ -1440,7 +1441,7 @@ public class Fichas extends javax.swing.JDialog {
                 .addGap(23, 23, 23))
         );
 
-        lbl_imc.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\imc FN.png")); // NOI18N
+        lbl_imc.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\imc FN.png")); // NOI18N
 
         DIASTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         DIASTOLICA.addActionListener(new java.awt.event.ActionListener() {
@@ -1449,6 +1450,9 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
         DIASTOLICA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                DIASTOLICAKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 DIASTOLICAKeyTyped(evt);
             }
@@ -1481,6 +1485,9 @@ public class Fichas extends javax.swing.JDialog {
         lblresultado1.setBackground(new java.awt.Color(73, 157, 178));
         lblresultado1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
+        lblresultado3.setBackground(new java.awt.Color(73, 157, 178));
+        lblresultado3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1497,30 +1504,37 @@ public class Fichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel58)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(sistolicatxt)
-                                .addGap(79, 79, 79)
-                                .addComponent(diastolicatxt))
                             .addComponent(jLabel62)
                             .addComponent(TEMPERATURA, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel59)
                             .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel56)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(FRECUENCIA_CARDIACA, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                    .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                            .addGap(25, 25, 25)
+                                            .addComponent(sistolicatxt)))
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                            .addGap(47, 47, 47)
+                                            .addComponent(diastolicatxt)))))
+                            .addComponent(jLabel56)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(197, 197, 197)
-                        .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(198, 198, 198)
+                        .addComponent(lblresultado3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
@@ -1557,7 +1571,7 @@ public class Fichas extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89))))
+                        .addGap(96, 96, 96))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1600,28 +1614,29 @@ public class Fichas extends javax.swing.JDialog {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel58)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                            .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(sistolicatxt))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel72))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(diastolicatxt))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(lbl_pre_arterial)
                                 .addGap(7, 7, 7)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(sistolicatxt)
-                            .addComponent(diastolicatxt)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblresultado3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1633,7 +1648,7 @@ public class Fichas extends javax.swing.JDialog {
                                 .addGap(6, 6, 6)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel67)
@@ -1649,11 +1664,11 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(lbl_condi_fisicas))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(332, Short.MAX_VALUE))
+                .addContainerGap(334, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("EXAMENES FISICO", jPanel3);
@@ -2333,6 +2348,41 @@ public class Fichas extends javax.swing.JDialog {
 
     }//GEN-LAST:event_FRECUENCIA_CARDIACAKeyReleased
 
+    private void DIASTOLICAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DIASTOLICAKeyReleased
+       try {
+            String textoSistolica = SISTOLICA.getText().trim();
+            String textoDiastolica = DIASTOLICA.getText().trim();
+
+            int sistolica = Integer.parseInt(textoSistolica);
+            int diastolica = Integer.parseInt(textoDiastolica);
+            
+            lblresultado3.setVisible(true);
+          
+
+            if (sistolica > 120 || diastolica > 80) {
+                lblresultado3.setText("Hipertensión");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.RED);
+                
+                
+            } else if (sistolica < 90 || diastolica < 60) {
+                lblresultado3.setText("Hipotensión");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.YELLOW);
+            } else {
+                lblresultado3.setText("Normal");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.BLACK);
+            }
+
+            // Mostrar el resultado
+            lblresultado3.setOpaque(true);
+        } catch (NumberFormatException ex) {
+            lblresultado3.setVisible(false);
+        }
+
+    }//GEN-LAST:event_DIASTOLICAKeyReleased
+
     private void grabarExamenes() {
         vr_frecuencia_cardiaca = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
         vr_sistolica = Integer.parseInt(SISTOLICA.getText());
@@ -2723,6 +2773,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JLabel lbl_saturacion;
     private javax.swing.JLabel lbl_temperatura;
     private javax.swing.JLabel lblresultado1;
+    private javax.swing.JLabel lblresultado3;
     private javax.swing.JLabel sistolicatxt;
     private javax.swing.JTextField telefono;
     private javax.swing.JTextField telefono_emergencia;
