@@ -32,24 +32,24 @@ public class CrudPersona implements PersonaDAO {
     public boolean save(Persona obj) {
         var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, "
                 + "direccion, telefono,telefono_emergencia,foto, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
-                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?)";
+                + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?,?, ?, ?, ?)";
 
         try (
                 java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
             st.setString(1, obj.getCedula());
             st.setString(2, obj.getNombre());
-            st.setString(3, obj.getNombre());
-            st.setString(4, obj.getApellidos());
+            st.setString(3, obj.getApellidos());
+            st.setString(4, obj.getLugar_nacimiento());
             st.setDate(5, obj.getFecha_nacimiento());
-            st.setString(6, obj.getLugar_nacimiento());
-            st.setInt(7, obj.getN_hijos());
-            st.setString(8, obj.getDireccion());
-            st.setString(9, obj.getTelefono());
-            st.setString(10, obj.getTelefono_emergencia());
-            st.setString(11, obj.getFoto());
-            st.setInt(12, obj.getId_grupo_sanguineo());
-            st.setInt(13, obj.getId_estado_civil());
-            st.setInt(14, obj.getId_area());
+            st.setInt(6, obj.getN_hijos());
+            st.setString(7, obj.getDireccion());
+            st.setString(8, obj.getTelefono());
+            st.setString(9, obj.getTelefono_emergencia());
+            st.setString(10, obj.getFoto());
+            st.setInt(11, obj.getId_grupo_sanguineo());
+            st.setInt(12, obj.getId_estado_civil());
+            st.setInt(13, obj.getId_area());
+            st.setString(14, obj.getId_usuario());
             st.setDate(15, obj.getFecha_registro());
             st.setString(16, obj.getEstado());
             int rowsAffected = st.executeUpdate();

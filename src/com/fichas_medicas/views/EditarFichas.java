@@ -43,7 +43,7 @@ import java.awt.Color;
  *
  * @Corregido 14 : 01 2025 cambio final
  */
-public class Fichas extends javax.swing.JDialog {
+public class EditarFichas extends javax.swing.JDialog {
 
     String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
@@ -82,6 +82,7 @@ public class Fichas extends javax.swing.JDialog {
     private Persona grb_objP;
     private FichaMedica grb_objF;
     private Examen grb_objE;
+    private FichaMedica fillObjFM;
 
     /**
      * Creates new form Fichas
@@ -89,7 +90,7 @@ public class Fichas extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public Fichas(java.awt.Frame parent, boolean modal) {
+    public EditarFichas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
@@ -114,13 +115,13 @@ public class Fichas extends javax.swing.JDialog {
         this.objU = new Usuario("JTAPIA", "4444", "JOSE", "LINO", "lino@gmail.com", 3, "SOFIA24", "A");
     }
 
-    public Fichas(java.awt.Frame parent, boolean modal, Usuario obj) {
+    public EditarFichas(java.awt.Frame parent, boolean modal, FichaMedica objFM) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setSize(797, 685);
-        this.objU = obj;
-        System.out.println("Usuario Modulo Fichas " + objU.getUsuario());
+        this.fillObjFM = objFM;
+        System.out.println("Usuario Modulo Fichas " + this.fillObjFM.getId_persona());
         cargarImagen();
         crudA = new CrudArea();
         areas = crudA.getAll();
@@ -137,9 +138,24 @@ public class Fichas extends javax.swing.JDialog {
         fillEstadoCivil();
         fillCorreo();
         fillGrupoSanguineo();
-        activar(false);
+               //System.out.println("fillData Editar Ficha:" + objFM.getId_persona());
+        fillData(objFM);
+        //activar(false);
         //antecedentes.setEnabledAt(1, false);
         ///antecedentes.setEnabledAt(2, false);
+    }
+
+    private void fillData(FichaMedica obj) {
+        System.out.println("fillData Editar Ficha:" + obj.getId_persona());
+        TXT_CEDULA.setText(obj.getId_persona());
+        var objPer = crudP.getOne(obj.getId_persona());
+        TXT_NOMBRE.setText(objPer.getNombre());
+        TXT_APELLIDO.setText(objPer.getApellidos());
+        TXT_L_NACIMIENTO.setText(objPer.getLugar_nacimiento());
+        TXT_N_HIJOS.setText(objPer.getN_hijos().toString());
+        direccion.setText(objPer.getDireccion());
+        telefono_emergencia.setText(objPer.getTelefono_emergencia());
+        telefono.setText(objPer.getTelefono());
     }
 
     private void cargarImagen() {
@@ -1229,16 +1245,7 @@ public class Fichas extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(74, 159, 181));
 
-        lbl_peso.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Peso FN.png")); // NOI18N
-
-        lbl_temperatura.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Temperatura FN.png")); // NOI18N
-
-        lbl_altura.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\altura FN.png")); // NOI18N
-
-        lbl_saturacion.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Saturacion FN.png")); // NOI18N
-
         lbl_condi_fisicas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        lbl_condi_fisicas.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Estado fisico FN.png")); // NOI18N
 
         PESO.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         PESO.addActionListener(new java.awt.event.ActionListener() {
@@ -1258,8 +1265,6 @@ public class Fichas extends javax.swing.JDialog {
         jLabel54.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel54.setForeground(new java.awt.Color(242, 242, 242));
         jLabel54.setText("PESO (KG)");
-
-        lbl_fre_cardiaca.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Frecuencia cardiaca1 FN.png")); // NOI18N
 
         FRECUENCIA_CARDIACA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         FRECUENCIA_CARDIACA.addActionListener(new java.awt.event.ActionListener() {
@@ -1293,7 +1298,6 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        lbl_pre_arterial.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\Presion arterial FN.png")); // NOI18N
         lbl_pre_arterial.setText("jLabel9");
 
         jLabel58.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
@@ -1439,8 +1443,6 @@ public class Fichas extends javax.swing.JDialog {
                 .addComponent(jButton11)
                 .addGap(23, 23, 23))
         );
-
-        lbl_imc.setIcon(new javax.swing.ImageIcon("C:\\FichaMedica\\img\\imc FN.png")); // NOI18N
 
         DIASTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         DIASTOLICA.addActionListener(new java.awt.event.ActionListener() {
@@ -2484,7 +2486,7 @@ public class Fichas extends javax.swing.JDialog {
                     System.out.println("No se pudo cargar la imagen.");
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Fichas.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EditarFichas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -2546,7 +2548,7 @@ public class Fichas extends javax.swing.JDialog {
         var msg = crudP.save(grb_objP);
         var msg1 = "\n" + crudFM.save(grb_objF);
         var msg2 = "\n" + crudEx.save(grb_objE);
-        JOptionPane.showMessageDialog(null, msg+"\n"+msg1+"\n"+msg2);
+        JOptionPane.showMessageDialog(null, msg + "\n" + msg1 + "\n" + msg2);
     }
 
     /**
@@ -2566,20 +2568,22 @@ public class Fichas extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Fichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Fichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Fichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Fichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFichas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(() -> {
-            Fichas dialog = new Fichas(new javax.swing.JFrame(), true);
+            EditarFichas dialog = new EditarFichas(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {

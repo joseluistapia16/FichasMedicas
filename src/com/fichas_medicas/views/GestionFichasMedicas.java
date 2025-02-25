@@ -205,19 +205,19 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         // TODO add your handling code here:
         var fila = 0;
         try {
-//            if (evt.getClickCount() == 2) {
-//                fila = tabla.getSelectedRow();
-//                var obj = getObject(tabla.getValueAt(fila, 1).toString(), lista);
-//                if (obj != null) {
-//                    System.out.println(obj.getUsuario() + " " + obj.getId_rol());
-//                    var ob = new EditarUsuario(new JFrame(), true, obj);
-//                    ob.setVisible(true);
-//                    lista = crudU.getAll();
-//                    tbl.cargarUsuarios(lista, tabla);
-//                    filtro.setText("");
-//                    tbl.filter("", tabla);
-//                }
-//            }
+            if (evt.getClickCount() == 2) {
+                fila = tabla.getSelectedRow();
+                var obj = getObject(tabla.getValueAt(fila, 1).toString(), lista);
+                if (obj != null) {
+                    System.out.println(obj.getId_persona()+ " ");
+                    var ob = new EditarFichas(new JFrame(), true, obj);
+                    ob.setVisible(true);
+                    lista = crudF.getAll();
+                    tbl.cargarFichas(lista, tabla);
+                    filtro.setText("");
+                    tbl.filter("", tabla);
+                }
+            }
 
         } catch (Exception e) {
         }
@@ -231,10 +231,10 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new Fichas(new JFrame(), true,objU).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
-    private Usuario getObject(String usuario, List<Usuario> lista) {
-        Usuario obj = null;
+    private FichaMedica getObject(String id_persona, List<FichaMedica> lista) {
+        FichaMedica obj = null;
         for (int i = 0; i < lista.size(); i++) {
-            if (usuario.equals(lista.get(i).getUsuario())) {
+            if (id_persona.equals(lista.get(i).getId_persona())) {
                 obj = lista.get(i);
                 break;
             }
