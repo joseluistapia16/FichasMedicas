@@ -16,7 +16,7 @@ import javax.swing.Timer;
 
 /**
  *
- * @author Usuario
+ * @author Usuario Prueba
  */
 public class Dialogo {
 
