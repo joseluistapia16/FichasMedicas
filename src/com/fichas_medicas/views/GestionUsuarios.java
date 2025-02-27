@@ -4,7 +4,6 @@
  */
 package com.fichas_medicas.views;
 
-
 import com.fichas_medicas.components.Tablas;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.Usuario;
@@ -131,6 +130,11 @@ public class GestionUsuarios extends javax.swing.JDialog {
         refrescar2.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\actualizar.png")); // NOI18N
         refrescar2.setText("Refrescar");
         refrescar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        refrescar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refrescar2ActionPerformed(evt);
+            }
+        });
 
         imprimir.setBackground(new java.awt.Color(0, 153, 204));
         imprimir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -249,6 +253,11 @@ public class GestionUsuarios extends javax.swing.JDialog {
     private void imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_imprimirActionPerformed
+
+    private void refrescar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescar2ActionPerformed
+        lista = crudU.getAll();
+        tbl.cargarUsuarios(lista, tabla);
+    }//GEN-LAST:event_refrescar2ActionPerformed
     private Usuario getObject(String usuario, List<Usuario> lista) {
         Usuario obj = null;
         for (int i = 0; i < lista.size(); i++) {

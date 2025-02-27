@@ -29,7 +29,8 @@ public class CrudPersona implements PersonaDAO {
     }
 
     @Override
-    public boolean save(Persona obj) {
+    public String save(Persona obj) {
+        var msg ="Datos guardados...";
         var sql = "INSERT INTO persona(cedula, nombres, apellidos, lugar_nacimiento, fecha_nacimiento, n_hijos, "
                 + "direccion, telefono,telefono_emergencia,foto, id_grupo_sanguineo, id_estado_civil, id_area, id_usuario,fecha_registro, estado) "
                 + "VALUES(?, ?, ?, ?,  ?, ?, ?, ?,?, ?, ?, ?,?, ?, ?, ?)";
@@ -53,11 +54,13 @@ public class CrudPersona implements PersonaDAO {
             st.setDate(15, obj.getFecha_registro());
             st.setString(16, obj.getEstado());
             int rowsAffected = st.executeUpdate();
-            return rowsAffected > 0;
+            
+           // return rowsAffected > 0;
         } catch (SQLException ex) {
             Logger.getLogger(CrudPersona.class.getName()).log(Level.SEVERE, null, ex);
+            msg=""+ex;
         }
-        return false;
+        return msg;
     }
 
     @Override

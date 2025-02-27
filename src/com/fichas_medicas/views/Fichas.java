@@ -44,7 +44,7 @@ import java.awt.Color;
  * @Corregido 14 : 01 2025 cambio final
  */
 public class Fichas extends javax.swing.JDialog {
-
+    
     String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
     private CrudArea crudA = null;
@@ -113,7 +113,7 @@ public class Fichas extends javax.swing.JDialog {
         activar(false);
         this.objU = new Usuario("JTAPIA", "4444", "JOSE", "LINO", "lino@gmail.com", 3, "SOFIA24", "A");
     }
-
+    
     public Fichas(java.awt.Frame parent, boolean modal, Usuario obj) {
         super(parent, modal);
         initComponents();
@@ -141,10 +141,10 @@ public class Fichas extends javax.swing.JDialog {
         //antecedentes.setEnabledAt(1, false);
         ///antecedentes.setEnabledAt(2, false);
     }
-
+    
     private void cargarImagen() {
-
-        String file = rutaimagen;
+        var rutai = "C://Fichas_Medicas//img//logofoto.png";
+        String file = rutai;
         foto.setIcon(new ImageIcon(file));
         ImageIcon icon = new ImageIcon(file);
         Image img = icon.getImage();
@@ -153,7 +153,7 @@ public class Fichas extends javax.swing.JDialog {
         foto.setIcon(newIcono);
         foto.setSize(350, 299);
     }
-
+    
     private void fillAreas() {
         areas = crudA.getAll();
         area.removeAllItems();
@@ -162,7 +162,7 @@ public class Fichas extends javax.swing.JDialog {
             area.addItem(areas.get(i).getNombre_area());
         }
     }
-
+    
     private void fillGrupoSanguineo() {
         lista_grupo = crudGrupo.getAll();
         grupito.removeAllItems();
@@ -171,7 +171,7 @@ public class Fichas extends javax.swing.JDialog {
             grupito.addItem(lista_grupo.get(i).getNombre());
         }
     }
-
+    
     private void fillEstadoCivil() {
         estados_civiles = crudEcl.getAll();
         estado_civil.removeAllItems();
@@ -180,7 +180,7 @@ public class Fichas extends javax.swing.JDialog {
             estado_civil.addItem(estados_civiles.get(i).getNombreEstadoCivil());
         }
     }
-
+    
     private void fillCorreo() {
         lista_correos = crudCo.getPersonMail(TXT_CEDULA.getText());
         correo.removeAllItems();
@@ -1765,15 +1765,17 @@ public class Fichas extends javax.swing.JDialog {
     private void btn_validar_antecedentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validar_antecedentesActionPerformed
         var vali = validarCamposAntecedentes();
         if (vali.length() > 1) {
+            activarAntededentes(true);
             JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            activarAntededentes(false);
             btn_validar_antecedentes.setEnabled(false);
             Dialogo.Mensaje("Validado", 90);
             grabarAntecedentes();
         }
     }//GEN-LAST:event_btn_validar_antecedentesActionPerformed
     private void grabarAntecedentes() {
-
+        
         var objF = new FichaMedica((Date) FechaComponente.FechaSql(),
                 TXT_CEDULA.getText(),
                 TXT_A_P_FAMILIARES.getText(),
@@ -1783,29 +1785,36 @@ public class Fichas extends javax.swing.JDialog {
         System.out.println("Prueba grabar " + objF.toString());
         grb_objF = objF;
     }
-
+    
     private String validarCamposAntecedentes() {
         var error2 = "";
         ///
         if (TXT_A_P_FAMILIARES.getText().length() < 4) {
             error2 = error2 + "Antecedentes Familiares\n";
         }
-
+        
         if (TXT_A_P_PERSONALES.getText().length() < 4) {
             error2 = error2 + "Antecedentes Personales\n";
         }
-
+        
         if (TXT_HABITOS.getText().length() < 3) {
             error2 = error2 + "Habitos\n";
         }
         if (TXT_E_ACTUAL.getText().length() < 3) {
             error2 = error2 + "Estado Actual\n";
         }
-
+        
         return error2;
-
+        
     }
-
+    
+    private void activarAntededentes(boolean valor) {
+        TXT_A_P_FAMILIARES.setEditable(valor);
+        TXT_A_P_PERSONALES.setEditable(valor);
+        TXT_HABITOS.setEditable(valor);
+        TXT_E_ACTUAL.setEditable(valor);
+    }
+    
 
     private void TXT_E_ACTUALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_E_ACTUALActionPerformed
         // TODO add your handling code here:
@@ -1853,7 +1862,7 @@ public class Fichas extends javax.swing.JDialog {
         var fec = cld.getStr_fecha();
         System.out.println(" fecha frm " + fec);
         TXT_F_NACIMIENTO.setText(fec);
-
+        
         fecha_nac = (Date) cld.getDt_fecha();
         System.out.println("fecha grt 1 " + fecha_nac);
     }//GEN-LAST:event_btn_calActionPerformed
@@ -1875,11 +1884,12 @@ public class Fichas extends javax.swing.JDialog {
         var vali = validarCampos();
         if (vali.length() > 1) {
             JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+            activar(true);
         } else {
             btn_validar_datos.setEnabled(false);
             Dialogo.Mensaje("Validado", 90);
             grabar();
-
+            activar(false);
         }
     }//GEN-LAST:event_btn_validar_datosActionPerformed
     /* Metodo grabar
@@ -1896,10 +1906,10 @@ public class Fichas extends javax.swing.JDialog {
         if (posA > 0) {
             id_area = areas.get(posA - 1).getId_area();
         }
-
+        
         return id_area;
     }
-
+    
     private int getIdAGrupoSanguineo() {
         var id_grupo = 0;
         int selectedIndex = grupito.getSelectedIndex();
@@ -1910,7 +1920,7 @@ public class Fichas extends javax.swing.JDialog {
         }
         return id_grupo;
     }
-
+    
     private int getIdEstadoCivil() {
         var id_estado_civil = 0;
         int selectedIndex = estado_civil.getSelectedIndex();
@@ -1920,18 +1930,18 @@ public class Fichas extends javax.swing.JDialog {
         }
         return id_estado_civil;
     }
-
+    
     private String validarCampos() {
         var error2 = "";
         ///
         if (TXT_NOMBRE.getText().length() < 2) {
             error2 = error2 + "Nombres\n";
         }
-
+        
         if (TXT_APELLIDO.getText().length() < 2) {
             error2 = error2 + "Apellidos\n";
         }
-
+        
         if (TXT_F_NACIMIENTO.getText().length() < 3) {
             error2 = error2 + "Fecha de nacimiento\n";
         }
@@ -1956,18 +1966,18 @@ public class Fichas extends javax.swing.JDialog {
         if (posA < 1) {
             error2 = error2 + "Estado Civil\n";
         }
-
+        
         posA = grupito.getSelectedIndex();
         if (posA < 1) {
             error2 = error2 + "Grupo Sanguinseo\n";
         }
-
+        
         return error2;
-
+        
     }
-
+    
     private void grabar() {
-
+        
         var id_area = getIdArea();
         System.out.println("Area " + id_area);
         var nh = 0; // numero de hijos
@@ -1985,7 +1995,7 @@ public class Fichas extends javax.swing.JDialog {
         System.out.println("Prueba grabar " + objP.toString());
         grb_objP = objP;
     }
-
+    
 
     private void FOTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FOTOActionPerformed
         guardarImagen();
@@ -2028,7 +2038,7 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_telefono_emergenciaActionPerformed
 
     private void TXT_N_HIJOSKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_N_HIJOSKeyTyped
-
+        
         char car = evt.getKeyChar();
         if (TXT_N_HIJOS.getText().length() == 2) {
             evt.consume();
@@ -2317,15 +2327,16 @@ public class Fichas extends javax.swing.JDialog {
         } else {
             grabarExamenes();
             saveData();
+            borrarDatos();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
         try {
-
+            
             int frecuencia = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
             lblresultado1.setVisible(true);
-
+            
             if (frecuencia > 80) {
                 lblresultado1.setText("Taquicardia");
                 lblresultado1.setOpaque(true);
@@ -2339,9 +2350,9 @@ public class Fichas extends javax.swing.JDialog {
                 lblresultado1.setOpaque(true);
                 lblresultado1.setForeground(Color.BLACK);
             }
-
+            
             lblresultado1.setOpaque(true);
-
+            
         } catch (NumberFormatException e) {
             lblresultado1.setVisible(false);
         }
@@ -2349,21 +2360,19 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_FRECUENCIA_CARDIACAKeyReleased
 
     private void DIASTOLICAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DIASTOLICAKeyReleased
-       try {
+        try {
             String textoSistolica = SISTOLICA.getText().trim();
             String textoDiastolica = DIASTOLICA.getText().trim();
-
+            
             int sistolica = Integer.parseInt(textoSistolica);
             int diastolica = Integer.parseInt(textoDiastolica);
             
             lblresultado3.setVisible(true);
-          
-
+            
             if (sistolica > 120 || diastolica > 80) {
                 lblresultado3.setText("Hipertensión");
                 lblresultado3.setOpaque(true);
                 lblresultado3.setForeground(Color.RED);
-                
                 
             } else if (sistolica < 90 || diastolica < 60) {
                 lblresultado3.setText("Hipotensión");
@@ -2382,7 +2391,7 @@ public class Fichas extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_DIASTOLICAKeyReleased
-
+    
     private void grabarExamenes() {
         vr_frecuencia_cardiaca = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
         vr_sistolica = Integer.parseInt(SISTOLICA.getText());
@@ -2402,25 +2411,25 @@ public class Fichas extends javax.swing.JDialog {
         System.out.println("Prueba grabar " + objE.toString());
         grb_objE = objE;
     }
-
+    
     private String validarCamposExamenes() {
         var error2 = "";
         ///
         if (TEMPERATURA.getText().length() < 1) {
             error2 = error2 + "Temperatura\n";
         }
-
+        
         if (PESO.getText().length() < 1) {
             error2 = error2 + "Peso\n";
         }
-
+        
         if (SATURACION.getText().length() < 1) {
             error2 = error2 + "Saturacion\n";
         }
         if (ESTATURA.getText().length() < 1) {
             error2 = error2 + "Estatura\n";
         }
-
+        
         if (SISTOLICA.getText().length() < 1) {
             error2 = error2 + "Sistolica\n";
         }
@@ -2437,21 +2446,21 @@ public class Fichas extends javax.swing.JDialog {
             error2 = error2 + "Condiciones Fisicas\n";
         }
         return error2;
-
+        
     }
-
+    
     private void calcular() {
         try {
-
+            
             var peso = Double.parseDouble(PESO.getText());
             var estatura = Double.parseDouble(ESTATURA.getText());
             var rs = Calculos.getImc(peso, estatura);
-
+            
             double imcRedondeado = Math.round(rs * 100.0) / 100.0;
             IMC.setText("" + imcRedondeado);
             vr_imc = imcRedondeado;
             lblResultado.setVisible(true);
-
+            
             if (imcRedondeado < 18.5) {
                 lblResultado.setText("Bajo peso");
                 lblResultado.setOpaque(true);
@@ -2469,14 +2478,14 @@ public class Fichas extends javax.swing.JDialog {
                 lblResultado.setOpaque(true);
                 lblResultado.setForeground(Color.RED);
             }
-
+            
             lblResultado.setOpaque(true);
-
+            
         } catch (NumberFormatException e) {
             lblResultado.setVisible(false);
         }
     }
-
+    
     private void guardarImagen() {
         String pass = "\\Fichas_Medicas\\fotos\\";
         //String pass = "\\Users\\TapiaSoftware\\Documents\\NetBeansProjects\\HermanosJesus\\src\\pictures\\";
@@ -2496,9 +2505,9 @@ public class Fichas extends javax.swing.JDialog {
             System.out.println("ruta " + rutaimagen);
             System.out.println(fil + " Foto  " + foto.getWidth() + " " + foto.getHeight());
         }
-
+        
     }
-
+    
     private void guardarImagen1() {
         // Definir la ruta inicial
         String pass = "C://Fichas_Medicas//fotos//"; // Asegúrate de usar barras invertidas en Windows
@@ -2538,11 +2547,11 @@ public class Fichas extends javax.swing.JDialog {
             }
         }
     }
-
+    
     private String validar() {
         int c = 0;
         StringBuilder err = new StringBuilder();
-
+        
         var var5 = validateString(TXT_N_HIJOS.getText());
         if (var5 == null) {
             err.append(" cedula");
@@ -2550,11 +2559,11 @@ public class Fichas extends javax.swing.JDialog {
         } else {
             TXT_N_HIJOS.setText(var1);
         }
-
+        
         System.out.println(err.toString());
         return err.toString();
     }
-
+    
     private void validarId() {
         if (TXT_CEDULA.getText().length() == 10) {
             var per = crudP.getOne(TXT_CEDULA.getText());
@@ -2568,11 +2577,11 @@ public class Fichas extends javax.swing.JDialog {
         } else {
             activar(false);
         }
-
+        
     }
-
+    
     private void activar(boolean valor) {
-
+        
         TXT_NOMBRE.setEditable(valor);
         TXT_APELLIDO.setEditable(valor);
         area.setEnabled(valor);
@@ -2585,18 +2594,62 @@ public class Fichas extends javax.swing.JDialog {
         FOTO.setEnabled(valor);
         direccion.setEditable(valor);
         telefono_emergencia.setEditable(valor);
-        antecedentes.setEnabledAt(1, valor);
-        antecedentes.setEnabledAt(2, valor);
+        //antecedentes.setEnabledAt(1, valor);
+        //antecedentes.setEnabledAt(2, valor);
         btn_correo.setEnabled(valor);
         btn_cal.setEnabled(valor);
         btn_validar_datos.setEnabled(valor);
     }
-
+    
     private void saveData() {
-        var msg = crudP.save(grb_objP);
-        var msg1 = "\n" + crudFM.save(grb_objF);
-        var msg2 = "\n" + crudEx.save(grb_objE);
-        JOptionPane.showMessageDialog(null, msg+"\n"+msg1+"\n"+msg2);
+        var res = crudP.save(grb_objP);
+        var msg = "";
+        if (!"Datos guardados...".equals(res)) {
+            msg = "Falta llenar campos en la seccion de DATOS.\n";
+        }
+        res = crudFM.save(grb_objF);
+        if (!"Datos guardados...".equals(res)) {
+            msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
+        }
+        res = crudFM.save(grb_objF);
+        if (!"Datos guardados...".equals(res)) {
+            msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
+        }
+        
+        JOptionPane.showMessageDialog(null, msg);
+    }
+    
+    private void borrarDatos() {
+        TXT_CEDULA.setText("");
+        TXT_NOMBRE.setText("");
+        TXT_APELLIDO.setText("");
+        TXT_F_NACIMIENTO.setText("");
+        TXT_L_NACIMIENTO.setText("");
+        TXT_N_HIJOS.setText("");
+        // foto
+        direccion.setText("");
+        telefono_emergencia.setText("");
+        area.setSelectedIndex(0);
+        estado_civil.setSelectedIndex(0);
+        grupito.setSelectedIndex(0);
+        cargarImagen();
+        // antecedentes
+        TXT_A_P_FAMILIARES.setText("");
+        TXT_A_P_PERSONALES.setText("");
+        TXT_HABITOS.setText("");
+        TXT_E_ACTUAL.setText("");
+        // 
+        TEMPERATURA.setText("");
+        PESO.setText("");
+        SATURACION.setText("");
+        ESTATURA.setText("");
+        SISTOLICA.setText("");
+        DIASTOLICA.setText("");
+        IMC.setText("");
+        FRECUENCIA_CARDIACA.setText("");
+        CON_FIS.setText("");
+        activar(true);
+        activarAntededentes(true);
     }
 
     /**
@@ -2638,7 +2691,7 @@ public class Fichas extends javax.swing.JDialog {
             });
             dialog.setVisible(true);
         });
-
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

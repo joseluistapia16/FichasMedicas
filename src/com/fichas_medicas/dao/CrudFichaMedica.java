@@ -29,8 +29,8 @@ public class CrudFichaMedica implements FichaMedicaDAO {
         this.conexion = new Conexion();
     }
 
-    public boolean save(FichaMedica obj) {
-        boolean msg = false;
+    public String save(FichaMedica obj) {
+        var msg = "";
         var sql = "INSERT INTO ficha_medica(fecha_registro, id_persona, antecedentes_patologicos_personales, antecedentes_patologicos_familiares,id_usuario, estado)"
                 + "values(?,?,?,?,?,?)";
         try (
@@ -42,9 +42,9 @@ public class CrudFichaMedica implements FichaMedicaDAO {
             st.setString(5, obj.getId_usuario());
             st.setString(6, obj.getEstado());
             st.executeUpdate();
-            msg = true;
+            msg = "Datos guardados...";
         } catch (SQLException ex) {
-            msg = false;
+            msg = "Erro: "+ex;
             Logger.getLogger(CrudFichaMedica.class.getName()).log(Level.SEVERE, null, ex);
         }
         return msg;

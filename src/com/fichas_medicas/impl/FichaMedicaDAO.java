@@ -15,7 +15,7 @@ import java.sql.Date;
  */
 public interface FichaMedicaDAO {
 
-    boolean save(FichaMedica obj);
+    String save(FichaMedica obj);
 
     boolean update(FichaMedica obj);
 

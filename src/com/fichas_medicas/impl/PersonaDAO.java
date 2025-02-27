@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PersonaDAO {
 
-    boolean save(Persona obj);
+    String save(Persona obj);
 
     boolean update(Persona obj);
 

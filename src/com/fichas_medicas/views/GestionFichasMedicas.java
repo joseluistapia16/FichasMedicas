@@ -153,6 +153,11 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         refrescar1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\actualizar.png")); // NOI18N
         refrescar1.setText("Refrescar");
         refrescar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        refrescar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refrescar1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -229,7 +234,7 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
                 fila = tabla.getSelectedRow();
                 var obj = getObject(tabla.getValueAt(fila, 1).toString(), lista);
                 if (obj != null) {
-                    System.out.println(obj.getId_persona()+ " ");
+                    System.out.println(obj.getId_persona() + " ");
                     var ob = new EditarFichas(new JFrame(), true, obj);
                     ob.setVisible(true);
                     lista = crudF.getAll();
@@ -249,8 +254,13 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new Fichas(new JFrame(), true,objU).setVisible(true);
+        new Fichas(new JFrame(), true, objU).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void refrescar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescar1ActionPerformed
+        lista = crudF.getAll();
+        tbl.cargarFichas(lista, tabla);
+    }//GEN-LAST:event_refrescar1ActionPerformed
     private FichaMedica getObject(String id_persona, List<FichaMedica> lista) {
         FichaMedica obj = null;
         for (int i = 0; i < lista.size(); i++) {
