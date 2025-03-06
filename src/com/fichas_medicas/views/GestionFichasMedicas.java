@@ -147,6 +147,11 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         imprimir2.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\impresora (1).png")); // NOI18N
         imprimir2.setText("Imprimir");
         imprimir2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        imprimir2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imprimir2ActionPerformed(evt);
+            }
+        });
 
         refrescar1.setBackground(new java.awt.Color(176, 206, 227));
         refrescar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -261,6 +266,10 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         lista = crudF.getAll();
         tbl.cargarFichas(lista, tabla);
     }//GEN-LAST:event_refrescar1ActionPerformed
+
+    private void imprimir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimir2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_imprimir2ActionPerformed
     private FichaMedica getObject(String id_persona, List<FichaMedica> lista) {
         FichaMedica obj = null;
         for (int i = 0; i < lista.size(); i++) {

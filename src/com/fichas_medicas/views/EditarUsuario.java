@@ -8,6 +8,12 @@ import com.fichas_medicas.dao.CrudRoles;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.Roles;
 import com.fichas_medicas.domain.Usuario;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -100,6 +106,7 @@ public class EditarUsuario extends javax.swing.JDialog {
         VER = new javax.swing.JLabel();
         OCULTAR = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -246,6 +253,13 @@ public class EditarUsuario extends javax.swing.JDialog {
             }
         });
 
+        jButton6.setText("PDF");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -285,11 +299,16 @@ public class EditarUsuario extends javax.swing.JDialog {
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(582, 582, 582)
                         .addComponent(jSeparator1))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(134, 134, 134))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addComponent(jButton6)
+                .addGap(19, 19, 19)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -390,11 +409,16 @@ public class EditarUsuario extends javax.swing.JDialog {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-         var res = crudU.delete(usuario.getText());
+        var res = crudU.delete(usuario.getText());
         JOptionPane.showMessageDialog(null, res);
 
 
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        testPDF();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void grabar() {
         var id_rol = lista_rol.get(posC).getId_rol();
@@ -406,6 +430,52 @@ public class EditarUsuario extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, res);
 
         System.out.println("grabar " + obj.toString());
+    }
+
+    //// PRUEBA PDF
+    public void testPDF() {
+        try {
+            // 1. Crear el documento PDF
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream("parte_diario.pdf"));
+            document.open();
+
+            // 2. Obtener los valores de los campos (simulados aquí)
+            String cedula = "1234567890";
+            String fechaRegistro = "06/03/2025";
+            String horaEntrada = "10:41:18";
+            String nombres = "Juan";
+            String apellidos = "Pérez";
+            String area = "Consulta Externa";
+            String horaSalida = "12:00:00";
+            String permisos = "No";
+            String diagnostico = "Gripe";
+            String tratamiento = "Paracetamol";
+            String observacion = "Paciente estable";
+            //String cad =jLabel4.getText();
+            // 3. Agregar los campos y valores al PDF
+            document.add(new Paragraph(jLabel4.getText() + ": " + usuario.getText()));
+            document.add(new Paragraph(jLabel3.getText() + ":" + password.getText()));
+            document.add(new Paragraph(jLabel5.getText() + ":" + nombre.getText()));
+            document.add(new Paragraph(jLabel6.getText() + ":" + apellido.getText()));
+            document.add(new Paragraph(jLabel2.getText() + ":" + roles.getSelectedItem()));
+            document.add(new Paragraph("Apellidos: " + apellidos));
+            document.add(new Paragraph("Área: " + area));
+            document.add(new Paragraph("Hora de Salida: " + horaSalida));
+            document.add(new Paragraph("Permisos: " + permisos));
+            document.add(new Paragraph("Diagnóstico: " + diagnostico));
+            document.add(new Paragraph("Tratamiento: " + tratamiento));
+            document.add(new Paragraph("Observación: " + observacion));
+
+            // 4. Cerrar el documento
+            document.close();
+
+            JOptionPane.showMessageDialog(null, "PDF de usuario generado correctamente.");
+            //  System.out.println();
+
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -467,6 +537,7 @@ public class EditarUsuario extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JLabel jLabel2;

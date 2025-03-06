@@ -20,6 +20,14 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  *
  * @author user
@@ -27,8 +35,9 @@ import javax.swing.Timer;
 public class Prueba {
 
     public static void main(String[] args) {
-        prueba3("Validado");
-       // System.out.println(FechaComponente.FechaSql());
+        pdf();
+        //prueba3("Validado");
+        // System.out.println(FechaComponente.FechaSql());
     }
 
     private static void prueba1() {
@@ -46,24 +55,23 @@ public class Prueba {
         String fechaSQL = formatoSQL.format(fechaActual);
         Date fecha = Date.valueOf(fechaSQL);
     }
-    
-    
-    private static void prueba3(String msg){
+
+    private static void prueba3(String msg) {
         JDialog dialog = new JDialog((Frame) null, "Aviso", false);
-        
+
         // Configuramos el contenido del diálogo (similar a un mensaje de JOptionPane)
         JLabel messageLabel = new JLabel(msg, SwingConstants.CENTER);
         messageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         messageLabel.setFont(new Font("Arial", Font.BOLD, 24));
         dialog.getContentPane().add(messageLabel);
-        
+
         // Ajustamos el tamaño y centramos el diálogo en pantalla
         dialog.setSize(350, 150);
         dialog.setLocationRelativeTo(null);
-        
+
         // Mostramos el diálogo
         dialog.setVisible(true);
-        
+
         // Creamos un Timer que se ejecuta después de 4000 milisegundos (4 segundos)
         Timer timer = new Timer(3000, new ActionListener() {
             @Override
@@ -74,5 +82,55 @@ public class Prueba {
         timer.setRepeats(false); // Se ejecuta una sola vez
         timer.start();
     }
+    
+    private static void pdf(){
+        GenerarPDF.test();
+    }
 
+}
+
+class GenerarPDF {
+
+    public static void test() {
+        try {
+            // 1. Crear el documento PDF
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream("parte_diario.pdf"));
+            document.open();
+
+            // 2. Obtener los valores de los campos (simulados aquí)
+            String cedula = "1234567890";
+            String fechaRegistro = "06/03/2025";
+            String horaEntrada = "10:41:18";
+            String nombres = "Juan";
+            String apellidos = "Pérez";
+            String area = "Consulta Externa";
+            String horaSalida = "12:00:00";
+            String permisos = "No";
+            String diagnostico = "Gripe";
+            String tratamiento = "Paracetamol";
+            String observacion = "Paciente estable";
+
+            // 3. Agregar los campos y valores al PDF
+            document.add(new Paragraph("Cédula: " + cedula));
+            document.add(new Paragraph("Fecha de Registro: " + fechaRegistro));
+            document.add(new Paragraph("Hora de Entrada: " + horaEntrada));
+            document.add(new Paragraph("Nombres: " + nombres));
+            document.add(new Paragraph("Apellidos: " + apellidos));
+            document.add(new Paragraph("Área: " + area));
+            document.add(new Paragraph("Hora de Salida: " + horaSalida));
+            document.add(new Paragraph("Permisos: " + permisos));
+            document.add(new Paragraph("Diagnóstico: " + diagnostico));
+            document.add(new Paragraph("Tratamiento: " + tratamiento));
+            document.add(new Paragraph("Observación: " + observacion));
+
+            // 4. Cerrar el documento
+            document.close();
+
+            System.out.println("PDF generado correctamente.");
+
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
