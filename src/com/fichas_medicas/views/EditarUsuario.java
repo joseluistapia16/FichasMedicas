@@ -8,9 +8,14 @@ import com.fichas_medicas.dao.CrudRoles;
 import com.fichas_medicas.dao.CrudUsuario;
 import com.fichas_medicas.domain.Roles;
 import com.fichas_medicas.domain.Usuario;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -437,41 +442,94 @@ public class EditarUsuario extends javax.swing.JDialog {
         try {
             // 1. Crear el documento PDF
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream("parte_diario.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("informe_parte_diario.pdf"));
             document.open();
 
-            // 2. Obtener los valores de los campos (simulados aquí)
-            String cedula = "1234567890";
-            String fechaRegistro = "06/03/2025";
-            String horaEntrada = "10:41:18";
-            String nombres = "Juan";
-            String apellidos = "Pérez";
-            String area = "Consulta Externa";
-            String horaSalida = "12:00:00";
-            String permisos = "No";
-            String diagnostico = "Gripe";
-            String tratamiento = "Paracetamol";
-            String observacion = "Paciente estable";
-            //String cad =jLabel4.getText();
-            // 3. Agregar los campos y valores al PDF
-            document.add(new Paragraph(jLabel4.getText() + ": " + usuario.getText()));
-            document.add(new Paragraph(jLabel3.getText() + ":" + password.getText()));
-            document.add(new Paragraph(jLabel5.getText() + ":" + nombre.getText()));
-            document.add(new Paragraph(jLabel6.getText() + ":" + apellido.getText()));
-            document.add(new Paragraph(jLabel2.getText() + ":" + roles.getSelectedItem()));
-            document.add(new Paragraph("Apellidos: " + apellidos));
-            document.add(new Paragraph("Área: " + area));
-            document.add(new Paragraph("Hora de Salida: " + horaSalida));
-            document.add(new Paragraph("Permisos: " + permisos));
-            document.add(new Paragraph("Diagnóstico: " + diagnostico));
-            document.add(new Paragraph("Tratamiento: " + tratamiento));
-            document.add(new Paragraph("Observación: " + observacion));
+            // 2. Agregar título
+            Paragraph title = new Paragraph("Parte diario: "+nombre.getText()+" "+apellido.getText()+".", new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD));
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(Chunk.NEWLINE); // Espacio en blanco
 
-            // 4. Cerrar el documento
+            // 3. Crear tabla para la información del paciente
+            PdfPTable patientTable = new PdfPTable(4); // 4 columnas
+            patientTable.setWidthPercentage(100); // Ancho completo de la página
+
+            // Agregar celdas para la información del paciente
+            patientTable.addCell(new Phrase("Nombre", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            patientTable.addCell(new Phrase(nombre.getText())); // Reemplaza con el valor real
+            patientTable.addCell(new Phrase("Apellido", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            patientTable.addCell(new Phrase(apellido.getText())); // Reemplaza con el valor real
+
+            patientTable.addCell(new Phrase("Usuario", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            patientTable.addCell(new Phrase(usuario.getText())); // Reemplaza con el valor real
+            patientTable.addCell(new Phrase("Correo", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            patientTable.addCell(new Phrase(correo.getText())); // Reemplaza con el valor real
+
+            patientTable.addCell(new Phrase("Perfil", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            patientTable.addCell(new Phrase((String) roles.getSelectedItem())); // Reemplaza con el valor real
+            patientTable.addCell(new Phrase("Clinical history", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            patientTable.addCell(new Phrase("None")); // Reemplaza con el valor real
+
+            document.add(patientTable);
+            document.add(Chunk.NEWLINE); // Espacio en blanco
+
+            // 4. Crear tabla para los resultados del examen
+            PdfPTable resultsTable = new PdfPTable(2); // 2 columnas
+            resultsTable.setWidthPercentage(100);
+
+            // Agregar celdas para los resultados del examen físico
+            resultsTable.addCell(new Phrase("Physical examination", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            resultsTable.addCell(new Phrase("")); // Celda vacía para espaciado
+
+            resultsTable.addCell(new Phrase("Color", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("Yellow")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("Appearance", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("Clear")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("Odor", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("Characteristic")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("Specific gravity", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("1.020")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("pH", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("6.0")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("Volume", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("150 mL")); // Reemplaza con el valor real
+
+            // Agregar celdas para los resultados del examen químico
+            resultsTable.addCell(new Phrase("Chemical examination", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            resultsTable.addCell(new Phrase("")); // Celda vacía para espaciado
+
+            resultsTable.addCell(new Phrase("Glucose", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("Negative")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("Protein", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("Negative")); // Reemplaza con el valor real
+
+            // ... (Agregar celdas para los demás resultados químicos) ...
+
+            // Agregar celdas para los resultados del examen microscópico
+            resultsTable.addCell(new Phrase("Microscopic examination", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            resultsTable.addCell(new Phrase("")); // Celda vacía para espaciado
+
+            resultsTable.addCell(new Phrase("Red blood cell (RBC)", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("0-2 /HPF")); // Reemplaza con el valor real
+
+            resultsTable.addCell(new Phrase("White blood cell (WBC)", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            resultsTable.addCell(new Phrase("0-5 /HPF")); // Reemplaza con el valor real
+
+            // ... (Agregar celdas para los demás resultados microscópicos) ...
+
+            document.add(resultsTable);
+
+            // 5. Cerrar el documento
             document.close();
 
-            JOptionPane.showMessageDialog(null, "PDF de usuario generado correctamente.");
-            //  System.out.println();
+            JOptionPane.showMessageDialog(null, "PDF de informe de orina generado correctamente.");
 
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
