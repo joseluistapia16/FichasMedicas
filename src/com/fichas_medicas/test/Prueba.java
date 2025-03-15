@@ -6,7 +6,9 @@ package com.fichas_medicas.test;
 
 import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.dao.CrudCorreo;
+import com.fichas_medicas.dao.CrudFichaMedica;
 import com.fichas_medicas.domain.Correo;
+import com.fichas_medicas.domain.FichaMedica;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -35,8 +37,8 @@ import java.io.IOException;
 public class Prueba {
 
     public static void main(String[] args) {
-        pdf();
-        //prueba3("Validado");
+       // pdf();
+        prueba4();
         // System.out.println(FechaComponente.FechaSql());
     }
 
@@ -82,8 +84,17 @@ public class Prueba {
         timer.setRepeats(false); // Se ejecuta una sola vez
         timer.start();
     }
-    
-    private static void pdf(){
+
+    private static void prueba4() {
+        CrudFichaMedica crud = new CrudFichaMedica();
+        var id_persona = "4543534534";
+        List<FichaMedica> lista = crud.getAllTabSummary(id_persona);
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println(lista.get(i).getFecha_registro()+" "+lista.get(i).getAnt_patologicos_fam());
+        }
+    }
+
+    private static void pdf() {
         GenerarPDF.test();
     }
 

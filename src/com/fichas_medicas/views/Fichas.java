@@ -8,6 +8,7 @@ import static com.fichas_medicas.components.Cadenas.validateString;
 import com.fichas_medicas.components.Calculos;
 import com.fichas_medicas.components.Dialogo;
 import com.fichas_medicas.components.FechaComponente;
+import com.fichas_medicas.components.TablasTabSummary;
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.dao.CrudCorreo;
 import com.fichas_medicas.dao.CrudEstadoCivil;
@@ -38,6 +39,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  *
@@ -45,6 +47,8 @@ import java.awt.Color;
  */
 public class Fichas extends javax.swing.JDialog {
 
+    TablasTabSummary tblF = null;
+    List<FichaMedica> lista_fichas = null;
     String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
     int gbr_persona = 0;
@@ -115,6 +119,8 @@ public class Fichas extends javax.swing.JDialog {
         antecedentes.setEnabledAt(1, false);
         antecedentes.setEnabledAt(2, false);
         this.objU = new Usuario("JTAPIA", "4444", "JOSE", "LINO", "lino@gmail.com", 3, "SOFIA24", "A");
+        lista_fichas = new ArrayList<>();
+        tblF = new TablasTabSummary();
     }
 
     public Fichas(java.awt.Frame parent, boolean modal, Usuario obj) {
@@ -143,6 +149,8 @@ public class Fichas extends javax.swing.JDialog {
         activar(false);
         antecedentes.setEnabledAt(1, false);
         antecedentes.setEnabledAt(2, false);
+        lista_fichas = new ArrayList<>();
+        tblF = new TablasTabSummary();
     }
 
     private void cargarImagen() {
@@ -323,7 +331,7 @@ public class Fichas extends javax.swing.JDialog {
         jLabel66 = new javax.swing.JLabel();
         jLabel67 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jButton6 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
@@ -1372,7 +1380,7 @@ public class Fichas extends javax.swing.JDialog {
         jLabel67.setForeground(new java.awt.Color(242, 242, 242));
         jLabel67.setText("CONDICIONES FÍSICAS");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1383,7 +1391,7 @@ public class Fichas extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
         jPanel4.setBackground(new java.awt.Color(113, 183, 202));
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -2355,8 +2363,10 @@ public class Fichas extends javax.swing.JDialog {
         } else {
             grabarExamenes();
             saveData();
-            borrarDatos();
+
+            // borrarDatos();
         }
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
@@ -2431,7 +2441,7 @@ public class Fichas extends javax.swing.JDialog {
         Double.valueOf(IMC.getText());
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
-        var objE = new Examen(TXT_CEDULA.getText(), (Date) FechaComponente.FechaSql(),
+        Examen objE = new Examen(TXT_CEDULA.getText(), (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
                 vr_imc, vr_estado_actual, vr_habitos, "A");
@@ -2639,11 +2649,12 @@ public class Fichas extends javax.swing.JDialog {
         if (!"Datos guardados...".equals(res)) {
             msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
         }
-        res = crudFM.save(grb_objF);
-        if (!"Datos guardados...".equals(res)) {
+        var res1 = crudEx.save(grb_objE);
+        if (res1==false) {
             msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
         }
-
+        lista_fichas= crudFM.getAllTabSummary(TXT_CEDULA.getText());
+        tblF.getTabSummary(lista_fichas, tabla);
         JOptionPane.showMessageDialog(null, msg);
     }
 
@@ -2844,7 +2855,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblResultado;
     private javax.swing.JLabel lbl_altura;
     private javax.swing.JLabel lbl_condi_fisicas;
@@ -2857,6 +2867,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JLabel lblresultado1;
     private javax.swing.JLabel lblresultado3;
     private javax.swing.JLabel sistolicatxt;
+    private javax.swing.JTable tabla;
     private javax.swing.JTextField telefono;
     private javax.swing.JTextField telefono_emergencia;
     // End of variables declaration//GEN-END:variables

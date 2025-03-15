@@ -44,7 +44,7 @@ public class CrudFichaMedica implements FichaMedicaDAO {
             st.executeUpdate();
             msg = "Datos guardados...";
         } catch (SQLException ex) {
-            msg = "Erro: "+ex;
+            msg = "Erro: " + ex;
             Logger.getLogger(CrudFichaMedica.class.getName()).log(Level.SEVERE, null, ex);
         }
         return msg;
@@ -116,7 +116,7 @@ public class CrudFichaMedica implements FichaMedicaDAO {
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setDate(1, fecha);                     // Asigna el nombre del área a buscar
-            st.setString(1, idPersona);
+            st.setString(2, idPersona);
             ResultSet rs = st.executeQuery();          // Ejecuta la consulta
             if (rs.next()) {                           // Verifica si hay resultados
                 return rs.getInt("id_ficha_medica");           // Retorna el id_area encontrado
@@ -152,4 +152,30 @@ public class CrudFichaMedica implements FichaMedicaDAO {
         return datos;
     }
 
+    public List<FichaMedica> getAllTabSummary(String id_persona) {
+        List<FichaMedica> datos = new ArrayList<>();
+        String query = "SELECT * FROM ficha_medica WHERE id_persona = ? AND estado = 'A'";
+        try (Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
+
+            st.setString(1, id_persona);
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    FichaMedica obj = new FichaMedica(
+                            rs.getInt("id_ficha_medica"),
+                            rs.getDate("fecha_registro"),
+                            rs.getString("id_persona"),
+                            rs.getString("antecedentes_patologicos_personales"),
+                            rs.getString("antecedentes_patologicos_familiares"),
+                            rs.getString("id_usuario"),
+                            rs.getString("estado")
+                    );
+                    datos.add(obj);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CrudFichaMedica.class.getName()).log(Level.SEVERE, "Error en la consulta getAllTabSummary", ex);
+        }
+        return datos;
+    }
 }
