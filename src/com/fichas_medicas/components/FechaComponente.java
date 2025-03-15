@@ -2,6 +2,8 @@ package com.fichas_medicas.components;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
@@ -316,6 +318,16 @@ public static Date getDateFecha1(String fecha) {
             }
         }
         return c1;
+    }
+ 
+     private static String getSystemTime() {
+        LocalTime horaActual = LocalTime.now();
+        // Formatear la hora en HH:mm:ss
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String horaFormateada = horaActual.format(formato);
+        // Imprimir la hora
+        return horaFormateada;
+      //  System.out.println("Hora actual: " + horaFormateada);
     }
 
 }

@@ -29,6 +29,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -37,8 +39,8 @@ import java.io.IOException;
 public class Prueba {
 
     public static void main(String[] args) {
-       // pdf();
-        prueba4();
+        // pdf();
+        prueba5();
         // System.out.println(FechaComponente.FechaSql());
     }
 
@@ -90,8 +92,19 @@ public class Prueba {
         var id_persona = "4543534534";
         List<FichaMedica> lista = crud.getAllTabSummary(id_persona);
         for (int i = 0; i < lista.size(); i++) {
-            System.out.println(lista.get(i).getFecha_registro()+" "+lista.get(i).getAnt_patologicos_fam());
+            System.out.println(lista.get(i).getFecha_registro() + " " + lista.get(i).getAnt_patologicos_fam());
         }
+    }
+
+    private static void prueba5() {
+        LocalTime horaActual = LocalTime.now();
+
+        // Formatear la hora en HH:mm:ss
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String horaFormateada = horaActual.format(formato);
+
+        // Imprimir la hora
+        System.out.println("Hora actual: " + horaFormateada);
     }
 
     private static void pdf() {
