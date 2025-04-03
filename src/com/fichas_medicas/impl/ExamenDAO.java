@@ -5,6 +5,7 @@
 package com.fichas_medicas.impl;
 
 import com.fichas_medicas.domain.Examen;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -17,11 +18,11 @@ public interface ExamenDAO {
 
     boolean update(Examen obj);
 
-    boolean delete(Integer id_correo);
+    boolean delete(Integer id_examen);
 
-    Examen getOne(Integer id_correo);
+    Examen getOne(Integer id_examen);
 
-    Integer getId(String name);
+    Integer getId(Date fecha, String idPersona);
 
     List<Examen> getAll();
 

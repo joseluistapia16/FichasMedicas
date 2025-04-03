@@ -148,7 +148,7 @@ public class CrudFichaMedica implements FichaMedicaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return 0;
     }
 
     @Override
