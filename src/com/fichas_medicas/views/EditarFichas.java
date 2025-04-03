@@ -121,6 +121,7 @@ public class EditarFichas extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setSize(797, 685);
         this.fillObjFM = objFM;
+        System.out.println("ID FICHA "+fillObjFM.getId_fichaMedica()+" "+fillObjFM.getId_persona());
         System.out.println("Usuario Modulo Fichas " + this.fillObjFM.getId_persona());
         cargarImagen();
         crudA = new CrudArea();

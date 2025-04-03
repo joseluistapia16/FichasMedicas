@@ -122,7 +122,6 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
 
         jButton2.setBackground(new java.awt.Color(0, 153, 204));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\agregar.png")); // NOI18N
         jButton2.setText("Nuevo");
         jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -133,7 +132,6 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
 
         jButton1.setBackground(new java.awt.Color(0, 153, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\salida (1).png")); // NOI18N
         jButton1.setText("Salir");
         jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +142,6 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
 
         imprimir2.setBackground(new java.awt.Color(0, 153, 204));
         imprimir2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        imprimir2.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\impresora (1).png")); // NOI18N
         imprimir2.setText("Imprimir");
         imprimir2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         imprimir2.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +152,6 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
 
         refrescar1.setBackground(new java.awt.Color(176, 206, 227));
         refrescar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        refrescar1.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\actualizar.png")); // NOI18N
         refrescar1.setText("Refrescar");
         refrescar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         refrescar1.addActionListener(new java.awt.event.ActionListener() {
@@ -169,24 +165,26 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(refrescar1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(64, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(101, 101, 101)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(imprimir2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(91, 91, 91))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(refrescar1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +235,7 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
         try {
             if (evt.getClickCount() == 2) {
                 fila = tabla.getSelectedRow();
-                var obj = getObject(tabla.getValueAt(fila, 1).toString(), lista);
+                var obj = getObject(tabla.getValueAt(fila, 2).toString(), lista);
                 if (obj != null) {
                     System.out.println(obj.getId_persona() + " ");
                     var ob = new EditarFichas(new JFrame(), true, obj);
