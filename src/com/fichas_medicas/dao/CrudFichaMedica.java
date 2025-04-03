@@ -6,6 +6,7 @@ package com.fichas_medicas.dao;
 
 import com.fichas_medicas.domain.FichaMedica;
 import com.fichas_medicas.impl.FichaMedicaDAO;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.Statement;
 
 /**
  *
@@ -24,29 +26,51 @@ public class CrudFichaMedica implements FichaMedicaDAO {
 
     private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
+    private Integer id_ficha_medica;
 
     public CrudFichaMedica() {
         this.conexion = new Conexion();
     }
 
     public String save(FichaMedica obj) {
-        var msg = "";
-        var sql = "INSERT INTO ficha_medica(fecha_registro, id_persona, antecedentes_patologicos_personales, antecedentes_patologicos_familiares,id_usuario, estado)"
-                + "values(?,?,?,?,?,?)";
+        String msg = "";
+        String sql = "INSERT INTO ficha_medica(fecha_registro, id_persona, antecedentes_patologicos_personales, antecedentes_patologicos_familiares, id_usuario, estado)"
+                + " VALUES(?, ?, ?, ?, ?, ?)";
+
         try (
-                java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql)) {
+                java.sql.Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            // Asignar los valores al PreparedStatement
             st.setDate(1, obj.getFecha_registro());
             st.setString(2, obj.getId_persona());
             st.setString(3, obj.getAnt_patologicos_per());
             st.setString(4, obj.getAnt_patologicos_fam());
             st.setString(5, obj.getId_usuario());
             st.setString(6, obj.getEstado());
-            st.executeUpdate();
-            msg = "Datos guardados...";
+
+            // Ejecutar la inserción
+            int rowsInserted = st.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Obtener el ID generado automáticamente
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int idFichaMedica = rs.getInt(1);  // Aquí tienes el ID que buscabas
+                        System.out.println("METODO SAVE FICHA ID:"+idFichaMedica);
+                        setId_ficha_medica(idFichaMedica);
+                        msg = "Ficha médica guardada con ID: " + getId_ficha_medica();
+                        // Si quisieras, podrías retornar ese ID o almacenarlo en el objeto
+                       // obj.setId_fichaMedica(idFichaMedica);  // si tienes un setter
+                    }
+                }
+            } else {
+                msg = "No se pudo guardar la ficha médica.";
+            }
+
         } catch (SQLException ex) {
-            msg = "Erro: " + ex;
+            msg = "Error: " + ex.getMessage();
             Logger.getLogger(CrudFichaMedica.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return msg;
     }
 
@@ -178,4 +202,13 @@ public class CrudFichaMedica implements FichaMedicaDAO {
         }
         return datos;
     }
+
+    public Integer getId_ficha_medica() {
+        return id_ficha_medica;
+    }
+
+    public void setId_ficha_medica(Integer id_ficha_medica) {
+        this.id_ficha_medica = id_ficha_medica;
+    }
+
 }

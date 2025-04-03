@@ -28,8 +28,9 @@ public class CrudExamen implements ExamenDAO {
 
     @Override
     public boolean save(Examen obj) {
+        System.out.println("GRABAR EN EXAMEN ID FICHA:" + obj.getId_ficha_medica());
         var query = "INSERT INTO examen (id_persona,fecha_registro,frecuencia_cardiaca,sistolica,diastolica,"
-                + "saturacion,peso_kg, estatura_cm,temperatura,imc, estado_actual,habitos, estado) VALUES (?, ?, ?, ?,?, ?,?, ?, ?,?, ?, ?, ?)";
+                + "saturacion,peso_kg, estatura_cm,temperatura,imc, estado_actual,habitos, estado,id_ficha_medica) VALUES (?, ?, ?, ?,?, ?,?, ?, ?,?, ?, ?, ?,?)";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, obj.getIdPersona());     // Asigna el Correo
@@ -44,7 +45,9 @@ public class CrudExamen implements ExamenDAO {
             st.setDouble(10, obj.getImc());
             st.setString(11, obj.getEstadoActual());
             st.setString(12, obj.getHabitos());
-            st.setString(13, obj.getEstado());         // Asigna el estado ('A' o 'I')
+            st.setString(13, obj.getEstado());
+            st.setInt(14, obj.getId_ficha_medica());
+            // Asigna el estado ('A' o 'I')
             int rowsAffected = st.executeUpdate();     // Ejecuta la inserción
             return rowsAffected > 0;                   // Retorna true si se insertaron filas
         } catch (SQLException ex) {

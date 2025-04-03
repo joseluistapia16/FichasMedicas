@@ -27,6 +27,8 @@ public class Examen {
     @NonNull
     private String idPersona;
     @NonNull
+    private Integer id_ficha_medica;
+    @NonNull
     private Date fechaRegistro;
     @NonNull
     private Integer frecuenciaCardiaca;

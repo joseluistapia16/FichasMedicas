@@ -71,7 +71,7 @@ public class Fichas extends javax.swing.JDialog {
     private int pst_1_error = 0;
     private int pst_2_error = 0;
     private int pst_3_error = 0;
-
+    private Integer frk_id_ficha_medica_grb = -1;
     //// valores examen
     private Integer vr_frecuencia_cardiaca;
     private Integer vr_presion_arterial;  // doble valor
@@ -305,7 +305,6 @@ public class Fichas extends javax.swing.JDialog {
         TXT_HABITOS = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         TXT_E_ACTUAL = new javax.swing.JTextField();
-        btn_validar_antecedentes = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         lbl_peso = new javax.swing.JLabel();
@@ -1122,18 +1121,6 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        btn_validar_antecedentes.setBackground(new java.awt.Color(0, 153, 204));
-        btn_validar_antecedentes.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        btn_validar_antecedentes.setForeground(new java.awt.Color(255, 255, 255));
-        btn_validar_antecedentes.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\aceptar.png")); // NOI18N
-        btn_validar_antecedentes.setText("Validar");
-        btn_validar_antecedentes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btn_validar_antecedentes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_validar_antecedentesActionPerformed(evt);
-            }
-        });
-
         jButton5.setBackground(new java.awt.Color(0, 153, 204));
         jButton5.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
@@ -1166,7 +1153,7 @@ public class Fichas extends javax.swing.JDialog {
                                         .addComponent(jLabel16)
                                         .addGap(18, 18, 18)))
                                 .addComponent(TXT_A_P_PERSONALES, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(89, 89, 89)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1187,14 +1174,12 @@ public class Fichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel17)
-                            .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_validar_antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(153, 153, 153)))
+                            .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(55, 55, 55))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(304, 304, 304))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1231,11 +1216,9 @@ public class Fichas extends javax.swing.JDialog {
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_validar_antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(314, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("ANTECEDENTES", jPanel2);
@@ -1757,21 +1740,8 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        btn_validar_antecedentes.setEnabled(true);
+        //btn_validar_antecedentes.setEnabled(true);
     }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void btn_validar_antecedentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validar_antecedentesActionPerformed
-        var vali = validarCamposAntecedentes();
-        if (vali.length() > 1) {
-            activarAntededentes(true);
-            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            activarAntededentes(false);
-            btn_validar_antecedentes.setEnabled(false);
-            Dialogo.Mensaje("Validado", 90);
-            grabarAntecedentes();
-        }
-    }//GEN-LAST:event_btn_validar_antecedentesActionPerformed
     private void grabarAntecedentes() {
 
         var objF = new FichaMedica((Date) FechaComponente.FechaSql(),
@@ -2357,17 +2327,39 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_areaActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        var vali = validarCamposExamenes();
-        if (vali.length() > 1) {
-            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            grabarExamenes();
-            saveData();
+//        var vali = validarCamposExamenes();
+//        if (vali.length() > 1) {
+//            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+//        } else {
+//            grabarExamenes();
+//            saveData();
+//            // borrarDatos();
+//        }
+        validarGrabar();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
-            // borrarDatos();
+    private void validarGrabar() {
+        var vali = validarCamposAntecedentes();
+        if (vali.length() > 1) {
+            activarAntededentes(true);
+            JOptionPane.showMessageDialog(null, vali, "Antecedentes Invalidos", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            activarAntededentes(false);
+            //btn_validar_antecedentes.setEnabled(false);
+            JOptionPane.showMessageDialog(null, vali, "Antecedentes validados", JOptionPane.INFORMATION_MESSAGE);
+            // Dialogo.Mensaje("Validado", 90);
+            grabarAntecedentes();
+            var vali2 = validarCamposExamenes();
+            if (vali2.length() > 1) {
+                JOptionPane.showMessageDialog(null, vali2, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                grabarExamenes();
+                saveData();
+                // borrarDatos();
+            }
         }
 
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }
 
     private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
         try {
@@ -2441,7 +2433,8 @@ public class Fichas extends javax.swing.JDialog {
         Double.valueOf(IMC.getText());
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
-        Examen objE = new Examen(TXT_CEDULA.getText(), (Date) FechaComponente.FechaSql(),
+        System.out.println("PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb);
+        Examen objE = new Examen(TXT_CEDULA.getText(), frk_id_ficha_medica_grb, (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
                 vr_imc, vr_estado_actual, vr_habitos, "A");
@@ -2646,14 +2639,17 @@ public class Fichas extends javax.swing.JDialog {
 //            msg = "Falta llenar campos en la seccion de DATOS.\n";
 //        }
         res = crudFM.save(grb_objF);
+        frk_id_ficha_medica_grb = crudFM.getId_ficha_medica();
+        System.out.println("grabacion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
         if (!"Datos guardados...".equals(res)) {
             msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
         }
+        grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
         var res1 = crudEx.save(grb_objE);
-        if (res1==false) {
+        if (res1 == false) {
             msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
         }
-        lista_fichas= crudFM.getAllTabSummary(TXT_CEDULA.getText());
+        lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
         tblF.getTabSummary(lista_fichas, tabla);
         JOptionPane.showMessageDialog(null, msg);
     }
@@ -2774,7 +2770,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> area;
     private javax.swing.JButton btn_cal;
     private javax.swing.JButton btn_correo;
-    private javax.swing.JButton btn_validar_antecedentes;
     private javax.swing.JButton btn_validar_datos;
     private javax.swing.JComboBox<String> correo;
     private javax.swing.JLabel diastolicatxt;

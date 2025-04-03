@@ -2389,7 +2389,7 @@ public class EditarFichas extends javax.swing.JDialog {
         Double.valueOf(IMC.getText());
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
-        var objE = new Examen(TXT_CEDULA.getText(), (Date) FechaComponente.FechaSql(),
+        var objE = new Examen(TXT_CEDULA.getText(),3, (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
                 vr_imc, vr_estado_actual, vr_habitos, "A");
