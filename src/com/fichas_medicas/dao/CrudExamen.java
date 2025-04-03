@@ -5,7 +5,7 @@
 package com.fichas_medicas.dao;
 
 import com.fichas_medicas.domain.Examen;
-import com.fichas_medicas.domain.FichaMedica;
+import java.sql.Statement;
 import com.fichas_medicas.impl.ExamenDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Date;
+
 /**
  *
  * @author user
@@ -24,6 +25,7 @@ public class CrudExamen implements ExamenDAO {
 
     private String base = "fichas_medicas_desarrollo";
     private Conexion conexion;
+    private int id_examen = 0;
 
     public CrudExamen() {
         this.conexion = new Conexion();
@@ -31,13 +33,15 @@ public class CrudExamen implements ExamenDAO {
 
     @Override
     public boolean save(Examen obj) {
-        System.out.println("GRABAR EN EXAMEN ID FICHA:" + obj.getId_ficha_medica());
-        var query = "INSERT INTO examen (id_persona,fecha_registro,frecuencia_cardiaca,sistolica,diastolica,"
-                + "saturacion,peso_kg, estatura_cm,temperatura,imc, estado_actual,habitos, estado,id_ficha_medica) VALUES (?, ?, ?, ?,?, ?,?, ?, ?,?, ?, ?, ?,?)";
+        boolean msg = false;
+        String query = "INSERT INTO examen (id_persona, fecha_registro, frecuencia_cardiaca, sistolica, diastolica, "
+                + "saturacion, peso_kg, estatura_cm, temperatura, imc, estado_actual, habitos, estado, id_ficha_medica,condiciones_fisicas) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+
         try (
-                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
-            st.setString(1, obj.getIdPersona());     // Asigna el Correo
-            st.setDate(2, obj.getFechaRegistro());         // Asigna el ID de la persona
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, obj.getIdPersona());
+            st.setDate(2, obj.getFechaRegistro());
             st.setInt(3, obj.getFrecuenciaCardiaca());
             st.setInt(4, obj.getSistolica());
             st.setInt(5, obj.getDiastolica());
@@ -50,20 +54,36 @@ public class CrudExamen implements ExamenDAO {
             st.setString(12, obj.getHabitos());
             st.setString(13, obj.getEstado());
             st.setInt(14, obj.getId_ficha_medica());
-            // Asigna el estado ('A' o 'I')
-            int rowsAffected = st.executeUpdate();     // Ejecuta la inserción
-            return rowsAffected > 0;                   // Retorna true si se insertaron filas
+            st.setString(15, obj.getCondiciones_fisicas());
+            int rowsAffected = st.executeUpdate();
+
+            if (rowsAffected > 0) {
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int idExamen = rs.getInt(1);
+                        setId_examen(idExamen);
+                        obj.setIdExamen(idExamen); // Guarda el ID generado en el objeto
+                        msg = true;
+                        System.out.println("Examen creado con ID: " + idExamen);
+                    }
+                }
+            } else {
+                msg = false;
+            }
+
         } catch (SQLException ex) {
+            msg = false;
             Logger.getLogger(CrudExamen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+
+        return msg;
     }
 
     @Override
     public boolean update(Examen obj) {
         String query = "UPDATE examen SET  frecuencia_cardiaca = ?, sistolica = ?, diastolica = ?, "
                 + "saturacion = ?, peso_kg = ?, estatura_cm = ?, temperatura = ?, imc = ?, "
-                + "estado_actual = ?, habitos = ? "
+                + "estado_actual = ?, habitos = ?,condiciones_fisicas = ? "
                 + "WHERE id_examen = ?";
 
         try (
@@ -78,7 +98,8 @@ public class CrudExamen implements ExamenDAO {
             st.setDouble(8, obj.getImc());
             st.setString(9, obj.getEstadoActual());
             st.setString(10, obj.getHabitos());
-            st.setInt(11, obj.getIdExamen()); // ← Este es clave para saber qué examen actualizar
+            st.setString(11, obj.getCondiciones_fisicas());
+            st.setInt(12, obj.getIdExamen()); // ← Este es clave para saber qué examen actualizar
 
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
@@ -132,6 +153,7 @@ public class CrudExamen implements ExamenDAO {
                             rs.getDouble("imc"),
                             rs.getString("estado_actual"),
                             rs.getString("habitos"),
+                            rs.getString("condiciones_fisicas"),
                             rs.getString("estado")
                     );
                 }
@@ -145,7 +167,7 @@ public class CrudExamen implements ExamenDAO {
 
     @Override
     public Integer getId(Date fecha, String idPersona) {
-       var query = "SELECT id_examen FROM examen WHERE fecha_registro = ? AND id_persona=? AND estado = 'A'";
+        var query = "SELECT id_examen FROM examen WHERE fecha_registro = ? AND id_persona=? AND estado = 'A'";
         try (
                 Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setDate(1, fecha);                     // Asigna el nombre del área a buscar
@@ -157,7 +179,7 @@ public class CrudExamen implements ExamenDAO {
         } catch (SQLException ex) {
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;  
+        return 0;
     }
 
     @Override
@@ -183,6 +205,7 @@ public class CrudExamen implements ExamenDAO {
                         rs.getDouble("imc"),
                         rs.getString("estado_actual"),
                         rs.getString("habitos"),
+                        rs.getString("condiciones_fisicas"),
                         rs.getString("estado")
                 );
                 lista.add(examen);
@@ -192,6 +215,14 @@ public class CrudExamen implements ExamenDAO {
         }
 
         return lista;
+    }
+
+    public int getId_examen() {
+        return id_examen;
+    }
+
+    public void setId_examen(int id_examen) {
+        this.id_examen = id_examen;
     }
 
 }

@@ -51,6 +51,8 @@ public class Examen {
     @NonNull
     private String habitos;
     @NonNull
+    private String condiciones_fisicas;
+    @NonNull
     private String estado;
 
 }

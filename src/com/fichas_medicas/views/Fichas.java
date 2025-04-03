@@ -6,7 +6,6 @@ package com.fichas_medicas.views;
 
 import static com.fichas_medicas.components.Cadenas.validateString;
 import com.fichas_medicas.components.Calculos;
-import com.fichas_medicas.components.Dialogo;
 import com.fichas_medicas.components.FechaComponente;
 import com.fichas_medicas.components.TablasTabSummary;
 import com.fichas_medicas.dao.CrudArea;
@@ -52,6 +51,8 @@ public class Fichas extends javax.swing.JDialog {
     String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
     int gbr_persona = 0;
+    int gbr_ficha_examen = 0;
+    
     private CrudArea crudA = null;
     /// grabar
     private CrudPersona crudP = null;
@@ -72,6 +73,7 @@ public class Fichas extends javax.swing.JDialog {
     private int pst_2_error = 0;
     private int pst_3_error = 0;
     private Integer frk_id_ficha_medica_grb = -1;
+    int frk_id_examen_upd=-1;
     //// valores examen
     private Integer vr_frecuencia_cardiaca;
     private Integer vr_presion_arterial;  // doble valor
@@ -2339,27 +2341,73 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void validarGrabar() {
-        var vali = validarCamposAntecedentes();
-        if (vali.length() > 1) {
-            activarAntededentes(true);
-            JOptionPane.showMessageDialog(null, vali, "Antecedentes Invalidos", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            activarAntededentes(false);
-            //btn_validar_antecedentes.setEnabled(false);
-            JOptionPane.showMessageDialog(null, vali, "Antecedentes validados", JOptionPane.INFORMATION_MESSAGE);
-            // Dialogo.Mensaje("Validado", 90);
-            grabarAntecedentes();
-            var vali2 = validarCamposExamenes();
-            if (vali2.length() > 1) {
-                JOptionPane.showMessageDialog(null, vali2, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                grabarExamenes();
-                saveData();
-                // borrarDatos();
-            }
-        }
+    String vali = validarCamposAntecedentes();
+    String vali2 = validarCamposExamenes();
 
+    boolean antecedentesValidos = vali.isEmpty();
+    boolean examenesValidos = vali2.isEmpty();
+
+    // Validación de antecedentes
+    if (!antecedentesValidos) {
+        activarAntededentes(true);
+        JOptionPane.showMessageDialog(null, vali, "Antecedentes Inválidos", JOptionPane.WARNING_MESSAGE);
+        return;
+    } else {
+        activarAntededentes(false);
+        JOptionPane.showMessageDialog(null, "Antecedentes validados correctamente.", "Validación", JOptionPane.INFORMATION_MESSAGE);
+        grabarAntecedentes();
     }
+
+    // Validación de exámenes
+    if (!examenesValidos) {
+        JOptionPane.showMessageDialog(null, vali2, "Exámenes Inválidos", JOptionPane.WARNING_MESSAGE);
+        return;
+    } else {
+        grabarExamenes();
+    }
+
+    // Lógica de guardar o actualizar
+    if (gbr_ficha_examen == 0) {
+        saveData();
+        gbr_ficha_examen = 1;
+    } else {
+        updateData();
+    }
+}
+    
+    
+    
+    
+//    private void validarGrabar() {
+//        var vali = validarCamposAntecedentes();
+//        if (vali.length() > 1) {
+//            activarAntededentes(true);
+//            JOptionPane.showMessageDialog(null, vali, "Antecedentes Invalidos", JOptionPane.INFORMATION_MESSAGE);
+//        } else {
+//            activarAntededentes(false);
+//            //btn_validar_antecedentes.setEnabled(false);
+//            JOptionPane.showMessageDialog(null, vali, "Antecedentes validados", JOptionPane.INFORMATION_MESSAGE);
+//            // Dialogo.Mensaje("Validado", 90);
+//            grabarAntecedentes();
+//            var vali2 = validarCamposExamenes();
+//            if (vali2.length() > 1) {
+//                JOptionPane.showMessageDialog(null, vali2, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+//            } else {
+//                gbr_ficha_examen++;
+//                grabarExamenes();
+//                if (gbr_ficha_examen == 1) {
+//                    saveData();
+//                }
+//                if (gbr_ficha_examen > 1) {
+//                  updateData();
+//                }
+//                //hgjhg
+//
+//                // borrarDatos();
+//            }
+//        }
+//
+//    }
 
     private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
         try {
@@ -2433,13 +2481,13 @@ public class Fichas extends javax.swing.JDialog {
         Double.valueOf(IMC.getText());
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
-        System.out.println("PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb);
+        System.out.println(frk_id_examen_upd+" PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb); 
         Examen objE = new Examen(TXT_CEDULA.getText(), frk_id_ficha_medica_grb, (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
-                vr_imc, vr_estado_actual, vr_habitos, "A");
+                vr_imc, vr_estado_actual, vr_habitos,CON_FIS.getText(), "A");
         // Problemas con fecha de nacikiento
-        System.out.println("Prueba grabar " + objE.toString());
+        System.out.println("Prueba grabar " + objE.toString()); 
         grb_objE = objE;
     }
 
@@ -2640,12 +2688,14 @@ public class Fichas extends javax.swing.JDialog {
 //        }
         res = crudFM.save(grb_objF);
         frk_id_ficha_medica_grb = crudFM.getId_ficha_medica();
-        System.out.println("grabacion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
+     
         if (!"Datos guardados...".equals(res)) {
             msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
         }
         grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
         var res1 = crudEx.save(grb_objE);
+        frk_id_examen_upd=crudEx.getId_examen();
+           System.out.println(frk_id_examen_upd+" grabacion edicion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
         if (res1 == false) {
             msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
         }
@@ -2654,6 +2704,65 @@ public class Fichas extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, msg);
     }
 
+    private void updateData() {
+        boolean fichaValida = crudFM.update(grb_objF);  // Actualiza Ficha Médica (DATOS + ANTECEDENTES)
+        grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
+        grb_objE.setIdExamen(frk_id_examen_upd);
+        System.out.println("EDITADO  "+grb_objE.getIdExamen());
+        boolean examenValido = crudEx.update(grb_objE); // Actualiza EXAMEN
+
+        StringBuilder msg = new StringBuilder();
+
+        // Validaciones
+        if (!fichaValida) {
+            msg.append("Falta llenar campos en la sección de DATOS o ANTECEDENTES.\n");
+        }
+
+        if (!examenValido) {
+            msg.append("Falta llenar campos en la sección de EXÁMENES.\n");
+        }
+
+        // Resultado final
+        if (fichaValida && examenValido) {
+            msg = new StringBuilder("¡Datos actualizados correctamente!");
+        } else {
+            msg.append("\nVerifique que todos los campos estén correctos.");
+        }
+
+        // Refrescar tabla con los datos actualizados
+        lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
+        tblF.getTabSummary(lista_fichas, tabla);
+
+        // Mostrar mensaje
+        JOptionPane.showMessageDialog(null, msg.toString());
+    }
+
+//     private void updateData() {
+//        var res = false;
+//        var msg = "";
+////        if (!"Datos guardados...".equals(res)) {
+////            msg = "Falta llenar campos en la seccion de DATOS.\n";
+////        }
+//        res = crudFM.update(grb_objF);
+//       // frk_id_ficha_medica_grb = crudFM.getId_ficha_medica();
+//       // System.out.println("grabacion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
+//        if (!res) {
+//            msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
+//        }
+//       // grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
+//        var res1 = crudEx.update(grb_objE);
+//        if (res1 == false) {
+//            msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
+//        }
+//         if (res==true  && res1==true) {
+//             msg="Datos han sido actualixados!";
+//         }else{
+//              msg="Verifique que todos los compos esten correctos....";
+//         }
+//        lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
+//        tblF.getTabSummary(lista_fichas, tabla);
+//        JOptionPane.showMessageDialog(null, msg);
+//    }
     private void borrarDatos() {
         TXT_CEDULA.setText("");
         TXT_NOMBRE.setText("");
