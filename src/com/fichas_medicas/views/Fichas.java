@@ -52,7 +52,7 @@ public class Fichas extends javax.swing.JDialog {
     private String var1;
     int gbr_persona = 0;
     int gbr_ficha_examen = 0;
-    
+
     private CrudArea crudA = null;
     /// grabar
     private CrudPersona crudP = null;
@@ -73,7 +73,7 @@ public class Fichas extends javax.swing.JDialog {
     private int pst_2_error = 0;
     private int pst_3_error = 0;
     private Integer frk_id_ficha_medica_grb = -1;
-    int frk_id_examen_upd=-1;
+    int frk_id_examen_upd = -1;
     //// valores examen
     private Integer vr_frecuencia_cardiaca;
     private Integer vr_presion_arterial;  // doble valor
@@ -307,7 +307,6 @@ public class Fichas extends javax.swing.JDialog {
         TXT_HABITOS = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         TXT_E_ACTUAL = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         lbl_peso = new javax.swing.JLabel();
         lbl_temperatura = new javax.swing.JLabel();
@@ -1123,18 +1122,6 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(0, 153, 204));
-        jButton5.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
-        jButton5.setText("Cancelar");
-        jButton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1178,10 +1165,6 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(jLabel17)
                             .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(55, 55, 55))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(304, 304, 304))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1218,9 +1201,7 @@ public class Fichas extends javax.swing.JDialog {
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addContainerGap(402, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("ANTECEDENTES", jPanel2);
@@ -1740,10 +1721,6 @@ public class Fichas extends javax.swing.JDialog {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        //btn_validar_antecedentes.setEnabled(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
     private void grabarAntecedentes() {
 
         var objF = new FichaMedica((Date) FechaComponente.FechaSql(),
@@ -2329,55 +2306,39 @@ public class Fichas extends javax.swing.JDialog {
     }//GEN-LAST:event_areaActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-//        var vali = validarCamposExamenes();
-//        if (vali.length() > 1) {
-//            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
-//        } else {
-//            grabarExamenes();
-//            saveData();
-//            // borrarDatos();
-//        }
         validarGrabar();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void validarGrabar() {
-    String vali = validarCamposAntecedentes();
-    String vali2 = validarCamposExamenes();
+        var men = "";
+        String vali = validarCamposAntecedentes();
+        String vali2 = validarCamposExamenes();
 
-    boolean antecedentesValidos = vali.isEmpty();
-    boolean examenesValidos = vali2.isEmpty();
+        // Validación de antecedentes
+        if (vali.length() > 0) {
+            activarAntededentes(true);
+            men = men + "Antecedentes Inválidos..\n";
+        } else {
+            grabarAntecedentes();
+        }
 
-    // Validación de antecedentes
-    if (!antecedentesValidos) {
-        activarAntededentes(true);
-        JOptionPane.showMessageDialog(null, vali, "Antecedentes Inválidos", JOptionPane.WARNING_MESSAGE);
-        return;
-    } else {
-        activarAntededentes(false);
-        JOptionPane.showMessageDialog(null, "Antecedentes validados correctamente.", "Validación", JOptionPane.INFORMATION_MESSAGE);
-        grabarAntecedentes();
+        // Validación de exámenes
+        if (vali2.length() > 0) {
+            men = men + vali2 + "\nExámenes Inválidos";
+        } else {
+            grabarExamenes();
+        }
+        if (vali.length() == 0 && vali2.length() == 0) {
+            if (gbr_ficha_examen == 0) {
+                men = saveData();
+                gbr_ficha_examen = 1;
+            } else {
+                men = updateData();
+            }
+        }
+        JOptionPane.showMessageDialog(null, men, "Validación", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Validación de exámenes
-    if (!examenesValidos) {
-        JOptionPane.showMessageDialog(null, vali2, "Exámenes Inválidos", JOptionPane.WARNING_MESSAGE);
-        return;
-    } else {
-        grabarExamenes();
-    }
-
-    // Lógica de guardar o actualizar
-    if (gbr_ficha_examen == 0) {
-        saveData();
-        gbr_ficha_examen = 1;
-    } else {
-        updateData();
-    }
-}
-    
-    
-    
-    
 //    private void validarGrabar() {
 //        var vali = validarCamposAntecedentes();
 //        if (vali.length() > 1) {
@@ -2481,13 +2442,13 @@ public class Fichas extends javax.swing.JDialog {
         Double.valueOf(IMC.getText());
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
-        System.out.println(frk_id_examen_upd+" PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb); 
+        System.out.println(frk_id_examen_upd + " PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb);
         Examen objE = new Examen(TXT_CEDULA.getText(), frk_id_ficha_medica_grb, (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
-                vr_imc, vr_estado_actual, vr_habitos,CON_FIS.getText(), "A");
+                vr_imc, vr_estado_actual, vr_habitos, CON_FIS.getText(), "A");
         // Problemas con fecha de nacikiento
-        System.out.println("Prueba grabar " + objE.toString()); 
+        System.out.println("Prueba grabar " + objE.toString());
         grb_objE = objE;
     }
 
@@ -2664,7 +2625,7 @@ public class Fichas extends javax.swing.JDialog {
         TXT_NOMBRE.setEditable(valor);
         TXT_APELLIDO.setEditable(valor);
         area.setEnabled(valor);
-        TXT_F_NACIMIENTO.setEditable(valor);
+        //TXT_F_NACIMIENTO.setEditable(valor);
         TXT_L_NACIMIENTO.setEditable(valor);
         estado_civil.setEnabled(valor);
         grupito.setEnabled(valor);
@@ -2680,61 +2641,32 @@ public class Fichas extends javax.swing.JDialog {
         btn_validar_datos.setEnabled(valor);
     }
 
-    private void saveData() {
-        var res = "";
-        var msg = "";
-//        if (!"Datos guardados...".equals(res)) {
-//            msg = "Falta llenar campos en la seccion de DATOS.\n";
-//        }
-        res = crudFM.save(grb_objF);
+    private String saveData() {
+        var msg = "Datos de ficha medica guardada....";
+        crudFM.save(grb_objF);
         frk_id_ficha_medica_grb = crudFM.getId_ficha_medica();
-     
-        if (!"Datos guardados...".equals(res)) {
-            msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
-        }
         grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
-        var res1 = crudEx.save(grb_objE);
-        frk_id_examen_upd=crudEx.getId_examen();
-           System.out.println(frk_id_examen_upd+" grabacion edicion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
-        if (res1 == false) {
-            msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
-        }
+        crudEx.save(grb_objE);
+        frk_id_examen_upd = crudEx.getId_examen();
+        //  System.out.println(frk_id_examen_upd + " grabacion edicion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
         lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
         tblF.getTabSummary(lista_fichas, tabla);
-        JOptionPane.showMessageDialog(null, msg);
+        return msg;
     }
 
-    private void updateData() {
-        boolean fichaValida = crudFM.update(grb_objF);  // Actualiza Ficha Médica (DATOS + ANTECEDENTES)
+    private String updateData() {
+        //System.out.println("ACTUALIZAR FICHA MEDICA ID: " + frk_id_ficha_medica_grb);
+        grb_objF.setId_fichaMedica(frk_id_ficha_medica_grb);
+        crudFM.update(grb_objF);  // Actualiza Ficha Médica (DATOS + ANTECEDENTES)
         grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
         grb_objE.setIdExamen(frk_id_examen_upd);
-        System.out.println("EDITADO  "+grb_objE.getIdExamen());
-        boolean examenValido = crudEx.update(grb_objE); // Actualiza EXAMEN
-
-        StringBuilder msg = new StringBuilder();
-
-        // Validaciones
-        if (!fichaValida) {
-            msg.append("Falta llenar campos en la sección de DATOS o ANTECEDENTES.\n");
-        }
-
-        if (!examenValido) {
-            msg.append("Falta llenar campos en la sección de EXÁMENES.\n");
-        }
-
-        // Resultado final
-        if (fichaValida && examenValido) {
-            msg = new StringBuilder("¡Datos actualizados correctamente!");
-        } else {
-            msg.append("\nVerifique que todos los campos estén correctos.");
-        }
-
+        //System.out.println("EDITADO  " + grb_objE.getIdExamen());
+        crudEx.update(grb_objE); // Actualiza EXAMEN
+        String msg = "Datos de ficha medica actualizados....";
         // Refrescar tabla con los datos actualizados
         lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
         tblF.getTabSummary(lista_fichas, tabla);
-
-        // Mostrar mensaje
-        JOptionPane.showMessageDialog(null, msg.toString());
+        return msg;
     }
 
 //     private void updateData() {
@@ -2889,7 +2821,6 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> grupito;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;

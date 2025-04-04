@@ -57,7 +57,8 @@ public class CrudFichaMedica implements FichaMedicaDAO {
                         int idFichaMedica = rs.getInt(1);  // Aquí tienes el ID que buscabas
                         System.out.println("METODO SAVE FICHA ID:"+idFichaMedica);
                         setId_ficha_medica(idFichaMedica);
-                        msg = "Ficha médica guardada con ID: " + getId_ficha_medica();
+                        msg = "Ficha médica guardada..." ;
+                       // msg = "Ficha médica guardada con ID: " + getId_ficha_medica();
                         // Si quisieras, podrías retornar ese ID o almacenarlo en el objeto
                        // obj.setId_fichaMedica(idFichaMedica);  // si tienes un setter
                     }
