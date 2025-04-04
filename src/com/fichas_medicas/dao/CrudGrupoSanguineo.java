@@ -127,4 +127,16 @@ public class CrudGrupoSanguineo implements GrupoSanguineoDAO {
 
         return datos;
     }
+    
+    public String cadenaGrupoSanguineo(Integer id) {
+        var res = "";
+        List<GrupoSanguineo> lista = getAll();
+        for (int i = 0; i < lista.size(); i++) {
+            if (id == lista.get(i).getId_grupo_sanguineo()) {
+                res = lista.get(i).getNombre();
+                break;
+            }
+        }
+        return res;
+    }
 }

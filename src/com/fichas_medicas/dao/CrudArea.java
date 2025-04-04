@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Jose Luis Tapia Fecha: 10/11/2024 hora: 17:50pm
- * 
+ *
  */
 public class CrudArea implements AreaDAO {
 
@@ -31,8 +32,7 @@ public class CrudArea implements AreaDAO {
     public boolean save(Area obj) {
         var query = "INSERT INTO area (nombre_area, id_usuario, estado) VALUES (?, ?, ?)";
         try (
-                Connection conect = this.conexion.conectar(base); 
-                PreparedStatement st = conect.prepareStatement(query)) {
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, obj.getNombre_area());     // Asigna el nombre del área
             st.setString(2, obj.getId_usuario());         // Asigna el ID del usuario
             st.setString(3, obj.getEstado());         // Asigna el estado ('A' o 'I')
@@ -48,8 +48,7 @@ public class CrudArea implements AreaDAO {
     public boolean update(Area obj) {
         var query = "UPDATE area SET nombre_area = ?, id_usuario = ?, estado = ? WHERE id_area = ?";
         try (
-                Connection conect = this.conexion.conectar(base); 
-                PreparedStatement st = conect.prepareStatement(query)) {
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setString(1, obj.getNombre_area());     // Asigna el nombre del área
             st.setString(2, obj.getId_usuario());         // Asigna el ID del usuario
             st.setString(3, obj.getEstado());          // Asigna el estado ('A' o 'I')
@@ -83,8 +82,7 @@ public class CrudArea implements AreaDAO {
         Area area = null;
         var query = "SELECT * FROM area WHERE id_area = ? AND estado = 'A'";
         try (
-                Connection conect = this.conexion.conectar(base);
-                PreparedStatement st = conect.prepareStatement(query)) {
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
             st.setInt(1, idArea);                      // Asigna el idArea al parámetro de la consulta
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {                       // Si se encuentra un resultado
@@ -123,8 +121,7 @@ public class CrudArea implements AreaDAO {
         List<Area> datos = new ArrayList<>();
         var query = "select * from area where estado='A'";
         try (
-                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); 
-                ResultSet rs = st.executeQuery()) {
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 Area area = new Area(rs.getInt("id_area"), rs.getString("nombre_area"),
@@ -136,5 +133,17 @@ public class CrudArea implements AreaDAO {
         }
 
         return datos;
+    }
+
+    public String cadenaArea(Integer id) {
+        var res = "";
+        List<Area> lista = getAll();
+        for (int i = 0; i < lista.size(); i++) {
+            if (id == lista.get(i).getId_area()) {
+                res = lista.get(i).getNombre_area();
+                break;
+            }
+        }
+        return res;
     }
 }

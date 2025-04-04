@@ -6,8 +6,8 @@ package com.fichas_medicas.views;
 
 import static com.fichas_medicas.components.Cadenas.validateString;
 import com.fichas_medicas.components.Calculos;
-import com.fichas_medicas.components.Dialogo;
 import com.fichas_medicas.components.FechaComponente;
+import com.fichas_medicas.components.TablasTabSummary;
 import com.fichas_medicas.dao.CrudArea;
 import com.fichas_medicas.dao.CrudCorreo;
 import com.fichas_medicas.dao.CrudEstadoCivil;
@@ -38,6 +38,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  *
@@ -45,8 +46,13 @@ import java.awt.Color;
  */
 public class EditarFichas extends javax.swing.JDialog {
 
+    TablasTabSummary tblF = null;
+    List<FichaMedica> lista_fichas = null;
     String rutaimagen = "C://Fichas_Medicas//img//logofoto.png";
     private String var1;
+    int gbr_persona = 0;
+    int gbr_ficha_examen = 0;
+
     private CrudArea crudA = null;
     /// grabar
     private CrudPersona crudP = null;
@@ -66,7 +72,8 @@ public class EditarFichas extends javax.swing.JDialog {
     private int pst_1_error = 0;
     private int pst_2_error = 0;
     private int pst_3_error = 0;
-
+    private Integer frk_id_ficha_medica_grb = -1;
+    int frk_id_examen_upd = -1;
     //// valores examen
     private Integer vr_frecuencia_cardiaca;
     private Integer vr_presion_arterial;  // doble valor
@@ -112,7 +119,41 @@ public class EditarFichas extends javax.swing.JDialog {
         fillCorreo();
         fillGrupoSanguineo();
         activar(false);
+        antecedentes.setEnabledAt(1, false);
+        antecedentes.setEnabledAt(2, false);
         this.objU = new Usuario("JTAPIA", "4444", "JOSE", "LINO", "lino@gmail.com", 3, "SOFIA24", "A");
+        lista_fichas = new ArrayList<>();
+        tblF = new TablasTabSummary();
+    }
+
+    public EditarFichas(java.awt.Frame parent, boolean modal, Usuario obj) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        setSize(797, 685);
+        this.objU = obj;
+        System.out.println("Usuario Modulo Fichas " + objU.getUsuario());
+        cargarImagen();
+        crudA = new CrudArea();
+        areas = crudA.getAll();
+        // grabar
+        crudP = new CrudPersona();
+        crudFM = new CrudFichaMedica();
+        crudEx = new CrudExamen();
+        //
+        crudEcl = new CrudEstadoCivil();
+        crudCo = new CrudCorreo();
+        crudGrupo = new CrudGrupoSanguineo();
+        System.out.println("lista " + areas.size());
+        fillAreas();
+        fillEstadoCivil();
+        fillCorreo();
+        fillGrupoSanguineo();
+        activar(false);
+        antecedentes.setEnabledAt(1, false);
+        antecedentes.setEnabledAt(2, false);
+        lista_fichas = new ArrayList<>();
+        tblF = new TablasTabSummary();
     }
 
     public EditarFichas(java.awt.Frame parent, boolean modal, FichaMedica objFM) {
@@ -121,7 +162,7 @@ public class EditarFichas extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setSize(797, 685);
         this.fillObjFM = objFM;
-        System.out.println("ID FICHA "+fillObjFM.getId_fichaMedica()+" "+fillObjFM.getId_persona());
+        System.out.println("ID FICHA " + fillObjFM.getId_fichaMedica() + " " + fillObjFM.getId_persona());
         System.out.println("Usuario Modulo Fichas " + this.fillObjFM.getId_persona());
         cargarImagen();
         crudA = new CrudArea();
@@ -139,8 +180,9 @@ public class EditarFichas extends javax.swing.JDialog {
         fillEstadoCivil();
         fillCorreo();
         fillGrupoSanguineo();
-               //System.out.println("fillData Editar Ficha:" + objFM.getId_persona());
+        //System.out.println("fillData Editar Ficha:" + objFM.getId_persona());
         fillData(objFM);
+        TXT_CEDULA.setEditable(false);
         //activar(false);
         //antecedentes.setEnabledAt(1, false);
         ///antecedentes.setEnabledAt(2, false);
@@ -157,6 +199,22 @@ public class EditarFichas extends javax.swing.JDialog {
         direccion.setText(objPer.getDireccion());
         telefono_emergencia.setText(objPer.getTelefono_emergencia());
         telefono.setText(objPer.getTelefono());
+        // Combo Box Persona
+        Persona objP = crudP.getOne(obj.getId_persona());
+        var resA = crudA.cadenaArea(objP.getId_area());
+        area.setSelectedItem(resA);
+
+        var resEC = crudEcl.cadenaEstadoCivil(objP.getId_estado_civil());
+        estado_civil.setSelectedItem(resEC);
+
+        var resGS = crudGrupo.cadenaGrupoSanguineo(objP.getId_grupo_sanguineo());
+        grupito.setSelectedItem(resGS);
+
+        var fech1 = FechaComponente.getStringFecha(objP.getFecha_nacimiento());
+        TXT_F_NACIMIENTO.setText(fech1);
+
+        cargarImagen(objP.getFoto());
+        //  System.out.println("Id_Rol " + objP.getId_area() + " " + resA);
     }
 
     private void cargarImagen() {
@@ -169,6 +227,18 @@ public class EditarFichas extends javax.swing.JDialog {
         ImageIcon newIcono = new ImageIcon(newimg);
         foto.setIcon(newIcono);
         foto.setSize(350, 299);
+    }
+
+    private void cargarImagen(String ruta) {
+        String file = ruta;
+        foto.setIcon(new ImageIcon(file));
+        ImageIcon icon = new ImageIcon(file);
+        Image img = icon.getImage();
+        Image newimg = img.getScaledInstance(310, 270, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newIcono = new ImageIcon(newimg);
+        foto.setIcon(newIcono);
+        foto.setSize(350, 299);
+        rutaimagen = file;
     }
 
     private void fillAreas() {
@@ -298,6 +368,7 @@ public class EditarFichas extends javax.swing.JDialog {
         g_sanguineo = new javax.swing.JLabel();
         EMERGENCIA = new javax.swing.JLabel();
         telefono = new javax.swing.JTextField();
+        btn_eliminar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -311,8 +382,7 @@ public class EditarFichas extends javax.swing.JDialog {
         TXT_HABITOS = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         TXT_E_ACTUAL = new javax.swing.JTextField();
-        btn_validar_antecedentes = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        muestra_fecha = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         lbl_peso = new javax.swing.JLabel();
         lbl_temperatura = new javax.swing.JLabel();
@@ -337,11 +407,10 @@ public class EditarFichas extends javax.swing.JDialog {
         jLabel66 = new javax.swing.JLabel();
         jLabel67 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
+        btn_guarda_ficha = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
-        imprimir3 = new javax.swing.JButton();
         lbl_imc = new javax.swing.JLabel();
         DIASTOLICA = new javax.swing.JTextField();
         jLabel72 = new javax.swing.JLabel();
@@ -351,7 +420,7 @@ public class EditarFichas extends javax.swing.JDialog {
         CON_FIS = new javax.swing.JTextArea();
         lblResultado = new javax.swing.JLabel();
         lblresultado1 = new javax.swing.JLabel();
-        refrescar3 = new javax.swing.JButton();
+        lblresultado3 = new javax.swing.JLabel();
 
         jLabel22.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/file (3).png"))); // NOI18N
@@ -742,6 +811,7 @@ public class EditarFichas extends javax.swing.JDialog {
 
         foto.setBackground(new java.awt.Color(255, 255, 255));
         foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        foto.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\logofoto.png")); // NOI18N
         foto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         FOTO.setBackground(new java.awt.Color(106, 176, 193));
@@ -758,7 +828,7 @@ public class EditarFichas extends javax.swing.JDialog {
         btn_validar_datos.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         btn_validar_datos.setForeground(new java.awt.Color(255, 255, 255));
         btn_validar_datos.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\aceptar.png")); // NOI18N
-        btn_validar_datos.setText("Validar");
+        btn_validar_datos.setText("Guardar");
         btn_validar_datos.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btn_validar_datos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -856,6 +926,18 @@ public class EditarFichas extends javax.swing.JDialog {
             }
         });
 
+        btn_eliminar.setBackground(new java.awt.Color(0, 153, 204));
+        btn_eliminar.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        btn_eliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_eliminar.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\ic_eliminar.png")); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -948,11 +1030,13 @@ public class EditarFichas extends javax.swing.JDialog {
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(11, 11, 11))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(125, 125, 125)
                 .addComponent(btn_validar_datos, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(239, 239, 239))
+                .addGap(86, 86, 86))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1005,7 +1089,7 @@ public class EditarFichas extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(TXT_N_HIJOS, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(40, 40, 40)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
@@ -1035,7 +1119,8 @@ public class EditarFichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_validar_datos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btn_validar_datos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(315, 315, 315))
         );
@@ -1128,29 +1213,9 @@ public class EditarFichas extends javax.swing.JDialog {
             }
         });
 
-        btn_validar_antecedentes.setBackground(new java.awt.Color(0, 153, 204));
-        btn_validar_antecedentes.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        btn_validar_antecedentes.setForeground(new java.awt.Color(255, 255, 255));
-        btn_validar_antecedentes.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\aceptar.png")); // NOI18N
-        btn_validar_antecedentes.setText("Validar");
-        btn_validar_antecedentes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btn_validar_antecedentes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_validar_antecedentesActionPerformed(evt);
-            }
-        });
-
-        jButton5.setBackground(new java.awt.Color(0, 153, 204));
-        jButton5.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\cancelar.png")); // NOI18N
-        jButton5.setText("Cancelar");
-        jButton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
+        muestra_fecha.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        muestra_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        muestra_fecha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1172,7 +1237,7 @@ public class EditarFichas extends javax.swing.JDialog {
                                         .addComponent(jLabel16)
                                         .addGap(18, 18, 18)))
                                 .addComponent(TXT_A_P_PERSONALES, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(89, 89, 89)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1193,14 +1258,12 @@ public class EditarFichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel17)
-                            .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_validar_antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(153, 153, 153)))
+                            .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(55, 55, 55))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(muestra_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(283, 283, 283))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1238,26 +1301,15 @@ public class EditarFichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_validar_antecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addComponent(muestra_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(337, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("ANTECEDENTES", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(74, 159, 181));
 
-        lbl_peso.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Peso FN.png")); // NOI18N
-
-        lbl_temperatura.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Temperatura FN.png")); // NOI18N
-
-        lbl_altura.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\altura FN.png")); // NOI18N
-
-        lbl_saturacion.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Saturacion FN.png")); // NOI18N
-
         lbl_condi_fisicas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        lbl_condi_fisicas.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Estado fisico FN.png")); // NOI18N
 
         PESO.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         PESO.addActionListener(new java.awt.event.ActionListener() {
@@ -1277,8 +1329,6 @@ public class EditarFichas extends javax.swing.JDialog {
         jLabel54.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel54.setForeground(new java.awt.Color(242, 242, 242));
         jLabel54.setText("PESO (KG)");
-
-        lbl_fre_cardiaca.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Frecuencia cardiaca1 FN.png")); // NOI18N
 
         FRECUENCIA_CARDIACA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         FRECUENCIA_CARDIACA.addActionListener(new java.awt.event.ActionListener() {
@@ -1312,7 +1362,6 @@ public class EditarFichas extends javax.swing.JDialog {
             }
         });
 
-        lbl_pre_arterial.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\Presion arterial FN.png")); // NOI18N
         lbl_pre_arterial.setText("jLabel9");
 
         jLabel58.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
@@ -1398,7 +1447,7 @@ public class EditarFichas extends javax.swing.JDialog {
         jLabel67.setForeground(new java.awt.Color(242, 242, 242));
         jLabel67.setText("CONDICIONES FÍSICAS");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1409,20 +1458,20 @@ public class EditarFichas extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
         jPanel4.setBackground(new java.awt.Color(113, 183, 202));
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton6.setBackground(new java.awt.Color(0, 153, 204));
-        jButton6.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
-        jButton6.setText("Guardar");
-        jButton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btn_guarda_ficha.setBackground(new java.awt.Color(0, 153, 204));
+        btn_guarda_ficha.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        btn_guarda_ficha.setForeground(new java.awt.Color(255, 255, 255));
+        btn_guarda_ficha.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\guardar.png")); // NOI18N
+        btn_guarda_ficha.setText("Guardar");
+        btn_guarda_ficha.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_guarda_ficha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btn_guarda_fichaActionPerformed(evt);
             }
         });
 
@@ -1438,38 +1487,26 @@ public class EditarFichas extends javax.swing.JDialog {
             }
         });
 
-        imprimir3.setBackground(new java.awt.Color(0, 153, 204));
-        imprimir3.setFont(new java.awt.Font("Microsoft Tai Le", 1, 18)); // NOI18N
-        imprimir3.setForeground(new java.awt.Color(255, 255, 255));
-        imprimir3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\impresora (1).png")); // NOI18N
-        imprimir3.setText("Imprimir");
-        imprimir3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                    .addComponent(imprimir3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_guarda_ficha, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(imprimir3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_guarda_ficha)
+                .addGap(18, 18, 18)
                 .addComponent(jButton11)
-                .addContainerGap())
+                .addGap(23, 23, 23))
         );
-
-        lbl_imc.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\imc FN.png")); // NOI18N
 
         DIASTOLICA.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         DIASTOLICA.addActionListener(new java.awt.event.ActionListener() {
@@ -1478,6 +1515,9 @@ public class EditarFichas extends javax.swing.JDialog {
             }
         });
         DIASTOLICA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                DIASTOLICAKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 DIASTOLICAKeyTyped(evt);
             }
@@ -1510,11 +1550,8 @@ public class EditarFichas extends javax.swing.JDialog {
         lblresultado1.setBackground(new java.awt.Color(73, 157, 178));
         lblresultado1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-        refrescar3.setBackground(new java.awt.Color(176, 206, 227));
-        refrescar3.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        refrescar3.setIcon(new javax.swing.ImageIcon("C:\\Fichas_Medicas\\img\\actualizar.png")); // NOI18N
-        refrescar3.setText("Refrescar");
-        refrescar3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        lblresultado3.setBackground(new java.awt.Color(73, 157, 178));
+        lblresultado3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1532,58 +1569,57 @@ public class EditarFichas extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel58)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(sistolicatxt)
-                                .addGap(79, 79, 79)
-                                .addComponent(diastolicatxt))
                             .addComponent(jLabel62)
                             .addComponent(TEMPERATURA, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel59)
                             .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel56)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(FRECUENCIA_CARDIACA, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                    .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                            .addGap(25, 25, 25)
+                                            .addComponent(sistolicatxt)))
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                            .addGap(47, 47, 47)
+                                            .addComponent(diastolicatxt)))))
+                            .addComponent(jLabel56)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(197, 197, 197)
                         .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(198, 198, 198)
+                        .addComponent(lblresultado3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
+                                .addComponent(lbl_peso)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(lbl_peso)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(PESO, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel54)))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(lbl_imc)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel66, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(IMC, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(PESO, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel54)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(lbl_imc)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel66, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(IMC, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(39, 39, 39)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lbl_condi_fisicas)
-                                            .addComponent(lbl_altura)))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(refrescar3)))
+                                    .addComponent(lbl_condi_fisicas)
+                                    .addComponent(lbl_altura))
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
@@ -1600,7 +1636,7 @@ public class EditarFichas extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89))))
+                        .addGap(96, 96, 96))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1643,28 +1679,29 @@ public class EditarFichas extends javax.swing.JDialog {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel58)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                            .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(SISTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(sistolicatxt))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(DIASTOLICA, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel72))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(diastolicatxt))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(lbl_pre_arterial)
                                 .addGap(7, 7, 7)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(sistolicatxt)
-                            .addComponent(diastolicatxt)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblresultado3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1676,7 +1713,7 @@ public class EditarFichas extends javax.swing.JDialog {
                                 .addGap(6, 6, 6)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel67)
@@ -1692,13 +1729,11 @@ public class EditarFichas extends javax.swing.JDialog {
                             .addComponent(lbl_condi_fisicas))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(refrescar3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(318, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(334, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("EXAMENES FISICO", jPanel3);
@@ -1787,21 +1822,6 @@ public class EditarFichas extends javax.swing.JDialog {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        btn_validar_antecedentes.setEnabled(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void btn_validar_antecedentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validar_antecedentesActionPerformed
-        var vali = validarCamposAntecedentes();
-        if (vali.length() > 1) {
-            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            btn_validar_antecedentes.setEnabled(false);
-            Dialogo.Mensaje("Validado", 90);
-            grabarAntecedentes();
-        }
-    }//GEN-LAST:event_btn_validar_antecedentesActionPerformed
     private void grabarAntecedentes() {
 
         var objF = new FichaMedica((Date) FechaComponente.FechaSql(),
@@ -1834,6 +1854,13 @@ public class EditarFichas extends javax.swing.JDialog {
 
         return error2;
 
+    }
+
+    private void activarAntededentes(boolean valor) {
+        TXT_A_P_FAMILIARES.setEditable(valor);
+        TXT_A_P_PERSONALES.setEditable(valor);
+        TXT_HABITOS.setEditable(valor);
+        TXT_E_ACTUAL.setEditable(valor);
     }
 
 
@@ -1905,11 +1932,12 @@ public class EditarFichas extends javax.swing.JDialog {
         var vali = validarCampos();
         if (vali.length() > 1) {
             JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+            activar(true);
+            //gbr_persona = 0;
         } else {
-            btn_validar_datos.setEnabled(false);
-            Dialogo.Mensaje("Validado", 90);
-            grabar();
-
+            //  btn_validar_datos.setEnabled(false);
+            //  Dialogo.Mensaje("Validado", 90);
+            editar();
         }
     }//GEN-LAST:event_btn_validar_datosActionPerformed
     /* Metodo grabar
@@ -1996,8 +2024,7 @@ public class EditarFichas extends javax.swing.JDialog {
 
     }
 
-    private void grabar() {
-
+    private void editar() {
         var id_area = getIdArea();
         System.out.println("Area " + id_area);
         var nh = 0; // numero de hijos
@@ -2014,9 +2041,10 @@ public class EditarFichas extends javax.swing.JDialog {
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objP.toString());
         grb_objP = objP;
+        var res = crudP.update(grb_objP);
+        JOptionPane.showMessageDialog(null, res, "Datos Actualizados", JOptionPane.INFORMATION_MESSAGE);
+
     }
-
-
     private void FOTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FOTOActionPerformed
         guardarImagen();
     }//GEN-LAST:event_FOTOActionPerformed
@@ -2032,7 +2060,7 @@ public class EditarFichas extends javax.swing.JDialog {
     }//GEN-LAST:event_TXT_CEDULAKeyTyped
 
     private void TXT_CEDULAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TXT_CEDULAKeyReleased
-        validarId();
+        //validarId();
     }//GEN-LAST:event_TXT_CEDULAKeyReleased
 
     private void TXT_CEDULAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXT_CEDULAActionPerformed
@@ -2340,15 +2368,70 @@ public class EditarFichas extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_areaActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        var vali = validarCamposExamenes();
-        if (vali.length() > 1) {
-            JOptionPane.showMessageDialog(null, vali, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+    private void btn_guarda_fichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guarda_fichaActionPerformed
+        validarGrabar();
+    }//GEN-LAST:event_btn_guarda_fichaActionPerformed
+
+    private void validarGrabar() {
+        var men = "";
+        String vali = validarCamposAntecedentes();
+        String vali2 = validarCamposExamenes();
+
+        // Validación de antecedentes
+        if (vali.length() > 0) {
+            activarAntededentes(true);
+            men = men + "Antecedentes Inválidos..\n";
+        } else {
+            grabarAntecedentes();
+        }
+
+        // Validación de exámenes
+        if (vali2.length() > 0) {
+            men = men + vali2 + "\nExámenes Inválidos";
         } else {
             grabarExamenes();
-            saveData();
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
+        if (vali.length() == 0 && vali2.length() == 0) {
+            if (gbr_ficha_examen == 0) {
+                men = saveData();
+                gbr_ficha_examen = 1;
+            } else {
+                men = updateData();
+            }
+        }
+        JOptionPane.showMessageDialog(null, men, "Validación", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+//    private void validarGrabar() {
+//        var vali = validarCamposAntecedentes();
+//        if (vali.length() > 1) {
+//            activarAntededentes(true);
+//            JOptionPane.showMessageDialog(null, vali, "Antecedentes Invalidos", JOptionPane.INFORMATION_MESSAGE);
+//        } else {
+//            activarAntededentes(false);
+//            //btn_validar_antecedentes.setEnabled(false);
+//            JOptionPane.showMessageDialog(null, vali, "Antecedentes validados", JOptionPane.INFORMATION_MESSAGE);
+//            // Dialogo.Mensaje("Validado", 90);
+//            grabarAntecedentes();
+//            var vali2 = validarCamposExamenes();
+//            if (vali2.length() > 1) {
+//                JOptionPane.showMessageDialog(null, vali2, "Datos Invalidos", JOptionPane.INFORMATION_MESSAGE);
+//            } else {
+//                gbr_ficha_examen++;
+//                grabarExamenes();
+//                if (gbr_ficha_examen == 1) {
+//                    saveData();
+//                }
+//                if (gbr_ficha_examen > 1) {
+//                  updateData();
+//                }
+//                //hgjhg
+//
+//                // borrarDatos();
+//            }
+//        }
+//
+//    }
 
     private void FRECUENCIA_CARDIACAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FRECUENCIA_CARDIACAKeyReleased
         try {
@@ -2378,6 +2461,48 @@ public class EditarFichas extends javax.swing.JDialog {
 
     }//GEN-LAST:event_FRECUENCIA_CARDIACAKeyReleased
 
+    private void DIASTOLICAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DIASTOLICAKeyReleased
+        try {
+            String textoSistolica = SISTOLICA.getText().trim();
+            String textoDiastolica = DIASTOLICA.getText().trim();
+
+            int sistolica = Integer.parseInt(textoSistolica);
+            int diastolica = Integer.parseInt(textoDiastolica);
+
+            lblresultado3.setVisible(true);
+
+            if (sistolica > 120 || diastolica > 80) {
+                lblresultado3.setText("Hipertensión");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.RED);
+
+            } else if (sistolica < 90 || diastolica < 60) {
+                lblresultado3.setText("Hipotensión");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.YELLOW);
+            } else {
+                lblresultado3.setText("Normal");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.BLACK);
+            }
+
+            // Mostrar el resultado
+            lblresultado3.setOpaque(true);
+        } catch (NumberFormatException ex) {
+            lblresultado3.setVisible(false);
+        }
+
+    }//GEN-LAST:event_DIASTOLICAKeyReleased
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        crudP.delete(TXT_CEDULA.getText());
+        crudFM.deleteByIdPerson(TXT_CEDULA.getText());
+         JOptionPane.showMessageDialog(null, "Datos eliminados", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+         btn_validar_datos.setEnabled(false);
+         btn_eliminar.setEnabled(false);
+         btn_guarda_ficha.setEnabled(false);
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
     private void grabarExamenes() {
         vr_frecuencia_cardiaca = Integer.parseInt(FRECUENCIA_CARDIACA.getText());
         vr_sistolica = Integer.parseInt(SISTOLICA.getText());
@@ -2389,10 +2514,11 @@ public class EditarFichas extends javax.swing.JDialog {
         Double.valueOf(IMC.getText());
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
-        var objE = new Examen(TXT_CEDULA.getText(),3, (Date) FechaComponente.FechaSql(),
+        System.out.println(frk_id_examen_upd + " PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb);
+        Examen objE = new Examen(TXT_CEDULA.getText(), frk_id_ficha_medica_grb, (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
-                vr_imc, vr_estado_actual, vr_habitos, "A");
+                vr_imc, vr_estado_actual, vr_habitos, CON_FIS.getText(), "A");
         // Problemas con fecha de nacikiento
         System.out.println("Prueba grabar " + objE.toString());
         grb_objE = objE;
@@ -2571,7 +2697,7 @@ public class EditarFichas extends javax.swing.JDialog {
         TXT_NOMBRE.setEditable(valor);
         TXT_APELLIDO.setEditable(valor);
         area.setEnabled(valor);
-        TXT_F_NACIMIENTO.setEditable(valor);
+        //TXT_F_NACIMIENTO.setEditable(valor);
         TXT_L_NACIMIENTO.setEditable(valor);
         estado_civil.setEnabled(valor);
         grupito.setEnabled(valor);
@@ -2580,18 +2706,99 @@ public class EditarFichas extends javax.swing.JDialog {
         FOTO.setEnabled(valor);
         direccion.setEditable(valor);
         telefono_emergencia.setEditable(valor);
-        antecedentes.setEnabledAt(1, valor);
-        antecedentes.setEnabledAt(2, valor);
+        //antecedentes.setEnabledAt(1, valor);
+        //antecedentes.setEnabledAt(2, valor);
         btn_correo.setEnabled(valor);
         btn_cal.setEnabled(valor);
         btn_validar_datos.setEnabled(valor);
     }
 
-    private void saveData() {
-        var msg = crudP.save(grb_objP);
-        var msg1 = "\n" + crudFM.save(grb_objF);
-        var msg2 = "\n" + crudEx.save(grb_objE);
-        JOptionPane.showMessageDialog(null, msg + "\n" + msg1 + "\n" + msg2);
+    private String saveData() {
+        var msg = "Datos de ficha medica guardada....";
+        crudFM.save(grb_objF);
+        frk_id_ficha_medica_grb = crudFM.getId_ficha_medica();
+        grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
+        crudEx.save(grb_objE);
+        frk_id_examen_upd = crudEx.getId_examen();
+        //  System.out.println(frk_id_examen_upd + " grabacion edicion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
+        lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
+        tblF.getTabSummary(lista_fichas, tabla);
+        return msg;
+    }
+
+    private String updateData() {
+        //System.out.println("ACTUALIZAR FICHA MEDICA ID: " + frk_id_ficha_medica_grb);
+        grb_objF.setId_fichaMedica(frk_id_ficha_medica_grb);
+        crudFM.update(grb_objF);  // Actualiza Ficha Médica (DATOS + ANTECEDENTES)
+        grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
+        grb_objE.setIdExamen(frk_id_examen_upd);
+        //System.out.println("EDITADO  " + grb_objE.getIdExamen());
+        crudEx.update(grb_objE); // Actualiza EXAMEN
+        String msg = "Datos de ficha medica actualizados....";
+        // Refrescar tabla con los datos actualizados
+        lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
+        tblF.getTabSummary(lista_fichas, tabla);
+        return msg;
+    }
+
+//     private void updateData() {
+//        var res = false;
+//        var msg = "";
+////        if (!"Datos guardados...".equals(res)) {
+////            msg = "Falta llenar campos en la seccion de DATOS.\n";
+////        }
+//        res = crudFM.update(grb_objF);
+//       // frk_id_ficha_medica_grb = crudFM.getId_ficha_medica();
+//       // System.out.println("grabacion en tabla EXAMEN: " + frk_id_ficha_medica_grb);
+//        if (!res) {
+//            msg = msg + "Falta llenar campos en la seccion de ANTECEDENTES.\n";
+//        }
+//       // grb_objE.setId_ficha_medica(frk_id_ficha_medica_grb);
+//        var res1 = crudEx.update(grb_objE);
+//        if (res1 == false) {
+//            msg = msg + "Falta llenar campos en la seccion de EXAMENES.\n";
+//        }
+//         if (res==true  && res1==true) {
+//             msg="Datos han sido actualixados!";
+//         }else{
+//              msg="Verifique que todos los compos esten correctos....";
+//         }
+//        lista_fichas = crudFM.getAllTabSummary(TXT_CEDULA.getText());
+//        tblF.getTabSummary(lista_fichas, tabla);
+//        JOptionPane.showMessageDialog(null, msg);
+//    }
+    private void borrarDatos() {
+        TXT_CEDULA.setText("");
+        TXT_NOMBRE.setText("");
+        TXT_APELLIDO.setText("");
+        TXT_F_NACIMIENTO.setText("");
+        TXT_L_NACIMIENTO.setText("");
+        TXT_N_HIJOS.setText("");
+        // foto
+        direccion.setText("");
+        telefono_emergencia.setText("");
+        area.setSelectedIndex(0);
+        estado_civil.setSelectedIndex(0);
+        grupito.setSelectedIndex(0);
+        cargarImagen();
+        // antecedentes
+        TXT_A_P_FAMILIARES.setText("");
+        TXT_A_P_PERSONALES.setText("");
+        TXT_HABITOS.setText("");
+        TXT_E_ACTUAL.setText("");
+        // 
+        TEMPERATURA.setText("");
+        PESO.setText("");
+        SATURACION.setText("");
+        ESTATURA.setText("");
+        SISTOLICA.setText("");
+        DIASTOLICA.setText("");
+        IMC.setText("");
+        FRECUENCIA_CARDIACA.setText("");
+        CON_FIS.setText("");
+        activar(true);
+        activarAntededentes(true);
+
     }
 
     /**
@@ -2678,7 +2885,8 @@ public class EditarFichas extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> area;
     private javax.swing.JButton btn_cal;
     private javax.swing.JButton btn_correo;
-    private javax.swing.JButton btn_validar_antecedentes;
+    private javax.swing.JButton btn_eliminar;
+    private javax.swing.JButton btn_guarda_ficha;
     private javax.swing.JButton btn_validar_datos;
     private javax.swing.JComboBox<String> correo;
     private javax.swing.JLabel diastolicatxt;
@@ -2687,11 +2895,8 @@ public class EditarFichas extends javax.swing.JDialog {
     private javax.swing.JLabel foto;
     private javax.swing.JLabel g_sanguineo;
     private javax.swing.JComboBox<String> grupito;
-    private javax.swing.JButton imprimir3;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
@@ -2760,7 +2965,6 @@ public class EditarFichas extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblResultado;
     private javax.swing.JLabel lbl_altura;
     private javax.swing.JLabel lbl_condi_fisicas;
@@ -2771,8 +2975,10 @@ public class EditarFichas extends javax.swing.JDialog {
     private javax.swing.JLabel lbl_saturacion;
     private javax.swing.JLabel lbl_temperatura;
     private javax.swing.JLabel lblresultado1;
-    private javax.swing.JButton refrescar3;
+    private javax.swing.JLabel lblresultado3;
+    private javax.swing.JTextField muestra_fecha;
     private javax.swing.JLabel sistolicatxt;
+    private javax.swing.JTable tabla;
     private javax.swing.JTextField telefono;
     private javax.swing.JTextField telefono_emergencia;
     // End of variables declaration//GEN-END:variables

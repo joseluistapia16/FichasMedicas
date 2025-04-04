@@ -120,23 +120,34 @@ public class CrudEstadoCivil implements EstadoCivilDAO {
         List<EstadoCivil> datos = new ArrayList<>();
         var query = "select * from estado_civil where estado='A'";
         try (
-                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); 
-                ResultSet rs = st.executeQuery()) {
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query); ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
-                  var  obj = new EstadoCivil(
-                            rs.getInt("id_estado_civil"),
-                            rs.getString("nombre_estado_civil"),
-                            rs.getString("id_usuario"),
-                            rs.getString("estado")
-                    );
+                var obj = new EstadoCivil(
+                        rs.getInt("id_estado_civil"),
+                        rs.getString("nombre_estado_civil"),
+                        rs.getString("id_usuario"),
+                        rs.getString("estado")
+                );
                 datos.add(obj);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CrudArea.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return datos; 
+        return datos;
+    }
+
+    public String cadenaEstadoCivil(Integer id) {
+        var res = "";
+        List<EstadoCivil> lista = getAll();
+        for (int i = 0; i < lista.size(); i++) {
+            if (id == lista.get(i).getIdEstadoCivil()) {
+                res = lista.get(i).getNombreEstadoCivil();
+                break;
+            }
+        }
+        return res;
     }
 
 }

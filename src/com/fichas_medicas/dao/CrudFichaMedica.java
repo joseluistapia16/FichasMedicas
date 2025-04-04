@@ -55,12 +55,12 @@ public class CrudFichaMedica implements FichaMedicaDAO {
                 try (ResultSet rs = st.getGeneratedKeys()) {
                     if (rs.next()) {
                         int idFichaMedica = rs.getInt(1);  // Aquí tienes el ID que buscabas
-                        System.out.println("METODO SAVE FICHA ID:"+idFichaMedica);
+                        System.out.println("METODO SAVE FICHA ID:" + idFichaMedica);
                         setId_ficha_medica(idFichaMedica);
-                        msg = "Ficha médica guardada..." ;
-                       // msg = "Ficha médica guardada con ID: " + getId_ficha_medica();
+                        msg = "Ficha médica guardada...";
+                        // msg = "Ficha médica guardada con ID: " + getId_ficha_medica();
                         // Si quisieras, podrías retornar ese ID o almacenarlo en el objeto
-                       // obj.setId_fichaMedica(idFichaMedica);  // si tienes un setter
+                        // obj.setId_fichaMedica(idFichaMedica);  // si tienes un setter
                     }
                 }
             } else {
@@ -206,6 +206,21 @@ public class CrudFichaMedica implements FichaMedicaDAO {
 
     public Integer getId_ficha_medica() {
         return id_ficha_medica;
+    }
+
+    public boolean deleteByIdPerson(String idPersona) {
+        var query = "UPDATE ficha_medica SET  estado = ? WHERE id_persona = ?";
+        try (
+                Connection conect = this.conexion.conectar(base); PreparedStatement st = conect.prepareStatement(query)) {
+            st.setString(1, "I");          // Asigna el estado ('A' o 'I')
+            st.setString(2, idPersona);
+            // Asigna el ID del área para actualizar
+            int rowsAffected = st.executeUpdate();     // Ejecuta la actualización
+            return rowsAffected > 0;                   // Retorna true si se actualizaron filas
+        } catch (SQLException ex) {
+            Logger.getLogger(CrudFichaMedica.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     public void setId_ficha_medica(Integer id_ficha_medica) {

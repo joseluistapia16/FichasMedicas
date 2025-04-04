@@ -307,6 +307,7 @@ public class Fichas extends javax.swing.JDialog {
         TXT_HABITOS = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         TXT_E_ACTUAL = new javax.swing.JTextField();
+        muestra_fecha = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         lbl_peso = new javax.swing.JLabel();
         lbl_temperatura = new javax.swing.JLabel();
@@ -1122,6 +1123,9 @@ public class Fichas extends javax.swing.JDialog {
             }
         });
 
+        muestra_fecha.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        muestra_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1165,6 +1169,10 @@ public class Fichas extends javax.swing.JDialog {
                             .addComponent(jLabel17)
                             .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(55, 55, 55))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(295, 295, 295)
+                .addComponent(muestra_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1201,7 +1209,9 @@ public class Fichas extends javax.swing.JDialog {
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TXT_E_ACTUAL, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(402, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(muestra_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(337, Short.MAX_VALUE))
         );
 
         antecedentes.addTab("ANTECEDENTES", jPanel2);
@@ -1809,7 +1819,7 @@ public class Fichas extends javax.swing.JDialog {
         var fec = cld.getStr_fecha();
         System.out.println(" fecha frm " + fec);
         TXT_F_NACIMIENTO.setText(fec);
-
+        muestra_fecha.setText(fec);
         fecha_nac = (Date) cld.getDt_fecha();
         System.out.println("fecha grt 1 " + fecha_nac);
     }//GEN-LAST:event_btn_calActionPerformed
@@ -2901,6 +2911,7 @@ public class Fichas extends javax.swing.JDialog {
     private javax.swing.JLabel lbl_temperatura;
     private javax.swing.JLabel lblresultado1;
     private javax.swing.JLabel lblresultado3;
+    private javax.swing.JTextField muestra_fecha;
     private javax.swing.JLabel sistolicatxt;
     private javax.swing.JTable tabla;
     private javax.swing.JTextField telefono;
