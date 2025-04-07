@@ -215,6 +215,13 @@ public class EditarFichas extends javax.swing.JDialog {
 
         cargarImagen(objP.getFoto());
         //  System.out.println("Id_Rol " + objP.getId_area() + " " + resA);
+        // FICHA
+        TXT_A_P_FAMILIARES.setText(obj.getAnt_patologicos_fam());
+        TXT_A_P_PERSONALES.setText(obj.getAnt_patologicos_per());
+        var obEx=crudEx.getOneByIdFicha(obj.getId_fichaMedica());
+        TXT_HABITOS.setText(obEx.getHabitos());
+        TXT_E_ACTUAL.setText(obEx.getEstadoActual());
+        muestra_fecha.setText(FechaComponente.getStringFecha(obEx.getFechaRegistro()));
     }
 
     private void cargarImagen() {
