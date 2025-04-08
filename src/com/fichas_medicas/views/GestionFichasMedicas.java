@@ -238,7 +238,7 @@ public class GestionFichasMedicas extends javax.swing.JDialog {
                 var obj = getObject(tabla.getValueAt(fila, 2).toString(), lista);
                 if (obj != null) {
                     System.out.println(obj.getId_persona() + " ");
-                    var ob = new EditarFichas(new JFrame(), true, obj);
+                    var ob = new EditarFichas(new JFrame(), true,obj, objU );
                     ob.setVisible(true);
                     lista = crudF.getAll();
                     tbl.cargarFichas(lista, tabla);

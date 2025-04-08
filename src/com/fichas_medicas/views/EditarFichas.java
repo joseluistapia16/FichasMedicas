@@ -156,11 +156,12 @@ public class EditarFichas extends javax.swing.JDialog {
         tblF = new TablasTabSummary();
     }
 
-    public EditarFichas(java.awt.Frame parent, boolean modal, FichaMedica objFM) {
+    public EditarFichas(java.awt.Frame parent, boolean modal, FichaMedica objFM,Usuario obj) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setSize(797, 685);
+         this.objU = obj;
         this.fillObjFM = objFM;
         System.out.println("ID FICHA " + fillObjFM.getId_fichaMedica() + " " + fillObjFM.getId_persona());
         System.out.println("Usuario Modulo Fichas " + this.fillObjFM.getId_persona());
@@ -218,10 +219,20 @@ public class EditarFichas extends javax.swing.JDialog {
         // FICHA
         TXT_A_P_FAMILIARES.setText(obj.getAnt_patologicos_fam());
         TXT_A_P_PERSONALES.setText(obj.getAnt_patologicos_per());
-        var obEx=crudEx.getOneByIdFicha(obj.getId_fichaMedica());
+        var obEx = crudEx.getOneByIdFicha(obj.getId_fichaMedica());
         TXT_HABITOS.setText(obEx.getHabitos());
         TXT_E_ACTUAL.setText(obEx.getEstadoActual());
         muestra_fecha.setText(FechaComponente.getStringFecha(obEx.getFechaRegistro()));
+        // EXAMEN
+        TEMPERATURA.setText(obEx.getTemperatura()+"");
+        PESO.setText(obEx.getPesoKg().toString());
+        SATURACION.setText(obEx.getSaturacion().toString());
+        ESTATURA.setText(obEx.getEstaturaCm().toString());
+        SISTOLICA.setText(obEx.getSistolica().toString());
+        DIASTOLICA.setText(obEx.getDiastolica().toString());
+        IMC.setText(obEx.getImc().toString());
+        FRECUENCIA_CARDIACA.setText(obEx.getFrecuenciaCardiaca().toString());
+        CON_FIS.setText(obEx.getCondiciones_fisicas());
     }
 
     private void cargarImagen() {
@@ -1244,7 +1255,7 @@ public class EditarFichas extends javax.swing.JDialog {
                                         .addComponent(jLabel16)
                                         .addGap(18, 18, 18)))
                                 .addComponent(TXT_A_P_PERSONALES, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 2, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(89, 89, 89)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1686,7 +1697,7 @@ public class EditarFichas extends javax.swing.JDialog {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addComponent(SATURACION, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1716,7 +1727,7 @@ public class EditarFichas extends javax.swing.JDialog {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel66)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(IMC, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(IMC, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                                 .addGap(6, 6, 6)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1736,11 +1747,11 @@ public class EditarFichas extends javax.swing.JDialog {
                             .addComponent(lbl_condi_fisicas))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblresultado1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addGap(334, 334, 334))
         );
 
         antecedentes.addTab("EXAMENES FISICO", jPanel3);
@@ -2399,12 +2410,12 @@ public class EditarFichas extends javax.swing.JDialog {
             grabarExamenes();
         }
         if (vali.length() == 0 && vali2.length() == 0) {
-            if (gbr_ficha_examen == 0) {
-                men = saveData();
-                gbr_ficha_examen = 1;
-            } else {
-                men = updateData();
-            }
+//            if (gbr_ficha_examen == 0) {
+//                men = saveData();
+//                gbr_ficha_examen = 1;
+//            } else {
+            men = updateData();
+//            }
         }
         JOptionPane.showMessageDialog(null, men, "Validación", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -2498,16 +2509,46 @@ public class EditarFichas extends javax.swing.JDialog {
         } catch (NumberFormatException ex) {
             lblresultado3.setVisible(false);
         }
-
+gdsfgdfgfdgdfgdf
     }//GEN-LAST:event_DIASTOLICAKeyReleased
+private void getOperationIMC(){
+      try {
+            String textoSistolica = SISTOLICA.getText().trim();
+            String textoDiastolica = DIASTOLICA.getText().trim();
 
+            int sistolica = Integer.parseInt(textoSistolica);
+            int diastolica = Integer.parseInt(textoDiastolica);
+
+            lblresultado3.setVisible(true);
+
+            if (sistolica > 120 || diastolica > 80) {
+                lblresultado3.setText("Hipertensión");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.RED);
+
+            } else if (sistolica < 90 || diastolica < 60) {
+                lblresultado3.setText("Hipotensión");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.YELLOW);
+            } else {
+                lblresultado3.setText("Normal");
+                lblresultado3.setOpaque(true);
+                lblresultado3.setForeground(Color.BLACK);
+            }
+
+            // Mostrar el resultado
+            lblresultado3.setOpaque(true);
+        } catch (NumberFormatException ex) {
+            lblresultado3.setVisible(false);
+        }
+}
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         crudP.delete(TXT_CEDULA.getText());
         crudFM.deleteByIdPerson(TXT_CEDULA.getText());
-         JOptionPane.showMessageDialog(null, "Datos eliminados", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-         btn_validar_datos.setEnabled(false);
-         btn_eliminar.setEnabled(false);
-         btn_guarda_ficha.setEnabled(false);
+        JOptionPane.showMessageDialog(null, "Datos eliminados", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        btn_validar_datos.setEnabled(false);
+        btn_eliminar.setEnabled(false);
+        btn_guarda_ficha.setEnabled(false);
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void grabarExamenes() {
@@ -2522,6 +2563,7 @@ public class EditarFichas extends javax.swing.JDialog {
         vr_estado_actual = TXT_E_ACTUAL.getText();
         vr_habitos = TXT_HABITOS.getText();
         System.out.println(frk_id_examen_upd + " PRUEBA GRABA 1 :" + frk_id_ficha_medica_grb);
+        System.out.println("IMC "+vr_imc);
         Examen objE = new Examen(TXT_CEDULA.getText(), frk_id_ficha_medica_grb, (Date) FechaComponente.FechaSql(),
                 vr_frecuencia_cardiaca, vr_sistolica, vr_diastolica,
                 vr_saturacion, vr_peso, vr_estatura, vr_temperatura,
